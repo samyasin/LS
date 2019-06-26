@@ -3,21 +3,21 @@ include 'includes/config.php';
 global $con;
 $msg = "";
 if(isset($_POST['add'])){
-  $fallname = $_POST['fallname'];
+  $full_name = $_POST['full_name'];
   $email    = $_POST['email'];
   /* Encrypt a password */
   $password = md5($_POST['password']);
 
 
   /* check if user exist */
-  $sql="SELECT email FROM admin WHERE email='$email' AND fallname='$fallname'";
+  $sql="SELECT email FROM admin WHERE email='$email' AND full_name='$full_name'";
   $result=mysqli_query($con,$sql);
 
   if(mysqli_num_rows($result) > 0){
     $msg ="This admin is exist";
   }else{
-    $insert = "INSERT INTO admin(fallname,email,password) VALUES
-              ('$fallname','$email','$password')";
+    $insert = "INSERT INTO admin(full_name,email,password) VALUES
+              ('$full_name','$email','$password')";
     if(mysqli_query($con,$insert)){
     //  getAccount($email,$password);
     }
@@ -28,24 +28,24 @@ if(isset($_POST['add'])){
 
 if(isset($_POST['remove'])){
   $id      = $_POST['id'];
-  $delete  = "DELETE FROM admin WHERE id_admin='$id'";
+  $delete  = "DELETE FROM admin WHERE admin_id='$id'";
   $resulte = mysqli_query($con,$delete);
   header('Location: admin.php');
 }
 
 if(isset($_POST['edit'])){
   $id       = $_POST['id'];
-  $name     = $_POST['fallname'];
+  $name     = $_POST['full_name'];
   $email    = $_POST['email'];
   $password = $_POST['password'];
 
 
   if($password == ''){
-    $update   = "UPDATE admin SET fallname='$name', email='$email' WHERE id_admin='$id'";
+    $update   = "UPDATE admin SET full_name='$name', email='$email' WHERE admin_id='$id'";
     $result = mysqli_query($con,$update);
   } else {
     $password = md5($password);
-    $update   = "UPDATE admin SET fallname='$name', email='$email', password='$password' WHERE id_admin='$id'";
+    $update   = "UPDATE admin SET full_name='$name', email='$email', password='$password' WHERE admin_id='$id'";
     $result = mysqli_query($con,$update);
   }
   header('Location: admin.php');
@@ -68,11 +68,11 @@ if(isset($_POST['edit'])){
                   <strong class="card-title">Add Admin</strong>
                 </div>
                 <div class="card-body card-block position-relative">
-                    <form id="add_admin" action = "admin.php" method="POST" class="">
+                    <form id="add_admin" action = "admin.php" method="POST" class="" validate>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                <input type="text" id="fallname" name="fallname" placeholder="Fall Name" class="form-control" required autocomplete="off">
+                                <input type="text" id="full_name" name="full_name" placeholder="Fall Name" class="form-control" required autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
@@ -135,7 +135,7 @@ if(isset($_POST['edit'])){
                         ?>
                         <tr>
                           <td><?php echo $i; ?></td>
-                          <td><?php echo $row['fallname'];?></td>
+                          <td><?php echo $row['full_name'];?></td>
                           <td><?php echo$row['email'];?></td>
                           <td>
                           <!-- modal -->
@@ -157,11 +157,11 @@ if(isset($_POST['edit'])){
                                 <div class='modal-body pb-0'>
                                 <!-- form edit admin -->
                                 <form id='edit_admin<?php echo $i;?>' action = 'admin.php' method='POST' class="">
-                                    <input type='hidden' name='id' value='<?php echo $row['id_admin'];?>'>
+                                    <input type='hidden' name='id' value='<?php echo $row['admin_id'];?>'>
                                     <div class='form-group'>
                                         <div class='input-group'>
                                             <div class='input-group-addon'><i class='fa fa-user'></i></div>
-                                            <input type='text' id='eFallname<?php echo $i;?>' name='fallname' placeholder='Fall Name' class='form-control' required autocomplete='off' value="<?php echo $row['fallname'];?>">
+                                            <input type='text' id='efull_name<?php echo $i;?>' name='full_name' placeholder='Fall Name' class='form-control' required autocomplete='off' value="<?php echo $row['full_name'];?>">
                                         </div>
                                     </div>
                                     <div class='form-group'>
@@ -194,7 +194,7 @@ if(isset($_POST['edit'])){
                           </div>
                           <!-- end modal -->
                           <form id='option<?php echo $i;?>'action = 'admin.php' method='POST' class='d-inline'>
-                          <input type='hidden' name='id' value='<?php echo $row['id_admin'];?>'>
+                          <input type='hidden' name='id' value='<?php echo $row['admin_id'];?>'>
                             <button class='btn btn-danger' type='submit' name='remove' vlaue='remove'>Remove</button>
                           </form>
                           </td>
@@ -221,14 +221,14 @@ if(isset($_POST['edit'])){
   <?php include 'includes/footer.php'; ?>
   <script>
       $(document).ready(function() {
-  /*      $( "#add_admin" ).submit(function( event ) {
+        $( "#add_admin" ).submit(function( event ) {
           if($('#password').val() == $('#Cpassword').val()){
             return;
           } else {
             $('#Cpassword').css('border-color','red');
           }
           event.preventDefault();
-        });*/
+        });
     } );
   </script>
 </body>

@@ -80,6 +80,10 @@
                       <a href="category.php"><i class="menu-icon fa fa-th-list"></i>Manage Category</a>
                     </li>
 
+                    <li>
+                      <a href="productAdmin.php"><i class="menu-icon fa fa-product-hunt"></i>Product</a>
+                    </li>
+
                     <li class="menu-title">Icons</li><!-- /.menu-title -->
 
                     <li class="menu-item-has-children dropdown">

@@ -4,6 +4,9 @@ global $con;
 $msg = "";
 if(isset($_POST['add'])){
   $name = $_POST['category'];
+  $image = $_FILES['image']['name'];
+  $target = "upload/".basename($image);
+
 
   /* check if user exist */
   $sql="SELECT name FROM category WHERE name='$name'";
@@ -12,11 +15,18 @@ if(isset($_POST['add'])){
   if(mysqli_num_rows($result) > 0){
     $msg ="This category is exist";
   }else{
-    $insert = "INSERT INTO category(name) VALUES
-              ('$name')";
-    if(mysqli_query($con,$insert)){
-    //  getAccount($email,$password);
-    }
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+  		$msg = "Image uploaded successfully";
+      $insert = "INSERT INTO category(name, url) VALUES
+                ('$name', '$target')";
+      if(mysqli_query($con,$insert)){
+      //  getAccount($email,$password);
+      $msg = "Add category successfully";
+      }
+  	}else{
+  		$msg = "Failed to upload image";
+  	}
+
     header('Location: category.php');
 
   }
@@ -24,17 +34,30 @@ if(isset($_POST['add'])){
 
 if(isset($_POST['remove'])){
   $id      = $_POST['id'];
-  $delete  = "DELETE FROM category WHERE id_category='$id'";
+  $target  = $_POST['image'];
+  $delete  = "DELETE FROM category WHERE category_id='$id'";
   $resulte = mysqli_query($con,$delete);
+  unlink($target);
+  $msg = "Remove category successfully";
   header('Location: category.php');
 }
 
 if(isset($_POST['edit'])){
   $id       = $_POST['id'];
   $name     = $_POST['category'];
+  $image = $_FILES['image']['name'];
+  $target = "upload/".basename($image);
 
-  $update   = "UPDATE category SET name='$name' WHERE id_category='$id'";
-  $result = mysqli_query($con,$update);
+
+
+  if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+    $msg = "Image uploaded successfully";
+    $update   = "UPDATE category SET name='$name', url='$target' WHERE category_id='$id'";
+    $result = mysqli_query($con,$update);
+  }else{
+    $msg = "Failed to upload image";
+  }
+
 
   header('Location: category.php');
 }
@@ -47,7 +70,11 @@ if(isset($_POST['edit'])){
   <div class="content">
     <!-- Animated -->
     <div class="animated fadeIn">
-
+      <?php if($msg != ''){ ?>
+      <div id="msg" class="alert alert-info position-fixed px-3" role="alert" style="bottom:10px; right:10px;z-index:999">
+        <?php echo $msg; ?>
+      </div>
+    <?php }?>
       <!-- add admin -->
       <div class="row">
         <div class="col-12">
@@ -56,20 +83,29 @@ if(isset($_POST['edit'])){
                   <strong class="card-title">Add Category</strong>
                 </div>
                 <div class="card-body card-block position-relative">
-                    <form id="add_admin" action = "category.php" method="POST" class="">
+                    <form id="add_admin" action = "category.php" method="POST" class="" enctype="multipart/form-data">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-th-list"></i></div>
                                 <input type="text" id="category" name="category" placeholder="Category" class="form-control" required autocomplete="off">
                             </div>
                         </div>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-image"></i></div>
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="uploadImg" accept="image/*" name="image">
+                              <label class="custom-file-label" for="uploadImg">Choose image</label>
+                            </div>
+                          </div>
+                        </div>
                         <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm" name="add" value="add">Submit</button></div>
                     </form>
-                    <?php if($msg!=""){ ?>
+                    <!-- <?php if($msg!=""){ ?>
                     <div class="alert alert-danger position-absolute w-50 p-2 text-center" style="right:10px;bottom:10px">
                       <?php echo $msg; ?>
                     </div>
-                  <?php } ?>
+                  <?php } ?> -->
                 </div>
             </div>
         </div>
@@ -90,6 +126,7 @@ if(isset($_POST['edit'])){
                   <tr>
                     <th>#</th>
                     <th>Category</th>
+                    <th>Image</th>
                     <th>Option</th>
                   </tr>
                 </thead>
@@ -105,6 +142,7 @@ if(isset($_POST['edit'])){
                         <tr>
                           <td><?php echo $i; ?></td>
                           <td><?php echo $row['name'];?></td>
+                          <td><img src="<?php echo $row['url'];?>" class="rounded border" style="max-width:100px;max-height:100px"></td>
                           <td>
                           <!-- modal -->
                           <!-- Button trigger modal -->
@@ -124,13 +162,22 @@ if(isset($_POST['edit'])){
                                 </div>
                                 <div class='modal-body pb-0'>
                                 <!-- form edit admin -->
-                                <form id='edit_admin<?php echo $i;?>' action = 'category.php' method='POST' class="">
-                                    <input type='hidden' name='id' value='<?php echo $row['id_category'];?>'>
+                                <form id='edit_admin<?php echo $i;?>' action = 'category.php' method='POST' class="" enctype="multipart/form-data">
+                                    <input type='hidden' name='id' value='<?php echo $row['category_id'];?>'>
                                     <div class='form-group'>
                                         <div class='input-group'>
                                             <div class='input-group-addon'><i class='fa fa-th-list'></i></div>
                                             <input type='text' id='eCategory<?php echo $i;?>' name='category' placeholder='Category' class='form-control' required autocomplete='off' value="<?php echo $row['name'];?>">
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-image"></i></div>
+                                        <div class="custom-file">
+                                          <input type="file" class="custom-file-input" id="edit<?php echo $i;?>" accept="image/*" value="<?php echo $row['url'];?>" name="image">
+                                          <label class="custom-file-label" for="edit<?php echo $i;?>">Choose image</label>
+                                        </div>
+                                      </div>
                                     </div>
                                     <div class='modal-footer'>
                                       <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
@@ -144,7 +191,8 @@ if(isset($_POST['edit'])){
                           </div>
                           <!-- end modal -->
                           <form id='option<?php echo $i;?>'action = 'category.php' method='POST' class='d-inline'>
-                          <input type='hidden' name='id' value='<?php echo $row['id_category'];?>'>
+                          <input type='hidden' name='id' value='<?php echo $row['category_id'];?>'>
+                          <input type='hidden' name='image' value='<?php echo $row['url'];?>'>
                             <button class='btn btn-danger' type='submit' name='remove' vlaue='remove'>Remove</button>
                           </form>
                           </td>
@@ -169,5 +217,12 @@ if(isset($_POST['edit'])){
   <!-- /.content -->
 
   <?php include 'includes/footer.php'; ?>
+  <script>
+    $(document).ready(function(){
+      setTimeout(function(){
+         $('#msg').fadeOut('slow');
+       }, 3000);
+    });
+  </script>
 </body>
 </html>
