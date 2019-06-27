@@ -5,7 +5,7 @@ $msg = "";
 if(isset($_POST['add'])){
   $name = $_POST['category'];
   $image = $_FILES['image']['name'];
-  $target = "upload/".basename($image);
+  $target = "upload/category/".basename($image);
 
 
   /* check if user exist */
@@ -46,7 +46,7 @@ if(isset($_POST['edit'])){
   $id       = $_POST['id'];
   $name     = $_POST['category'];
   $image = $_FILES['image']['name'];
-  $target = "upload/".basename($image);
+  $target = "upload/category/".basename($image);
 
 
 
@@ -142,7 +142,7 @@ if(isset($_POST['edit'])){
                         <tr>
                           <td><?php echo $i; ?></td>
                           <td><?php echo $row['name'];?></td>
-                          <td><img src="<?php echo $row['url'];?>" class="rounded border" style="max-width:100px;max-height:100px"></td>
+                          <td><img src="<?php echo $row['url'];?>" style="max-width:100px;max-height:100px"></td>
                           <td>
                           <!-- modal -->
                           <!-- Button trigger modal -->
@@ -155,7 +155,7 @@ if(isset($_POST['edit'])){
                             <div class='modal-dialog modal-dialog-centered' role='document'>
                               <div class='modal-content'>
                                 <div class='modal-header'>
-                                  <h5 class='modal-title d-inline' id='exampleModalLongTitle<?php echo $i;?>'>Edit Admin</h5>
+                                  <h5 class='modal-title d-inline' id='exampleModalLongTitle<?php echo $i;?>'>Edit Category</h5>
                                   <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                                     <span aria-hidden='true'>&times;</span>
                                   </button>
@@ -192,7 +192,6 @@ if(isset($_POST['edit'])){
                           <!-- end modal -->
                           <form id='option<?php echo $i;?>'action = 'category.php' method='POST' class='d-inline'>
                           <input type='hidden' name='id' value='<?php echo $row['category_id'];?>'>
-                          <input type='hidden' name='image' value='<?php echo $row['url'];?>'>
                             <button class='btn btn-danger' type='submit' name='remove' vlaue='remove'>Remove</button>
                           </form>
                           </td>
