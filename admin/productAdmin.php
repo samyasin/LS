@@ -78,7 +78,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                           <?php if(mysqli_num_rows($resultCategory) > 0){
                             while($row = mysqli_fetch_assoc($resultCategory)){
                               ?>
-                              <option value="<?php echo $row['category_id']; ?>"><?php echo $row['name']; ?></option>
+                              <option value="<?php echo $row['category_id']; ?>"><?php echo $row['name_en']; ?></option>
                               <?php
                             }
                           } ?>
@@ -113,6 +113,24 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-trademark"></i></div>
+                        <input type="text" id="brand" name="brand" placeholder="Brand" class="form-control" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-shield"></i></div>
+                        <input type="text" id="warranty" name="warranty" placeholder="Warranty Period" class="form-control" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-tint"></i></div>
+                        <input type="text" id="color" name="color" placeholder="Color" class="form-control" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"><i class="fa fa-image"></i></div>
                     <div class="custom-file">
@@ -123,8 +141,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                      <textarea rows="6" name="description" class="form-control" required placeholder="Description"></textarea>
-                    </div>
+                      <textarea id="example" name="description" class="form-control" required placeholder="Description"></textarea>
                 </div>
               <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm" name="add" value="add">Submit</button></div>
               </form>
@@ -135,7 +152,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
       <!-- / .end add product -->
       <div class="row">
         <div class="col-12">
-          <div class="card">
+          <div class="card w-100">
             <div class="card-header">
               <strong class="card-title">Product</strong>
             </div>
@@ -146,17 +163,20 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                     <th>#</th>
                     <th>Title</th>
                     <th>Category</th>
+                    <th>Brand</th>
                     <th>Price</th>
                     <th>Special Price</th>
                     <th>Featured</th>
+                    <th>Warranty Period</th>
                     <th>Description</th>
+                    <th>Color</th>
                     <th>Images</th>
                     <th>Option</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
-                  $retrieveData = "SELECT product.product_id, product.featured, product.title, category.name catName, product.price, product.special_price, product.description FROM product, category  WHERE product.category_id = category.category_id";
+                  $retrieveData = "SELECT * FROM product, category  WHERE product.category_id = category.category_id";
                   $resultRetrieve = mysqli_query($con, $retrieveData);
                   if(mysqli_num_rows($resultRetrieve) > 0){
                     $i=1;
@@ -165,7 +185,8 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                       <tr>
                         <td><?php echo $i; ?></td>
                         <td><?php echo $row['title'];?></td>
-                        <td><?php echo $row['catName'];?></td>
+                        <td><?php echo $row['name_en'];?></td>
+                        <td><?php echo $row['brand'];?></td>
                         <td><?php echo $row['price'];?></td>
                         <td>
                           <?php
@@ -185,12 +206,14 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                           }
                            ?>
                         </td>
+                        <td><?php echo $row['warranty'];?></td>
                         <td style="max-width:400px"><?php echo $row['description'];?></td>
+                        <td><?php echo $row['color'];?></td>
                         <!-- display image -->
                         <td>
                         <?php
                           $product_id = $row['product_id'];
-                          $retrieveImage = "SELECT * FROM image WHERE product_id='$product_id'";
+                          $retrieveImage = "SELECT * FROM product_image WHERE product_id='$product_id'";
                           $resultImage = mysqli_query($con,$retrieveImage);
                           if(mysqli_num_rows($resultImage) > 0){
                             while ($imageUrl = mysqli_fetch_assoc($resultImage)) {
@@ -272,5 +295,16 @@ $resultCategory = mysqli_query($con,$sqlCategory);
   <!-- /.content -->
 
 <?php include 'includes/footer.php'; ?>
+
+<script type="text/javascript">
+  var editor = new FroalaEditor('#example', {
+    toolbarButtons: ['bold', 'italic', 'underline', '|', 'fontFamily', '|', 'fontSize', '|', 'formatOL', 'formatUL', '|', 'align', '|', 'lineHeight', '|', 'undo', 'redo', '|', 'codeView'],
+    heightMin: 150,
+    dragInline: false,
+    toolbarInline: false,
+    placeholderText: 'Description',
+    fullPage: true,
+  });
+</script>
 </body>
 </html>

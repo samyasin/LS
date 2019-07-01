@@ -31,31 +31,31 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                 <div class="single-product-img-layout1 item-mb">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="tab-content">
+                                            <div class="tab-content h-100">
+                                              <?php if($row['special_price'] == ''){ ?>
                                                 <span class="price">$<?php echo $row['price']; ?></span>
-                                                <?php
-                                                $product_id     = $row['product_id'];
-                                                $retrieveImageP = "SELECT * FROM image WHERE product_id='$product_id'";
-                                                $resultImageP   = mysqli_query($con, $retrieveImageP);
-                                                $i              = 1;
-                                                $arrImage       = array();
-                                                while($image = mysqli_fetch_assoc($resultImageP)){ ?>
-                                                  <div role="tabpanel" class="tab-pane fade <?php if($i==1) echo 'active';?> show" id="related<?php echo $i; ?>">
-                                                      <a href="#" class="zoom ex1"><img alt="single" src="../admin/<?php echo $image['url']; ?>" class="img-fluid" style="width:100% !important; max-height:700px !important"></a>
-                                                      <?php $arrImage[] = $image['url']; ?>
+                                              <?php }else{ ?>
+                                                <span class="price">$<?php echo $row['special_price']; ?>
+                                                  <span class="d-none d-sm-block" style="position: absolute;font-size: 1rem;bottom: 15px;right: 15px;text-decoration: line-through;color: #f12f34;">$<?php echo $row['price']; ?></span>
+                                                </span>
+                                              <?php } ?>
+
+                                                  <div role="tabpanel" class="h-100 text-center" id="related" style="height:500px !important">
+                                                      <img id="displayImg" alt="single" src="" class="img-fluid" style="height:100%">
                                                   </div>
-                                                <?php $i++; } ?>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <ul class="nav tab-nav tab-nav-inline cp-carousel nav-control-middle" data-loop="true" data-items="6" data-margin="2" data-autoplay="true" data-autoplay-timeout="5000" data-smart-speed="2000" data-dots="false" data-nav="true" data-nav-speed="false" data-r-x-small="2" data-r-x-small-nav="true" data-r-x-small-dots="false" data-r-x-medium="4" data-r-x-medium-nav="true" data-r-x-medium-dots="false" data-r-small="3" data-r-small-nav="true" data-r-small-dots="false" data-r-medium="4" data-r-medium-nav="true" data-r-medium-dots="false" data-r-Large="6" data-r-Large-nav="true" data-r-Large-dots="false">
-
-                                              <?php for($num=0;$num<count($arrImage,COUNT_NORMAL);$num++){ ?>
-                                                <li class="nav-item">
-                                                    <a class="active" href="#related<?php echo $num+1; ?>" data-toggle="tab" aria-expanded="false"><img alt="related1" src="../admin/<?php echo $arrImage[$num] ?>" class="img-fluid" style="width:110px !important; height:100px !important" ></a>
-                                                </li>
-                                              <?php } ?>
-                                            </ul>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 pt-2">
+                                          <div class="owl-carousel owl-theme text-center">
+                                            <?php
+                                            $retImage    = "SELECT * FROM image WHERE product_id='$prodect_id'";
+                                            $resImage    = mysqli_query($con, $retImage);
+                                            while($image = mysqli_fetch_assoc($resImage)){ ?>
+                                              <div class="item text-center">
+                                                <img class="imgItem" src="../admin/<?php echo $image['url']; ?>" alt="" style="width:75px !important; height:75px !important;cursor:pointer">
+                                              </div>
+                                            <?php } ?>
+                                          </div>
                                         </div>
                                     </div>
                                 </div>
@@ -348,6 +348,36 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
         </section>
         <!-- Product Area End Here -->
         <?php include 'includes/footer.php'; ?>
+
+        <script>
+          $(document).ready(function(){
+            $('#displayImg').attr('src',$('.imgItem').attr('src'));
+            $('.imgItem').click(function(){
+              var url = $(this).attr('src');
+              $('#displayImg').animate({
+                opacity:0
+              }, 100, function(){
+                $('#displayImg').attr('src',url).animate({
+                  opacity:1
+                },200);
+              });
+            });
+            $('.owl-carousel').owlCarousel({
+                margin:10,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:3
+                    },
+                    1000:{
+                        items:5
+                    }
+                }
+            })
+          });
+        </script>
 </body>
 
 

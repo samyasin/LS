@@ -3,13 +3,14 @@ include 'includes/config.php';
 global $con;
 $msg = "";
 if(isset($_POST['add'])){
-  $name = $_POST['category'];
+  $name_en = $_POST['category_en'];
+  $name_ar = $_POST['category_ar'];
   $image = $_FILES['image']['name'];
   $target = "upload/category/".basename($image);
 
 
   /* check if user exist */
-  $sql="SELECT name FROM category WHERE name='$name'";
+  $sql="SELECT name FROM category WHERE name='$name_en'";
   $result=mysqli_query($con,$sql);
 
   if(mysqli_num_rows($result) > 0){
@@ -17,8 +18,8 @@ if(isset($_POST['add'])){
   }else{
     if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
   		$msg = "Image uploaded successfully";
-      $insert = "INSERT INTO category(name, url) VALUES
-                ('$name', '$target')";
+      $insert = "INSERT INTO category(name_en, name_ar, url) VALUES
+                ('$name_en', '$name_ar', '$target')";
       if(mysqli_query($con,$insert)){
       //  getAccount($email,$password);
       $msg = "Add category successfully";
@@ -87,7 +88,13 @@ if(isset($_POST['edit'])){
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-th-list"></i></div>
-                                <input type="text" id="category" name="category" placeholder="Category" class="form-control" required autocomplete="off">
+                                <input type="text" id="category_en" name="category_en" placeholder="Insert category name in english" class="form-control" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-th-list"></i></div>
+                                <input type="text" id="category_er" name="category_ar" placeholder="Insert category name in arabic" class="form-control" required autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
@@ -125,7 +132,8 @@ if(isset($_POST['edit'])){
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Category</th>
+                    <th>Category English</th>
+                    <th>Category Arabic</th>
                     <th>Image</th>
                     <th>Option</th>
                   </tr>
@@ -141,7 +149,8 @@ if(isset($_POST['edit'])){
                         ?>
                         <tr>
                           <td><?php echo $i; ?></td>
-                          <td><?php echo $row['name'];?></td>
+                          <td><?php echo $row['name_en'];?></td>
+                          <td><?php echo $row['name_ar'];?></td>
                           <td><img src="<?php echo $row['url'];?>" style="max-width:100px;max-height:100px"></td>
                           <td>
                           <!-- modal -->

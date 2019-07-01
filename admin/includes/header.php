@@ -29,6 +29,15 @@
     <link href="https://cdn.jsdelivr.net/npm/weathericons@2.1.0/css/weather-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" rel="stylesheet" />
 
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+<style>
+  .fr-box.fr-basic{
+    width: 100%;
+    margin-bottom: 15px
+  }
+  .fr-quick-insert, #logo { display: none; }
+</style>
+
 </head>
 
 <body>
