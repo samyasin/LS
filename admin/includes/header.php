@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start();
+if(!isset($_SESSION["id"])){
+  header('Location: login.php');
+}
+ ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -36,6 +40,39 @@
     margin-bottom: 15px
   }
   .fr-quick-insert, #logo { display: none; }
+  #weatherWidget .currentDesc {
+      color: #ffffff!important;
+  }
+    .traffic-chart {
+        min-height: 335px;
+    }
+    #flotPie1  {
+        height: 150px;
+    }
+    #flotPie1 td {
+        padding:3px;
+    }
+    #flotPie1 table {
+        top: 20px!important;
+        right: -10px!important;
+    }
+    .chart-container {
+        display: table;
+        min-width: 270px ;
+        text-align: left;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    #flotLine5  {
+         height: 105px;
+    }
+
+    #flotBarChart {
+        height: 150px;
+    }
+    #cellPaiChart{
+        height: 160px;
+    }
 </style>
 
 </head>
@@ -80,17 +117,30 @@
                             <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
                         </ul>
                     </li>
+                    <?php if($_SESSION['type'] == "admin"){ ?>
+                      <li>
+                        <a href="admin.php"><i class="menu-icon fa fa-user"></i>Manage Admin</a>
+                      </li>
 
-                    <li>
-                      <a href="admin.php"><i class="menu-icon fa fa-user"></i>Manage Admin</a>
-                    </li>
+                      <li>
+                        <a href="provider.php"><i class="menu-icon fa fa-id-badge"></i>Manage Provider</a>
+                      </li>
 
-                    <li>
-                      <a href="category.php"><i class="menu-icon fa fa-th-list"></i>Manage Category</a>
-                    </li>
+                      <li>
+                        <a href="category.php"><i class="menu-icon fa fa-th-list"></i>Manage Category</a>
+                      </li>
+
+                      <li>
+                        <a href="customer.php"><i class="menu-icon fa fa-users"></i>Manage Customer</a>
+                      </li>
+                  <?php } ?>
 
                     <li>
                       <a href="productAdmin.php"><i class="menu-icon fa fa-product-hunt"></i>Product</a>
+                    </li>
+
+                    <li>
+                      <a href="order.php"><i class="menu-icon fa fa-list-alt"></i>Order</a>
                     </li>
 
                     <li class="menu-title">Icons</li><!-- /.menu-title -->

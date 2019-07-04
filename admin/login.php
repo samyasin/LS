@@ -1,3 +1,47 @@
+<?php
+session_start();
+include 'includes/config.php';
+global $con;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+  if(isset($_POST['email']) && isset($_POST['password'])){
+
+    $email    = $_POST['email'];
+    $password = md5($_POST['password']);
+    $type     = $_POST['type'];
+    if($type == 0){
+      $sql    = "SELECT * FROM admin WHERE email='$email' AND password='$password'";
+      $result = mysqli_query($con, $sql);
+      if(mysqli_num_rows($result) > 0){
+        $id = '';
+        while($row = mysqli_fetch_assoc($result)){
+          $id = $row['admin_id'];
+        }
+        $_SESSION["id"]   = $id;
+        $_SESSION["type"] = "admin";
+        header('Location: admin.php');
+      } else {
+        $error =  'Email or Password is incorrect';
+      }
+    }else {
+      $sql    = "SELECT * FROM provider WHERE provider_email='$email' AND password='$password'";
+      $result = mysqli_query($con, $sql);
+      if(mysqli_num_rows($result) > 0){
+        $id = '';
+        while($row = mysqli_fetch_assoc($result)){
+          $id = $row['provider_id'];
+        }
+        $_SESSION["id"]   = $id;
+        $_SESSION["type"] = "provider";
+        header('Location: index.php');
+      } else {
+        $error =  'Email or Password is incorrect';
+      }
+    }
+  }
+}
+ ?>
+
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -32,38 +76,35 @@
         <div class="container">
             <div class="login-content">
                 <div class="login-logo">
-                    <a href="index.html">
-                        <img class="align-content" src="images/logo.png" alt="">
-                    </a>
+                  <img class="align-content" src="images/logo.png" alt="">
                 </div>
-                <div class="login-form">
-                    <form>
+                  <div class="login-form">
+                  <?php if(isset($error)) { echo "<div class='alert alert-danger' role='alert'>$error</div>";} ?>
+
+                    <form id="form" method="post" action="login.php">
                         <div class="form-group">
                             <label>Email address</label>
-                            <input type="email" class="form-control" placeholder="Email">
+                            <input type="email" class="form-control" placeholder="Email" name="email" required>
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input type="password" class="form-control" placeholder="Password" name="password" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select class="form-control" name="type">
+                              <option value="0">Admin</option>
+                              <option value="1">Provider</option>
+                            </select>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox"> Remember Me
                             </label>
-                            <label class="pull-right">
-                                <a href="#">Forgotten Password?</a>
-                            </label>
-
                         </div>
                         <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
-                        <div class="social-login-content">
-                            <div class="social-button">
-                                <button type="button" class="btn social facebook btn-flat btn-addon mb-3"><i class="ti-facebook"></i>Sign in with facebook</button>
-                                <button type="button" class="btn social twitter btn-flat btn-addon mt-2"><i class="ti-twitter"></i>Sign in with twitter</button>
-                            </div>
-                        </div>
-                        <div class="register-link m-t-15 text-center">
-                            <p>Don't have account ? <a href="#"> Sign Up Here</a></p>
+                        <div class="text-center mt-3 text-danger">
+                          If you forget your password, see an administrator to edit it
                         </div>
                     </form>
                 </div>

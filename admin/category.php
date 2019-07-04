@@ -44,16 +44,27 @@ if(isset($_POST['remove'])){
 }
 
 if(isset($_POST['edit'])){
-  $id       = $_POST['id'];
-  $name     = $_POST['category'];
-  $image = $_FILES['image']['name'];
-  $target = "upload/category/".basename($image);
+  $id      = $_POST['id'];
+  $name_en = $_POST['category_en'];
+  $name_ar = $_POST['category_ar'];
+  $image   = $_FILES['eImage']['name'];
+  $target  = "upload/category/".basename($image);
+  if($image == ''){
+    $update   = "UPDATE category SET name_en='$name_en', name_ar='$name_ar' WHERE category_id='$id'";
+    $result = mysqli_query($con,$update);
+  }else{
+    if (move_uploaded_file($_FILES['eImage']['tmp_name'], $target)) {
+      $msg = "Image uploaded successfully";
+      $update   = "UPDATE category SET name_en='$name_en', name_ar='$name_ar', url='$target' WHERE category_id='$id'";
+      $result = mysqli_query($con,$update);
+    }else{
+      $msg = "Failed to upload image";
+    }
+  }
 
-
-
-  if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+  if (move_uploaded_file($_FILES['eImage']['tmp_name'], $target)) {
     $msg = "Image uploaded successfully";
-    $update   = "UPDATE category SET name='$name', url='$target' WHERE category_id='$id'";
+    $update   = "UPDATE category SET name_en='$name_en', name_ar='$name_ar', url='$target' WHERE category_id='$id'";
     $result = mysqli_query($con,$update);
   }else{
     $msg = "Failed to upload image";
@@ -84,7 +95,7 @@ if(isset($_POST['edit'])){
                   <strong class="card-title">Add Category</strong>
                 </div>
                 <div class="card-body card-block position-relative">
-                    <form id="add_admin" action = "category.php" method="POST" class="" enctype="multipart/form-data">
+                    <form id="add_category" action = "category.php" method="POST" class="" enctype="multipart/form-data">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-th-list"></i></div>
@@ -176,14 +187,20 @@ if(isset($_POST['edit'])){
                                     <div class='form-group'>
                                         <div class='input-group'>
                                             <div class='input-group-addon'><i class='fa fa-th-list'></i></div>
-                                            <input type='text' id='eCategory<?php echo $i;?>' name='category' placeholder='Category' class='form-control' required autocomplete='off' value="<?php echo $row['name'];?>">
+                                            <input type='text' id='eCategory_en<?php echo $i;?>' name='category_en' placeholder='Insert category name in English' class='form-control' required autocomplete='off' value="<?php echo $row['name_en'];?>">
+                                        </div>
+                                    </div>
+                                    <div class='form-group'>
+                                        <div class='input-group'>
+                                            <div class='input-group-addon'><i class='fa fa-th-list'></i></div>
+                                            <input type='text' id='eCategory_ar<?php echo $i;?>' name='category_ar' placeholder='Insert category name in arabic' class='form-control' required autocomplete='off' value="<?php echo $row['name_ar'];?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                       <div class="input-group">
                                         <div class="input-group-addon"><i class="fa fa-image"></i></div>
                                         <div class="custom-file">
-                                          <input type="file" class="custom-file-input" id="edit<?php echo $i;?>" accept="image/*" value="<?php echo $row['url'];?>" name="image">
+                                          <input type="file" class="custom-file-input" name="eImage" id="edit<?php echo $i;?>" accept="image/*" value="">
                                           <label class="custom-file-label" for="edit<?php echo $i;?>">Choose image</label>
                                         </div>
                                       </div>

@@ -1,20 +1,22 @@
 <?php
+include 'includes/header.php';
 include 'includes/config.php';
 global $con;
-
-
 // add product
 if(isset($_POST['add'])){
   // $userId = SESSION['id'];
-  $userId      = '5';
+  $provider_id = $_SESSION['id'];
   $title       = $_POST['title'];
   $category    = $_POST['category'];
   $description = $_POST['description'];
   $price       = $_POST['price'];
   $specialP    = $_POST['specialPrice'];
   $featured    = $_POST['featured'];
+  $brand       = $_POST['brand'];
+  $color       = $_POST['color'];
+  $warranty    = $_POST['warranty'];
 
-  $sql        = "INSERT INTO product(title,price,special_price,category_id,user_id,description,featured) VALUES ('$title','$price','$specialP','$category','$userId','$description','$featured')";
+  $sql        = "INSERT INTO product(title,price,special_price,brand,color,warranty,category_id,provider_id,description,featured) VALUES ('$title','$price','$specialP','$brand','$color','$warranty','$category','$provider_id','$description','$featured')";
   if(mysqli_query($con,$sql)){
 
     $last_id = mysqli_insert_id($con);
@@ -24,30 +26,32 @@ if(isset($_POST['add'])){
         $imageName = $_FILES['image']['name'][$key];
         $target    = "upload/product/".basename($imageName);
         if(move_uploaded_file($_FILES['image']['tmp_name'][$key],$target)){
-          $insert = "INSERT INTO image(product_id, url) VALUES ('$last_id', '$target')";
+          $insert = "INSERT INTO product_image(product_id, url) VALUES ('$last_id', '$target')";
           $result = mysqli_query($con, $insert);
         }
       }
     }
 
   }
-   header('Location: productAdmin.php');
+  echo "<script type='text/javascript'>window.top.location='productAdmin.php';</script>"; exit;
+   // exit(header('Location: productAdmin.php'));
 }
 
 if(isset($_POST['remove'])){
   $product_id = $_POST['id'];
   $delete     = "DELETE FROM product WHERE product_id='$product_id'";
   $result     = mysqli_query($con, $delete);
-  $sqlImg     = "SELECT * FROM image WHERE product_id='$product_id'";
+  $sqlImg     = "SELECT * FROM product_image WHERE product_id='$product_id'";
   $resultImg  = mysqli_query($con, $sqlImg);
   if(mysqli_num_rows($resultImg) > 0){
     while($row = mysqli_fetch_assoc($resultImg)){
       unlink($row['url']);
-      $deleteImg = "DELETE FROM image WHERE product_id='$product_id'";
+      $deleteImg = "DELETE FROM product_image WHERE product_id='$product_id'";
       $resImg    = mysqli_query($con, $deleteImg);
     }
   }
-  header('Location: productAdmin.php');
+  echo "<script type='text/javascript'>window.top.location='productAdmin.php';</script>"; exit;
+  //header('Location: productAdmin.php');
 }
 
 //retrieve data category
@@ -56,8 +60,6 @@ $resultCategory = mysqli_query($con,$sqlCategory);
 
  ?>
 
-
-<?php include 'includes/header.php'; ?>
 
   <!-- Content -->
   <div class="content">
@@ -135,14 +137,14 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                     <div class="input-group-addon"><i class="fa fa-image"></i></div>
                     <div class="custom-file">
                       <input type="file" class="custom-file-input" id="uploadImg" accept="image/*" name="image[]" multiple required>
-                      <label class="custom-file-label" for="uploadImg">Choose image</label>
+                      <label class="custom-file-label" for="uploadImg">Choose images</label>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
-                    <div class="input-group">
-                      <textarea id="example" name="description" class="form-control" required placeholder="Description"></textarea>
-                </div>
+                  <div class="input-group">
+                    <textarea id="example" name="description" class="form-control" required placeholder="Description"></textarea>
+                  </div>
               <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm" name="add" value="add">Submit</button></div>
               </form>
             </div>
@@ -207,7 +209,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                            ?>
                         </td>
                         <td><?php echo $row['warranty'];?></td>
-                        <td style="max-width:400px"><?php echo $row['description'];?></td>
+                        <td style="max-width:400px;padding:10px 30px"><?php echo $row['description'];?></td>
                         <td><?php echo $row['color'];?></td>
                         <!-- display image -->
                         <td>
@@ -228,50 +230,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                         <td>
                           <!-- modal -->
                           <!-- Button trigger modal -->
-                          <button type='button' class='btn btn-sm btn-primary my-2' data-toggle='modal' data-target='#modal<?php echo $i;?>'>
-                            Edit
-                          </button>
-
-                          <!-- Modal -->
-                          <div class='modal fade' id='modal<?php echo $i;?>' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                            <div class='modal-dialog modal-dialog-centered' role='document'>
-                              <div class='modal-content'>
-                                <div class='modal-header'>
-                                  <h5 class='modal-title d-inline' id='exampleModalLongTitle<?php echo $i;?>'>Edit Admin</h5>
-                                  <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                                    <span aria-hidden='true'>&times;</span>
-                                  </button>
-                                </div>
-                                <div class='modal-body pb-0'>
-                                <!-- form edit admin -->
-                                <form id='edit_admin<?php echo $i;?>' action = 'category.php' method='POST' class="" enctype="multipart/form-data">
-                                    <input type='hidden' name='id' value='<?php echo $row['category_id'];?>'>
-                                    <div class='form-group'>
-                                        <div class='input-group'>
-                                            <div class='input-group-addon'><i class='fa fa-th-list'></i></div>
-                                            <input type='text' id='eCategory<?php echo $i;?>' name='category' placeholder='Category' class='form-control' required autocomplete='off' value="<?php echo $row['name'];?>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                      <div class="input-group">
-                                        <div class="input-group-addon"><i class="fa fa-image"></i></div>
-                                        <div class="custom-file">
-                                          <input type="file" class="custom-file-input" id="edit<?php echo $i;?>" accept="image/*" value="<?php echo $row['url'];?>" name="image">
-                                          <label class="custom-file-label" for="edit<?php echo $i;?>">Choose image</label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class='modal-footer'>
-                                      <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-                                      <button type='submit' class='btn btn-primary' name="edit" value="edit">Save changes</button>
-                                    </div>
-                                </form>
-                                <!-- end form -->
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- end modal -->
+                          <a href="editProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary my-2'>Edit</a>
                           <form id='option<?php echo $i;?>'action = 'productAdmin.php' method='POST' class='d-inline'>
                           <input type='hidden' name='id' value='<?php echo $row['product_id'];?>'>
                             <button class='btn btn-sm btn-danger' type='submit' name='remove' vlaue='remove'>Remove</button>
@@ -297,14 +256,14 @@ $resultCategory = mysqli_query($con,$sqlCategory);
 <?php include 'includes/footer.php'; ?>
 
 <script type="text/javascript">
-  var editor = new FroalaEditor('#example', {
-    toolbarButtons: ['bold', 'italic', 'underline', '|', 'fontFamily', '|', 'fontSize', '|', 'formatOL', 'formatUL', '|', 'align', '|', 'lineHeight', '|', 'undo', 'redo', '|', 'codeView'],
-    heightMin: 150,
-    dragInline: false,
-    toolbarInline: false,
-    placeholderText: 'Description',
-    fullPage: true,
-  });
+var editor = new FroalaEditor('#example', {
+  toolbarButtons: ['bold', 'italic', 'underline', '|', 'fontFamily', '|', 'fontSize', '|', 'formatOL', 'formatUL', '|', 'align', '|', 'lineHeight', '|', 'undo', 'redo'],
+  heightMin: 150,
+  dragInline: false,
+  toolbarInline: false,
+  placeholderText: 'Description',
+  enter: FroalaEditor.ENTER_BR
+});
 </script>
 </body>
 </html>
