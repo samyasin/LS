@@ -5,7 +5,7 @@ global $con;
 $retrieveCategorySearch = "SELECT * FROM category";
 $resultCategorySearch   = mysqli_query($con, $retrieveCategorySearch);
 
-$retrieveLocation = "SELECT * FROM location";
+$retrieveLocation = "SELECT * FROM address";
 $resultLocation   = mysqli_query($con, $retrieveLocation);
  ?>
 
@@ -243,7 +243,7 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                       <select id="location" class="select2">
                                           <option value="0">Select Location</option>
                                           <?php while($row = mysqli_fetch_assoc($resultLocation)){ ?>
-                                            <option value="<?php echo $row['location_id']; ?>"><?php echo $row['name']; ?></option>
+                                            <option value="<?php echo $row['location_id']; ?>"><?php echo $row['city']; ?></option>
                                           <?php } ?>
                                       </select>
                                   </div>
@@ -253,7 +253,7 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                       <select id="categories" class="select2">
                                           <option value="0">Select Categories</option>
                                           <?php while($row = mysqli_fetch_assoc($resultCategorySearch)){ ?>
-                                            <option value="<?php echo $row['category_id']; ?>"><?php echo $row['name']; ?></option>
+                                            <option value="<?php echo $row['category_id']; ?>"><?php echo $row['name_en']; ?></option>
                                           <?php } ?>
                                       </select>
                                   </div>
@@ -285,7 +285,7 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                   <select id="location" class="select2">
                                       <option class="first" value="0">Select Location</option>
                                       <?php while($row = mysqli_fetch_assoc($resultLocation)){ ?>
-                                        <option value="<?php echo $row['location_id']; ?>"><?php echo $row['name']; ?></option>
+                                        <option value="<?php echo $row['location_id']; ?>"><?php echo $row['city']; ?></option>
                                       <?php } ?>
                                   </select>
                               </div>
@@ -295,7 +295,7 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                   <select id="categories" class="select2">
                                       <option class="first" value="0">Select Categories</option>
                                       <?php while($row = mysqli_fetch_assoc($resultCategorySearch)){ ?>
-                                        <option value="<?php echo $row['category_id'] ?>"><?php echo $row['name']; ?></option>
+                                        <option value="<?php echo $row['category_id'] ?>"><?php echo $row['name_en']; ?></option>
                                       <?php } ?>
                                   </select>
                               </div>

@@ -46,7 +46,7 @@ if(isset($_POST['remove'])){
 }
 
 if(isset($_POST['edit_company'])){
-  $provider_id   = $_POST['provider_id'];
+  $provider_id  = $_POST['provider_id'];
   $company_name = $_POST['company_name'];
   $owner_name   = $_POST['owner_name'];
   $number_phone = $_POST['number_phone'];
@@ -122,6 +122,9 @@ $resultCategory = mysqli_query($con,$sqlCategory);
              <strong class="card-title">Add Provider</strong>
            </div>
            <div class="card-body card-block">
+             <div class="alert alert-danger" role="alert" style="display:none">
+               Passwords do not match
+             </div>
              <h4 class="card-title">Company Information</h4>
              <form id="add_provider" class="mt-3" action="provider.php" method="post" validate enctype="multipart/form-data">
                <div class="form-group">
@@ -181,7 +184,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                <div class="form-group">
                    <div class="input-group">
                        <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
-                       <input type="password" id="cPassword" name="cPassword" placeholder="Confirm Password" class="form-control" required autocomplete="off">
+                       <input type="password" id="cpassword" name="cPassword" placeholder="Confirm Password" class="form-control" required autocomplete="off">
                    </div>
                </div>
                <h4 class="card-title mt-4">Address Information</h4>
@@ -377,19 +380,19 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                                             <input type='hidden' name='provider_id' value='<?php echo $row['provider_id'];?>'>
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <div class="input-group-addon"><i class="fa fa-building"></i></div>
+                                                    <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
                                                     <input type="email" id="email<?php echo $i;?>" name="email" placeholder="Email" class="form-control" required autocomplete="off" value="<?php echo $row['provider_email'];?>">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <div class="input-group-addon"><i class="fa fa-building"></i></div>
+                                                    <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
                                                     <input type="password" id="password<?php echo $i;?>" name="password" placeholder="password" class="form-control" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <div class="input-group-addon"><i class="fa fa-building"></i></div>
+                                                    <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
                                                     <input type="password" id="cPassword<?php echo $i;?>" name="cPassword" placeholder="Confirm Password" class="form-control" autocomplete="off">
                                                 </div>
                                             </div>
@@ -495,5 +498,19 @@ $resultCategory = mysqli_query($con,$sqlCategory);
 
 
 <?php include 'includes/footer.php'; ?>
+
+<script>
+  $('.alert').fadeOut();
+  $(document).ready(function(){
+    $('#add_provider').submit(function(){
+      if($('#password').val() != $('#cpassword').val()){
+        $('.alert').fadeIn('slow');
+        $('#cpassword').css('border-color','#dc3545');
+        return false;
+      }
+    });
+  });
+</script>
+
 </boody>
 </html>

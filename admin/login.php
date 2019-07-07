@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         $_SESSION["id"]   = $id;
         $_SESSION["type"] = "admin";
-        header('Location: admin.php');
+        header('Location: index.php');
       } else {
         $error =  'Email or Password is incorrect';
       }

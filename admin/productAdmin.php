@@ -228,13 +228,20 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                          </td>
                          <!-- end display image -->
                         <td>
-                          <!-- modal -->
-                          <!-- Button trigger modal -->
-                          <a href="editProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary my-2'>Edit</a>
-                          <form id='option<?php echo $i;?>'action = 'productAdmin.php' method='POST' class='d-inline'>
-                          <input type='hidden' name='id' value='<?php echo $row['product_id'];?>'>
-                            <button class='btn btn-sm btn-danger' type='submit' name='remove' vlaue='remove'>Remove</button>
-                          </form>
+                          <div class="row">
+                            <div class="col-12">
+                              <a href="previewProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary w-100'>Preview</a>
+                            </div>
+                            <div class="col-12">
+                              <a href="editProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary my-2 w-100'>Edit</a>
+                            </div>
+                            <div class="col-12">
+                              <form id='option<?php echo $i;?>'action = 'productAdmin.php' method='POST' class='d-inline'>
+                              <input type='hidden' name='id' value='<?php echo $row['product_id'];?>'>
+                                <button class='btn btn-sm btn-danger w-100' type='submit' name='remove' vlaue='remove'>Remove</button>
+                              </form>
+                            </div>
+                          </div>
                         </td>
                       </tr>
                       <?php

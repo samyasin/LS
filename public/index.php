@@ -21,9 +21,8 @@ $resultProduct    = mysqli_query($con, $retrieveProduct);
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12 item-mb">
                         <div class="service-box1 bg-body text-center">
                             <img src="../admin/<?php echo $row1['url']; ?>" alt="service" class="img-fluid">
-                            <h3 class="title-medium-dark mb-none"><a href="category-grid-layout.php?category_id=<?php echo $row1['category_id']; ?>"><?php
-                            echo $row1['name']; ?></a></h3>
-                            <div class="view">(19,805)</div>
+                            <h3 class="title-medium-dark mb-none"><a href="provider-grid-layout.php?category_id=<?php echo $row1['category_id']; ?>"><?php
+                            echo $row1['name_en']; ?></a></h3>
                         </div>
                     </div>
                     <?php } ?>
@@ -47,7 +46,7 @@ $resultProduct    = mysqli_query($con, $retrieveProduct);
                 </div>
             </div>
             <div class="container menu-list-wrapper">
-                <div class="row menu-list category-grid-layout2 zoom-gallery">
+                <div class="row menu-list category-grid-layout2 zoom-gallery justify-content-center">
                   <?php while($row = mysqli_fetch_assoc($resultProduct)){ ?>
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12 menu-item">
                         <div class="product-box item-mb zoom-gallery">
@@ -55,13 +54,13 @@ $resultProduct    = mysqli_query($con, $retrieveProduct);
                                 <div class="item-mask bg-box justify-content-center align-items-center d-flex" style="height:314px">
                                   <?php
                                   $product_id     = $row["product_id"];
-                                  $retrieveImageP = "SELECT * FROM image WHERE image.product_id='$product_id' limit 1";
+                                  $retrieveImageP = "SELECT * FROM product_image WHERE product_id='$product_id' limit 1";
                                   $resultImageP   = mysqli_query($con, $retrieveImageP);
                                   while($image = mysqli_fetch_assoc($resultImageP)){ ?>
                                     <img src="../admin/<?php echo $image['url']; ?>" alt="categories" class="img-fluid">
                                   <?php } ?>
                                     <div class="trending-sign" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i></div>
-                                    <div class="title-ctg"><?php echo $row['name']; ?></div>
+                                    <div class="title-ctg"><?php echo $row['name_en']; ?></div>
                                     <ul class="info-link">
                                         <li><a href="single-product-layout.php?product_id=<?php echo $product_id ?>"><i class="fa fa-link" aria-hidden="true"></i></a></li>
                                     </ul>
@@ -69,7 +68,7 @@ $resultProduct    = mysqli_query($con, $retrieveProduct);
                                 </div>
                             </div>
                             <div class="item-content">
-                                <div class="title-ctg"><?php echo $row['name']; ?></div>
+                                <div class="title-ctg"><?php echo $row['name_en']; ?></div>
                                 <h3 class="short-title"><a href="single-product-layout.php?product_id=<?php echo $product_id ?>"><?php echo $row['title']; ?></a></h3>
                                 <ul class="upload-info">
                                     <li class="place"><i class="fa fa-map-marker d-inline-block"></i>Sydney, Australia</li>

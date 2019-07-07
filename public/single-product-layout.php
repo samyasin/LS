@@ -6,24 +6,52 @@ $prodect_id         = $_GET['product_id'];
 $retrieveOneProduct = "SELECT * FROM product WHERE product_id='$prodect_id'";
 $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
 
+
+
+$retrieveProduct = "SELECT * FROM product, provider, category WHERE product_id='$prodect_id' AND provider.provider_id=product.provider_id AND category.category_id=product.category_id";
+$resultProduct   = mysqli_query($con, $retrieveProduct);
+$company_name     = "";
+$category_id      = "";
+$category_name_en = "";
+$provider_id      = "";
+$title            = "";
+while($ret = mysqli_fetch_assoc($resultProduct)){
+  $provider_id      = $ret['provider_id'];
+  $category_id      = $ret['category_id'];
+  $company_name     = $ret['company_name'];
+  $category_name_en = $ret['name_en'];
+  $title            = $ret['title'];
+}
+
  ?>
 <?php include 'includes/header.php'; ?>
         <!-- Product Area Start Here -->
         <section class="s-space-bottom-full bg-accent-shadow-body">
-            <div class="container">
-                <div class="breadcrumbs-area">
-                    <ul>
-                        <li><a href="#">Home</a> -</li>
-                        <li><a href="#">Electronics</a> -</li>
-                        <li class="active">Computer</li>
-                    </ul>
-                </div>
-            </div>
+          <div class="container">
+              <div class="breadcrumbs-area">
+                  <ul>
+                      <li><a href="index.php">Home</a> -</li>
+                      <li><a href="provider-grid-layout.php?category_id=<?php echo $category_id; ?>"><?php echo $category_name_en; ?> Providers</a> -</li>
+                      <li><a href="product-grid-layout.php?provider_id=<?php echo $provider_id ?>&category_id=<?php echo $category_id ?>"><?php echo $company_name ?> Company</a> -</li>
+                      <li class="active"><?php echo $title ?></li>
+                  </ul>
+              </div>
+          </div>
             <div class="container">
                 <div class="row">
                     <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12">
                         <div class="gradient-wrapper item-mb">
-                          <?php while($row = mysqli_fetch_assoc($resultOneProduct)){ ?>
+                          <?php
+                          $brand       = "";
+                          $color       = "";
+                          $warranty    = "";
+                          $category_id = "";
+                           while($row = mysqli_fetch_assoc($resultOneProduct)){
+                             $brand       = $row['brand'];
+                             $color       = $row['color'];
+                             $warranty    = $row['warranty'];
+                             $category_id = $row['category_id'];
+                              ?>
                             <div class="gradient-title">
                                 <h2><?php echo $row['title']; ?></h2>
                             </div>
@@ -48,7 +76,7 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 pt-2">
                                           <div class="owl-carousel owl-theme text-center">
                                             <?php
-                                            $retImage    = "SELECT * FROM image WHERE product_id='$prodect_id'";
+                                            $retImage    = "SELECT * FROM product_image WHERE product_id='$prodect_id'";
                                             $resImage    = mysqli_query($con, $retImage);
                                             while($image = mysqli_fetch_assoc($resImage)){ ?>
                                               <div class="item text-center">
@@ -78,162 +106,40 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                             </div>
                             <div class="gradient-padding">
                                 <div class="cp-carousel nav-control-middle category-grid-layout1" data-loop="true" data-items="4" data-margin="30" data-autoplay="true" data-autoplay-timeout="5000" data-smart-speed="2000" data-dots="false" data-nav="true" data-nav-speed="false" data-r-x-small="1" data-r-x-small-nav="true" data-r-x-small-dots="false" data-r-x-medium="2" data-r-x-medium-nav="true" data-r-x-medium-dots="false" data-r-small="2" data-r-small-nav="true" data-r-small-dots="false" data-r-medium="2" data-r-medium-nav="true" data-r-medium-dots="false" data-r-Large="3" data-r-Large-nav="true" data-r-Large-dots="false">
-                                    <div class="product-box">
-                                        <div class="item-mask-wrapper">
-                                            <div class="item-mask secondary-bg-box"><img src="img/product/product1.png" alt="categories" class="img-fluid">
-                                                <div class="trending-sign active" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i> </div>
-                                                <div class="title-ctg">Clothing</div>
-                                                <ul class="info-link">
-                                                    <li><a href="img/product/product1.png" class="elv-zoom" data-fancybox-group="gallery" title="Title Here"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a></li>
-                                                    <li><a href="single-product-layout1.html"><i class="fa fa-link" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                                <div class="symbol-featured"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="title-ctg">Clothing</div>
-                                            <h3 class="short-title"><a href="single-product1.html">Cotton T-Shirt</a></h3>
-                                            <h3 class="long-title"><a href="single-product1.html">Men's Basic Cotton T-Shirt</a></h3>
-                                            <ul class="upload-info">
-                                                <li class="date"><i class="fa fa-clock-o" aria-hidden="true"></i>07 Mar, 2017</li>
-                                                <li class="place"><i class="fa fa-map-marker" aria-hidden="true"></i>Sydney, Australia</li>
-                                                <li class="tag-ctg"><i class="fa fa-tag" aria-hidden="true"></i>Clothing</li>
-                                            </ul>
-                                            <p>Eimply dummy text of the printing and typesetting industrym has been the industry's standard dummy.</p>
-                                            <div class="price">$15</div>
-                                            <a href="single-product-layout1.html" class="product-details-btn">Details</a>
-                                        </div>
-                                    </div>
-                                    <div class="product-box">
-                                        <div class="item-mask-wrapper">
-                                            <div class="item-mask secondary-bg-box"><img src="img/product/product2.png" alt="categories" class="img-fluid">
-                                                <div class="trending-sign active" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i> </div>
-                                                <div class="title-ctg">Electronics</div>
-                                                <ul class="info-link">
-                                                    <li><a href="img/product/product2.png" class="elv-zoom" data-fancybox-group="gallery" title="Title Here"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a></li>
-                                                    <li><a href="single-product-layout2.html"><i class="fa fa-link" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                                <div class="symbol-featured"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="title-ctg">Clothing</div>
-                                            <h3 class="short-title"><a href="single-product2.html">Patriot Phone</a></h3>
-                                            <h3 class="long-title"><a href="single-product2.html">HTC Desire Patriot Mobile Smart Phone</a></h3>
-                                            <ul class="upload-info">
-                                                <li class="date"><i class="fa fa-clock-o" aria-hidden="true"></i>07 Mar, 2017</li>
-                                                <li class="place"><i class="fa fa-map-marker" aria-hidden="true"></i>Sydney, Australia</li>
-                                                <li class="tag-ctg"><i class="fa fa-tag" aria-hidden="true"></i>Clothing</li>
-                                            </ul>
-                                            <p>Eimply dummy text of the printing and typesetting industrym has been the industry's standard dummy.</p>
-                                            <div class="price">$250</div>
-                                            <a href="single-product-layout1.html" class="product-details-btn">Details</a>
-                                        </div>
-                                    </div>
-                                    <div class="product-box">
-                                        <div class="item-mask-wrapper">
-                                            <div class="item-mask secondary-bg-box"><img src="img/product/product3.png" alt="categories" class="img-fluid">
-                                                <div class="trending-sign active" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i> </div>
-                                                <div class="title-ctg">Electronics</div>
-                                                <ul class="info-link">
-                                                    <li><a href="img/product/product3.png" class="elv-zoom" data-fancybox-group="gallery" title="Title Here"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a></li>
-                                                    <li><a href="single-product-layout3.html"><i class="fa fa-link" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                                <div class="symbol-featured"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="title-ctg">Clothing</div>
-                                            <h3 class="short-title"><a href="https://www.radiustheme.com/demo/html/classipost/classipost/single-product3.html">Smart LED TV</a></h3>
-                                            <h3 class="long-title"><a href="https://www.radiustheme.com/demo/html/classipost/classipost/single-product3.html">TCL 55-Inch 4K Ultra HD Roku Smart LED TV</a></h3>
-                                            <ul class="upload-info">
-                                                <li class="date"><i class="fa fa-clock-o" aria-hidden="true"></i>07 Mar, 2017</li>
-                                                <li class="place"><i class="fa fa-map-marker" aria-hidden="true"></i>Sydney, Australia</li>
-                                                <li class="tag-ctg"><i class="fa fa-tag" aria-hidden="true"></i>Clothing</li>
-                                            </ul>
-                                            <p>Eimply dummy text of the printing and typesetting industrym has been the industry's standard dummy.</p>
-                                            <div class="price">$800</div>
-                                            <a href="single-product-layout1.html" class="product-details-btn">Details</a>
-                                        </div>
-                                    </div>
-                                    <div class="product-box">
-                                        <div class="item-mask-wrapper">
-                                            <div class="item-mask secondary-bg-box"><img src="img/product/product4.png" alt="categories" class="img-fluid">
-                                                <div class="trending-sign" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i> </div>
-                                                <div class="title-ctg">Clothing</div>
-                                                <ul class="info-link">
-                                                    <li><a href="img/product/product4.png" class="elv-zoom" data-fancybox-group="gallery" title="Title Here"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a></li>
-                                                    <li><a href="single-product-layout1.html"><i class="fa fa-link" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                                <div class="symbol-featured"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="title-ctg">Clothing</div>
-                                            <h3 class="short-title"><a href="single-product1.html">Headphones</a></h3>
-                                            <h3 class="long-title"><a href="single-product1.html">Basics Lightweight On-Ear Headphones</a></h3>
-                                            <ul class="upload-info">
-                                                <li class="date"><i class="fa fa-clock-o" aria-hidden="true"></i>07 Mar, 2017</li>
-                                                <li class="place"><i class="fa fa-map-marker" aria-hidden="true"></i>Sydney, Australia</li>
-                                                <li class="tag-ctg"><i class="fa fa-tag" aria-hidden="true"></i>Clothing</li>
-                                            </ul>
-                                            <p>Eimply dummy text of the printing and typesetting industrym has been the industry's standard dummy.</p>
-                                            <div class="price">$15</div>
-                                            <a href="single-product-layout1.html" class="product-details-btn">Details</a>
-                                        </div>
-                                    </div>
-                                    <div class="product-box">
-                                        <div class="item-mask-wrapper">
-                                            <div class="item-mask secondary-bg-box"><img src="img/product/product5.png" alt="categories" class="img-fluid">
-                                                <div class="trending-sign" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i> </div>
-                                                <div class="title-ctg">Clothing</div>
-                                                <ul class="info-link">
-                                                    <li><a href="img/product/product5.png" class="elv-zoom" data-fancybox-group="gallery" title="Title Here"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a></li>
-                                                    <li><a href="single-product-layout2.html"><i class="fa fa-link" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                                <div class="symbol-featured"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="title-ctg">Clothing</div>
-                                            <h3 class="short-title"><a href="single-product2.html">Handbags</a></h3>
-                                            <h3 class="long-title"><a href="single-product2.html">MMK collection Women Fashion Matching Satchel handbags</a></h3>
-                                            <ul class="upload-info">
-                                                <li class="date"><i class="fa fa-clock-o" aria-hidden="true"></i>07 Mar, 2017</li>
-                                                <li class="place"><i class="fa fa-map-marker" aria-hidden="true"></i>Sydney, Australia</li>
-                                                <li class="tag-ctg"><i class="fa fa-tag" aria-hidden="true"></i>Clothing</li>
-                                            </ul>
-                                            <p>Eimply dummy text of the printing and typesetting industrym has been the industry's standard dummy.</p>
-                                            <div class="price">$15</div>
-                                            <a href="single-product-layout1.html" class="product-details-btn">Details</a>
-                                        </div>
-                                    </div>
-                                    <div class="product-box">
-                                        <div class="item-mask-wrapper">
-                                            <div class="item-mask secondary-bg-box"><img src="img/product/product6.png" alt="categories" class="img-fluid">
-                                                <div class="trending-sign" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i> </div>
-                                                <div class="title-ctg">Clothing</div>
-                                                <ul class="info-link">
-                                                    <li><a href="img/product/product6.png" class="elv-zoom" data-fancybox-group="gallery" title="Title Here"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a></li>
-                                                    <li><a href="single-product-layout3.html"><i class="fa fa-link" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                                <div class="symbol-featured"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="title-ctg">Clothing</div>
-                                            <h3 class="short-title"><a href="https://www.radiustheme.com/demo/html/classipost/classipost/single-product3.html">Classic Watch</a></h3>
-                                            <h3 class="long-title"><a href="https://www.radiustheme.com/demo/html/classipost/classipost/single-product3.html">Men's Classic Sport Watch with Black Band</a></h3>
-                                            <ul class="upload-info">
-                                                <li class="date"><i class="fa fa-clock-o" aria-hidden="true"></i>07 Mar, 2017</li>
-                                                <li class="place"><i class="fa fa-map-marker" aria-hidden="true"></i>Sydney, Australia</li>
-                                                <li class="tag-ctg"><i class="fa fa-tag" aria-hidden="true"></i>Clothing</li>
-                                            </ul>
-                                            <p>Eimply dummy text of the printing and typesetting industrym has been the industry's standard dummy.</p>
-                                            <div class="price">$15</div>
-                                            <a href="single-product-layout1.html" class="product-details-btn">Details</a>
-                                        </div>
-                                    </div>
+                                  <?php
+                                    $moreProduct  = "SELECT * FROM product, category WHERE category.category_id='$category_id' AND  product.category_id=category.category_id";
+                                    $resultMoreProduct    = mysqli_query($con, $moreProduct);
+                                    while($row = mysqli_fetch_assoc($resultMoreProduct)){ ?>
+                                      <div class="product-box item-mb zoom-gallery">
+                                          <div class="item-mask-wrapper">
+                                              <div class="item-mask bg-box justify-content-center align-items-center d-flex" style="height:277px">
+                                                <?php
+                                                $product_id     = $row["product_id"];
+                                                $retrieveImageP = "SELECT * FROM product_image WHERE product_id='$product_id' limit 1";
+                                                $resultImageP   = mysqli_query($con, $retrieveImageP);
+                                                while($image = mysqli_fetch_assoc($resultImageP)){ ?>
+                                                  <img src="../admin/<?php echo $image['url']; ?>" alt="categories" class="img-fluid">
+                                                <?php } ?>
+                                                  <div class="trending-sign" data-tips="Featured"> <i class="fa fa-bolt" aria-hidden="true"></i></div>
+                                                  <div class="title-ctg"><?php echo $row['name_en']; ?></div>
+                                                  <ul class="info-link">
+                                                      <li><a href="single-product-layout.php?product_id=<?php echo $product_id ?>"><i class="fa fa-link" aria-hidden="true"></i></a></li>
+                                                  </ul>
+                                                  <div class="symbol-featured <?php if($row['featured'] == 1) echo 'active'; ?>"><img src="img/banner/symbol-featured.png" alt="symbol" class="img-fluid"> </div>
+                                              </div>
+                                          </div>
+                                          <div class="item-content">
+                                              <div class="title-ctg"><?php echo $row['name_en']; ?></div>
+                                              <h3 class="short-title text-left"><a href="single-product-layout.php?product_id=<?php echo $product_id ?>"><?php echo $row['title']; ?></a></h3>
+                                              <?php if($row['special_price'] == ''){ ?>
+                                                <div class="price" style="bottom:-5px"><?php echo $row['price']; ?>$</div>
+                                              <?php }else{ ?>
+                                                <div class="price" style="bottom:21px;color:#a0a0a0;font-size:1rem;text-decoration:line-through"><?php echo $row['price']; ?>$</div>
+                                                <div class="Sprice" style="position: absolute;right: 0;bottom: -4px;font-size: 1.5rem;color:#dc3545;font-weight: bold;"><?php echo $row['special_price']; ?>$</div>
+                                              <?php } ?>
+                                          </div>
+                                      </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -260,51 +166,56 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                     <h3>Seller Information</h3>
                                 </div>
                                 <ul class="sidebar-seller-information">
-                                    <li>
-                                        <div class="media">
-                                            <img src="img/user/user1.png" alt="user" class="img-fluid pull-left">
-                                            <div class="media-body">
-                                                <span>Posted By</span>
-                                                <h4>Mr. Fahim Rahman</h4>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <img src="img/user/user2.png" alt="user" class="img-fluid pull-left">
-                                            <div class="media-body">
-                                                <span>Location</span>
-                                                <h4>Gulshan, Dhaka</h4>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <img src="img/user/user3.png" alt="user" class="img-fluid pull-left">
-                                            <div class="media-body">
-                                                <span>Contact Number</span>
-                                                <h4>01612854530</h4>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <img src="img/user/user4.png" alt="user" class="img-fluid pull-left">
-                                            <div class="media-body">
-                                                <span>Want To Live Chat</span>
-                                                <h4>Chat Now!</h4>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <img src="img/user/user5.png" alt="user" class="img-fluid pull-left">
-                                            <div class="media-body">
-                                                <span>User Type</span>
-                                                <h4>Verified</h4>
-                                            </div>
-                                        </div>
-                                    </li>
+                                  <?php
+                                    $retProvider = "SELECT * FROM provider, product, address WHERE provider.provider_id=product.provider_id AND product.product_id='$prodect_id' AND provider.address_id=address.address_id";
+                                    $resProvider = mysqli_query($con, $retProvider);
+                                    while($provider = mysqli_fetch_assoc($resProvider)){ ?>
+                                      <li>
+                                          <div class="media">
+                                              <img src="../admin/<?php echo $provider['logo']; ?>" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
+                                              <div class="media-body">
+                                                  <span>Posted By</span>
+                                                  <h4><?php echo $provider['owner_full_name']; ?></h4>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <div class="media">
+                                              <img src="img/user/user2.png" alt="user" class="img-fluid pull-left">
+                                              <div class="media-body">
+                                                  <span>Location</span>
+                                                  <h4><?php echo $provider['address'].', '.$provider['city'].', '.$provider['country']; ?></h4>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <div class="media">
+                                              <img src="img/user/user3.png" alt="user" class="img-fluid pull-left">
+                                              <div class="media-body">
+                                                  <span>Contact Number</span>
+                                                  <h4><?php echo $provider['phone_number']; ?></h4>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <div class="media">
+                                              <img src="img/user/user4.png" alt="user" class="img-fluid pull-left">
+                                              <div class="media-body">
+                                                  <span>Email</span>
+                                                  <h4><?php echo $provider['provider_email']; ?></h4>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <div class="media">
+                                              <img src="img/user/user5.png" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
+                                              <div class="media-body">
+                                                  <span>Location in Map</span>
+                                                  <h4>Go to the map</h4>
+                                              </div>
+                                          </div>
+                                      </li>
+                                    <?php }?>
                                 </ul>
                             </div>
                         </div>
@@ -314,10 +225,9 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                     <h3>Item Details</h3>
                                 </div>
                                 <ul class="sidebar-item-details">
-                                    <li>Condition:<span>New</span></li>
-                                    <li>Brand:<span>Apple</span></li>
-                                    <li>Color:<span>White</span></li>
-                                    <li>Warranty:<span>1 Year</span></li>
+                                  <?php if($brand != "") echo "<li>Brand:<span>".$brand."</span></li>"; ?>
+                                  <?php if($color != "") echo "<li>Color:<span>".$color."</span></li>"; ?>
+                                  <?php if($warranty != "") echo "<li>Warranty:<span>".$warranty."</span></li>"; ?>
                                     <li>
                                         <ul class="sidebar-social">
                                             <li>Share:</li>
