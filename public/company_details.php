@@ -20,8 +20,10 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
                          $category_id = $row['category_id'];
                          $sql = "SELECT * FROM category WHERE category_id='$category_id'";
                          $res = mysqli_query($con, $sql);
+                         $cat_name_en = "";
                          while($cat = mysqli_fetch_assoc($res)){
                            echo $cat['name_en'];
+                           $cat_name_en = $cat['name_en'];
                          }
                          ?> Providers</a> -</li>
                         <li class="active"><li class="active"><?php echo $row['company_name'] ?> Company</li></li>
@@ -36,11 +38,11 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
                       <h2><?php echo $row['company_name']; ?> Company</h2>
                     </div>
                     <div class="gradient-padding reduce-padding">
-                      <div class="row" style="height:200px">
-                        <div class="col-12 col-md-4 w-100 h-100">
-                          <img class="h-100 rounded" src="../admin/<?php echo $row['logo']; ?>" alt="">
+                      <div class="row overflow-hidden">
+                        <div class="col-12 col-md-4 d-flex align-items-center justify-content-center" style="height:200px">
+                          <img class="rounded mh-100" src="../admin/<?php echo $row['logo']; ?>" alt="">
                         </div>
-                        <div class="col-12 col-md-8 py-2 d-flex flex-column justify-content-around">
+                        <div class="col-12 col-md-4 py-2 d-flex flex-column justify-content-around" style="min-height:130px">
                           <div class="h3">
                             Company: <?php echo $row['company_name']; ?>
                           </div>
@@ -48,10 +50,40 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
                             Owner: <?php echo $row['owner_full_name']; ?>
                           </div>
                         </div>
+                        <div class="col-12 col-md-4 py-4 d-flex align-items-start">
+                          <div class="h5 mt-md-3">
+                            Field of Company: <?php echo $cat_name_en; ?>
+                          </div>
+                        </div>
                       </div>
-                      <div class="row">
-                        <div class="col">
-                          Phone Number: <?php echo $row['phone_number'] ?>
+                      <div class="row py-2">
+                        <div class="col-12 mt-3 h4">
+                          Contact Informatiom
+                        </div>
+                        <div class="col-12 col-md-8 py-2 h6">
+                          <i class="fa fa-phone pr-2"></i> Phone Number: <?php echo $row['phone_number'] ?>
+                        </div>
+                        <div class="col-12 col-md-4 py-2 h6">
+                          <i class="fa fa-envelope pr-2"></i> Email: <?php echo $row['provider_email'] ?>
+                        </div>
+                        <div class="col-12 col-md-8 py-2 h6">
+                          <i class="fa fa-map-marker pr-2"></i> Address:
+                          <?php
+                            $address_id = $row['address_id'];
+                            $postal     = "";
+                            $sqlAddress = "SELECT * FROM address WHERE address_id='$address_id'";
+                            $resAddress = mysqli_query($con, $sqlAddress);
+                            while($address = mysqli_fetch_assoc($resAddress)){
+                              echo $address['address'].', '.$address['city'].', '.$address['country'];
+                              $postal = $address['postal_code'];
+                            }
+                           ?>
+                        </div>
+                        <div class="col-12 col-md-4 py-2 h6">
+                          <i class="fa fa-hashtag pr-2"></i> Postal Code: <?php echo $postal; ?>
+                        </div>
+                        <div class="col-12 py-2 h6">
+                           <a href="#"><i class="fa fa-map pr-2"></i> Go to Map</a>
                         </div>
                       </div>
                     </div>

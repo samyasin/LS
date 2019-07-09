@@ -161,7 +161,10 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
-                                <a href="post-ad.html" class="cp-default-btn">Post Your Ad</a>
+                                <a href="post-ad.html" class="position-relative" style="z-index:999">
+                                  <i class="fa fa-shopping-cart fa-4x text-light" style="position:absolute;top:-80%;left:-140%;z-index:-1"></i>
+                                  <span class="text-warning" style="font-size:1.5rem">9</span>
+                                </a>
                             </div>
                         </div>
                     </div>

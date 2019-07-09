@@ -9,7 +9,8 @@ if(!isset($_SESSION["id"])){
 include 'includes/config.php';
 global $con;
 
-if(!isset($_GET['product_id']) || empty($_GET['product_id'])){
+
+if(!isset($_GET['product_id'])){
   header("Location: productAdmin.php");
 }
 
@@ -17,7 +18,7 @@ $product_id = $_GET['product_id'];
 
 if(isset($_FILES['addImg'])){
   $image = $_FILES['addImg']['name'];
-  $target = "upload/product/".basename($image);
+  $target = "upload/product/$product_id".basename($image);
 
   if (move_uploaded_file($_FILES['addImg']['tmp_name'], $target)){
     $insertImg = "INSERT INTO product_image(product_id, url) VALUES ('$product_id', '$target')";
@@ -25,8 +26,7 @@ if(isset($_FILES['addImg'])){
   }
 
 
-
-  header("Location: editProduct.php?product_id=$product_id");
+    header("Location: editProduct.php?product_id=$product_id");
 }
 
 
@@ -44,7 +44,7 @@ if(isset($_POST['changeImage'])){
   $image_id  = $_POST['image_id'];
   $image_url = $_POST['image_url'];
   $new_image_url = $_FILES['eImage']['name'];
-  $target = "upload/product/".basename($new_image_url);
+  $target = "upload/product/$product_id".basename($new_image_url);
   unlink($image_url);
   if(move_uploaded_file($_FILES['eImage']['tmp_name'], $target)){
     $updateImg = "UPDATE product_image SET url='$target' WHERE img_id='$image_id'";
@@ -67,6 +67,7 @@ if(isset($_POST['save'])){
   $sql          = "UPDATE product SET title='$title', price='$price', special_price='$specialPrice', brand='$brand', color='$color', warranty='$warranty', category_id='$category', description='$description', featured='$featurd' WHERE product_id='$product_id'";
   $result = mysqli_query($con, $sql);
   header("Location: productAdmin.php");
+
 }
 
 
@@ -253,7 +254,10 @@ $resultProductImage   = mysqli_query($con, $retrieveProductImage);
                         Image
                       </div>
                       <div class="col-4 d-flex justify-content-end align-items-center">
-                        <button id="btnAddImg" class="btn btn-dark btn-file position-relative" type="button"><i class="fa fa-plus fa-1x"></i> <input id="addImg" type="file" name="addImg" accept="image/*"></button>
+                        <form id="addImage" action="editProduct.php?product_id=<?php echo $product_id; ?>" method="post" enctype="multipart/form-data">
+                          <button id="btnAddImg" class="btn btn-dark btn-file position-relative" type="button"><i class="fa fa-plus fa-1x"></i> <input id="addImg" type="file" name="addImg" accept="image/*"></button>
+                          <input class="d-none" id="btn-addImg" type="submit" name="send" value="send">
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -372,7 +376,7 @@ $resultProductImage   = mysqli_query($con, $retrieveProductImage);
   <script>
     $(document).ready(function(e){
       $('#addImg').change(function(e){
-        $('#btn-submit').click();
+        $('#btn-addImg').click();
       });
     });
   </script>

@@ -26,6 +26,7 @@ if(!isset($_SESSION["id"])){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css">
     <link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
     <link href="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/jqvmap@1.5.1/dist/jqvmap.min.css" rel="stylesheet">
@@ -72,6 +73,78 @@ if(!isset($_SESSION["id"])){
     }
     #cellPaiChart{
         height: 160px;
+    }
+    .select2-container--classic .select2-selection--single {
+      background-color: #FFFFFF;
+      border: none;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -ms-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px;
+    }
+    .select2-container--classic.select2-container--open .select2-dropdown {
+      border-color: #007bff;
+      z-index: 9999;
+    }
+    .select2-container .select2-selection--single {
+      height: 40px;
+    }
+    .select2-container--classic .select2-selection--single {
+      background-color: transparent;
+      background-image: none;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      -ms-border-radius: 6px;
+      -o-border-radius: 6px;
+      border-radius: 6px;
+      border: 1px solid #c8c8c8;
+    }
+    .select2-container--classic .select2-selection--single .select2-selection__rendered {
+      font-size: 16px!important;
+      height: 40px;
+      line-height: 36px;
+      padding-left: 35px;
+    }
+    .select2-container--classic .select2-dropdown {
+      border: 1px solid #c8c8c8;
+    }
+    .select2-container--classic.select2-container--open .select2-selection--single .select2-selection__arrow b {
+      border-color: transparent transparent #007bff transparent;
+    }
+    .select2-container--classic .select2-selection--single .select2-selection__arrow b {
+      border-color: #007bff transparent transparent transparent;
+    }
+    .select2-container--classic .select2-selection--single .select2-selection__arrow {
+      top: 7px;
+      background-color: transparent;
+      background-image: none;
+      border-style: none;
+      right: 5px;
+    }
+    .select2-container--classic.select2-container--open .select2-selection--single {
+      border: 1px solid #c8c8c8;
+    }
+    .select2-container--classic .select2-selection--single:focus {
+      border: 1px solid #007bff;
+    }
+    .select2-container--classic .select2-results__option--highlighted[aria-selected] {
+      background-color: #007bff;
+      color: #FFFFFF;
+    }
+    .custom-select {
+      margin-bottom: 15px;
+    }
+    .select2-container--classic.select2-container--open.select2-container--below .select2-selection--single,
+    .select2-container--classic.select2-container--open.select2-container--above .select2-selection--single {
+      background-image: none;
+    }
+    .select2-results__options {
+      padding: 0 4px;
+    }
+    .select2-container--classic .select2-selection--single .select2-selection__arrow b,
+    .select2-container--classic.select2-container--open .select2-selection--single .select2-selection__arrow b {
+      border-width: 0;
     }
 </style>
 
