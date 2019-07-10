@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 include 'includes/config.php';
 global $con;
 $retrieveCategory = "SELECT * FROM category limit 8";

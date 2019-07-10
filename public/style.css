@@ -6279,4 +6279,17 @@ ul.sidebar-ads-from-user li .price {
   text-align: -o-center;
   text-align: -moz-center
 }
+
+.sidebar-single-product{
+  top: 0;
+  right: -35%;
+  position: absolute;
+}
+
+@media (max-width: 768px){
+  .sidebar-single-product{
+    position: static;
+    padding-bottom: 25px
+  }
+}
 /***********************************End By Noor***************************************/

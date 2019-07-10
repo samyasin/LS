@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'includes/config.php';
 global $con;
 
@@ -6,6 +7,14 @@ $prodect_id         = $_GET['product_id'];
 $retrieveOneProduct = "SELECT * FROM product WHERE product_id='$prodect_id'";
 $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
 
+
+if(isset($_POST['addProduct'])){
+  if(!isset($_SESSION['cart'])){
+    $_SESSION['cart'] = array();
+  }
+  $_SESSION['carts'][$_POST['product_id']] = $_POST['quantity'];
+  echo "<script type='text/javascript'>window.top.location='single-product-layout.php?product_id=$prodect_id';</script>"; exit;
+}
 
 
 $retrieveProduct = "SELECT * FROM product, provider, category WHERE product_id='$prodect_id' AND provider.provider_id=product.provider_id AND category.category_id=product.category_id";
@@ -24,7 +33,9 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
 }
 
  ?>
-<?php include 'includes/header.php'; ?>
+
+ <?php include 'includes/header.php'; ?>
+
         <!-- Product Area Start Here -->
         <section class="s-space-bottom-full bg-accent-shadow-body">
           <div class="container">
@@ -46,14 +57,18 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                           $color       = "";
                           $warranty    = "";
                           $category_id = "";
+                          $product_id  = "";
                            while($row = mysqli_fetch_assoc($resultOneProduct)){
                              $brand       = $row['brand'];
                              $color       = $row['color'];
                              $warranty    = $row['warranty'];
                              $category_id = $row['category_id'];
+                             $product_id  = $row['product_id'];
                               ?>
                             <div class="gradient-title">
                                 <h2><?php echo $row['title']; ?></h2>
+
+
                             </div>
                             <div class="gradient-padding reduce-padding">
                                 <div class="single-product-img-layout1 item-mb">
@@ -99,6 +114,112 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                             </div>
                           <?php }?>
 
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12 col-12 sidebar-single-product">
+                          <div class="sidebar-item-box">
+                            <div class="gradient-wrapper">
+                              <div class="gradient-title">
+                                <h3>Add To Cart</h3>
+                              </div>
+                              <form class="py-2 px-1"  action="single-product-layout.php?product_id=<?php echo $product_id; ?>" method="post">
+                                <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                                <input class="form-control mb-2" type="number" name="quantity" value="" placeholder="Quantity">
+                                <button type="submit" class="cp-default-btn-xl p-2 w-100" name="addProduct" value="addProduct">Add To Cart</button>
+                              </form>
+                            </div>
+                          </div>
+                            <div class="sidebar-item-box">
+                                <div class="gradient-wrapper">
+                                    <div class="gradient-title">
+                                        <h3>Seller Information</h3>
+                                    </div>
+                                    <ul class="sidebar-seller-information">
+                                      <?php
+                                        $retProvider = "SELECT * FROM provider, product, address WHERE provider.provider_id=product.provider_id AND product.product_id='$prodect_id' AND provider.address_id=address.address_id";
+                                        $resProvider = mysqli_query($con, $retProvider);
+                                        while($provider = mysqli_fetch_assoc($resProvider)){ ?>
+                                          <li>
+                                              <div class="media">
+                                                  <img src="../admin/<?php echo $provider['logo']; ?>" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
+                                                  <div class="media-body">
+                                                      <span>Posted By</span>
+                                                      <h4><?php echo $provider['owner_full_name']; ?></h4>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="media">
+                                                  <img src="img/user/user2.png" alt="user" class="img-fluid pull-left">
+                                                  <div class="media-body">
+                                                      <span>Location</span>
+                                                      <h4><?php echo $provider['address'].', '.$provider['city'].', '.$provider['country']; ?></h4>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="media">
+                                                  <img src="img/user/user3.png" alt="user" class="img-fluid pull-left">
+                                                  <div class="media-body">
+                                                      <span>Contact Number</span>
+                                                      <h4><?php echo $provider['phone_number']; ?></h4>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="media">
+                                                  <img src="img/user/user4.png" alt="user" class="img-fluid pull-left">
+                                                  <div class="media-body">
+                                                      <span>Email</span>
+                                                      <h4><?php echo $provider['provider_email']; ?></h4>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="media">
+                                                  <img src="img/user/user5.png" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
+                                                  <div class="media-body">
+                                                      <span>Location in Map</span>
+                                                      <h4>Go to the map</h4>
+                                                  </div>
+                                              </div>
+                                          </li>
+                                        <?php }?>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sidebar-item-box">
+                                <div class="gradient-wrapper">
+                                    <div class="gradient-title">
+                                        <h3>Item Details</h3>
+                                    </div>
+                                    <ul class="sidebar-item-details">
+                                      <?php if($brand != "") echo "<li>Brand:<span>".$brand."</span></li>"; ?>
+                                      <?php if($color != "") echo "<li>Color:<span>".$color."</span></li>"; ?>
+                                      <?php if($warranty != "") echo "<li>Warranty:<span>".$warranty."</span></li>"; ?>
+                                        <li>
+                                            <ul class="sidebar-social">
+                                                <li>Share:</li>
+                                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sidebar-item-box">
+                                <div class="gradient-wrapper">
+                                    <div class="gradient-title">
+                                        <h3>Safety Tips for Buyers</h3>
+                                    </div>
+                                    <ul class="sidebar-safety-tips">
+                                        <li>Meet seller at a public place</li>
+                                        <li>Check The item before you buy</li>
+                                        <li>Pay only after collecting The item</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="gradient-wrapper item-mb">
                             <div class="gradient-title">
@@ -156,100 +277,6 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                                 <div class="add-layout2-right d-flex align-items-center justify-content-end mb--sm">
                                     <a href="#" class="cp-default-btn-sm-primary">Post Your Ad Now!</a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12">
-                        <div class="sidebar-item-box">
-                            <div class="gradient-wrapper">
-                                <div class="gradient-title">
-                                    <h3>Seller Information</h3>
-                                </div>
-                                <ul class="sidebar-seller-information">
-                                  <?php
-                                    $retProvider = "SELECT * FROM provider, product, address WHERE provider.provider_id=product.provider_id AND product.product_id='$prodect_id' AND provider.address_id=address.address_id";
-                                    $resProvider = mysqli_query($con, $retProvider);
-                                    while($provider = mysqli_fetch_assoc($resProvider)){ ?>
-                                      <li>
-                                          <div class="media">
-                                              <img src="../admin/<?php echo $provider['logo']; ?>" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
-                                              <div class="media-body">
-                                                  <span>Posted By</span>
-                                                  <h4><?php echo $provider['owner_full_name']; ?></h4>
-                                              </div>
-                                          </div>
-                                      </li>
-                                      <li>
-                                          <div class="media">
-                                              <img src="img/user/user2.png" alt="user" class="img-fluid pull-left">
-                                              <div class="media-body">
-                                                  <span>Location</span>
-                                                  <h4><?php echo $provider['address'].', '.$provider['city'].', '.$provider['country']; ?></h4>
-                                              </div>
-                                          </div>
-                                      </li>
-                                      <li>
-                                          <div class="media">
-                                              <img src="img/user/user3.png" alt="user" class="img-fluid pull-left">
-                                              <div class="media-body">
-                                                  <span>Contact Number</span>
-                                                  <h4><?php echo $provider['phone_number']; ?></h4>
-                                              </div>
-                                          </div>
-                                      </li>
-                                      <li>
-                                          <div class="media">
-                                              <img src="img/user/user4.png" alt="user" class="img-fluid pull-left">
-                                              <div class="media-body">
-                                                  <span>Email</span>
-                                                  <h4><?php echo $provider['provider_email']; ?></h4>
-                                              </div>
-                                          </div>
-                                      </li>
-                                      <li>
-                                          <div class="media">
-                                              <img src="img/user/user5.png" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
-                                              <div class="media-body">
-                                                  <span>Location in Map</span>
-                                                  <h4>Go to the map</h4>
-                                              </div>
-                                          </div>
-                                      </li>
-                                    <?php }?>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="sidebar-item-box">
-                            <div class="gradient-wrapper">
-                                <div class="gradient-title">
-                                    <h3>Item Details</h3>
-                                </div>
-                                <ul class="sidebar-item-details">
-                                  <?php if($brand != "") echo "<li>Brand:<span>".$brand."</span></li>"; ?>
-                                  <?php if($color != "") echo "<li>Color:<span>".$color."</span></li>"; ?>
-                                  <?php if($warranty != "") echo "<li>Warranty:<span>".$warranty."</span></li>"; ?>
-                                    <li>
-                                        <ul class="sidebar-social">
-                                            <li>Share:</li>
-                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="sidebar-item-box">
-                            <div class="gradient-wrapper">
-                                <div class="gradient-title">
-                                    <h3>Safety Tips for Buyers</h3>
-                                </div>
-                                <ul class="sidebar-safety-tips">
-                                    <li>Meet seller at a public place</li>
-                                    <li>Check The item before you buy</li>
-                                    <li>Pay only after collecting The item</li>
-                                </ul>
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,9 @@
 include 'includes/config.php';
 global $con;
 
+
+
+
 $retrieveCategorySearch = "SELECT * FROM category";
 $resultCategorySearch   = mysqli_query($con, $retrieveCategorySearch);
 
@@ -161,10 +164,13 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
-                                <a href="post-ad.html" class="position-relative" style="z-index:999">
-                                  <i class="fa fa-shopping-cart fa-4x text-light" style="position:absolute;top:-80%;left:-140%;z-index:-1"></i>
-                                  <span class="text-warning" style="font-size:1.5rem">9</span>
-                                </a>
+                                <a href="shopping-cart.php" class="h4 text-white"><i class="fa fa-shopping-cart"></i><span style="font-weight:500;" class="badge badge-pill badge-light ml-2">
+                                  <?php if(isset($_SESSION['carts'])){
+                                    echo is_array($_SESSION['carts']) ? count($_SESSION['carts']) : 0;
+                                  }else {
+                                    echo "0";
+                                  } ?>
+                                </span></a>
                             </div>
                         </div>
                     </div>
