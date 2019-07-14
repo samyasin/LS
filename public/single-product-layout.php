@@ -9,8 +9,8 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
 
 
 if(isset($_POST['addProduct'])){
-  if(!isset($_SESSION['cart'])){
-    $_SESSION['cart'] = array();
+  if(!isset($_SESSION['carts'])){
+    $_SESSION['carts'] = array();
   }
   $_SESSION['carts'][$_POST['product_id']] = $_POST['quantity'];
   echo "<script type='text/javascript'>window.top.location='single-product-layout.php?product_id=$prodect_id';</script>"; exit;
