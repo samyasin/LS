@@ -3,16 +3,18 @@ session_start();
 include 'includes/config.php';
 global $con;
 $msg = "";
-
+$url = "";
 if(isset($_SERVER['HTTP_REFERER'])){
   $url = $_SERVER['HTTP_REFERER'];
+}
+if(strpos($url, "shopping-cart")){
+  $url = "address.php";
 }else{
   $url = "index.php";
 }
-if(strpos($url, "shopping-cart")){
-  $url = "checkout.php";
+if(!isset($_SESSION['url'])){
+  $_SESSION['url'] = $url;
 }
-
 
 
 
@@ -26,6 +28,7 @@ if(isset($_POST['login'])){
       $user_id = $row['user_id'];
     }
     $_SESSION['user_id'] = $user_id;
+    $url = $_SESSION['url'];
     header("Location: $url");
     exit();
   }else {

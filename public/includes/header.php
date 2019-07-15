@@ -63,8 +63,16 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                     <div class="container">
                         <div class="row no-gutters">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-8">
-                                <div class="top-bar-left">
-                                    <a href="post-ad.html" class="cp-default-btn d-lg-none">Post Your Ad</a>
+                                <div class="top-bar-left h-100">
+                                    <div class="d-flex d-lg-none align-items-end h-100">
+                                        <a href="shopping-cart.php" class="h5 text-white mb-0"><i class="fa fa-shopping-cart"></i><span style="font-weight:500;" class="badge badge-pill badge-light ml-2">
+                                        <?php if(isset($_SESSION['carts'])){
+                                            echo is_array($_SESSION['carts']) ? count($_SESSION['carts']) : 0;
+                                        }else {
+                                            echo "0";
+                                        } ?>
+                                        </span></a>
+                                    </div>
                                     <p class="d-none d-lg-block">
                                         <i class="fa fa-life-ring" aria-hidden="true"></i>Have any questions? +088 199990 or mail@classipost
                                     </p>

@@ -123,7 +123,7 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                               </div>
                               <form class="py-2 px-1"  action="single-product-layout.php?product_id=<?php echo $product_id; ?>" method="post">
                                 <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
-                                <input class="form-control mb-2" type="number" name="quantity" value="" placeholder="Quantity">
+                                <input class="form-control mb-2" type="number" name="quantity" value="" placeholder="Quantity" required>
                                 <button type="submit" class="cp-default-btn-xl p-2 w-100" name="addProduct" value="addProduct">Add To Cart</button>
                               </form>
                             </div>

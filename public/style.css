@@ -6292,4 +6292,110 @@ ul.sidebar-ads-from-user li .price {
     padding-bottom: 25px
   }
 }
+
+.progressbar {
+  counter-reset: step;
+}
+.progressbar li {
+  list-style-type: none;
+  width: 25%;
+  float: left;
+  font-size: 16px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  color: #7d7d7d;
+  z-index:999
+}
+.progressbar li:before {
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: step;
+  line-height: 30px;
+  border: 2px solid #7d7d7d;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+  z-index:99
+}
+.progressbar li:after {
+  width: 100%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  background-color: #7d7d7d;
+  top: 15px;
+  left: calc(-50% + 15px);
+  z-index: -1;
+}
+.progressbar li:first-child:after {
+  content: none;
+}
+.progressbar li.active {
+  color: green;
+}
+.progressbar li.active:before {
+  border-color: #55b776;
+}
+.progressbar li.active + li:after {
+  background-color: #55b776;
+}
+.font-weight-light{
+font-weight:300 !important
+}
+.custom-control{
+  display: block;
+  margin-bottom: 0.5rem
+}
+.custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+}
+.custom-control-label::before {
+  position: absolute;
+  top: .25rem;
+  left: -1.5rem;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+  content: "";
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #dee2e6;
+  border:1px solid #bcc0c4
+}
+.custom-control-label::before, .custom-file-label, .custom-select {
+  transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.custom-radio .custom-control-label::before {
+  border-radius: 50%;
+}
+.custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  background-color: #16a085;
+  border: none
+}
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
+  background-color: #16a085;
+  border: none
+}
+.custom-control-label::after {
+  position: absolute;
+  top: calc( 50% - 0.15rem);
+  left: -20px;
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  content: "";
+  border-radius: 50%
+}
+.custom-radio .custom-control-input:checked~.custom-control-label::after {
+  background-color: #fff;
+}
 /***********************************End By Noor***************************************/

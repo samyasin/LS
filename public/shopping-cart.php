@@ -101,7 +101,9 @@ if(isset($_POST['edit'])){
                         </tr>
                       <?php }
                     }
-                  }?>
+                  }
+                  $_SESSION['sumPrice'] = $sumPrice;
+                  ?>
                 </tbody>
               </table>
             </div>
