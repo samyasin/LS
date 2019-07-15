@@ -200,12 +200,17 @@ if(!isset($_SESSION["id"])){
                       </li>
 
                       <li>
+                        <a href="customer.php"><i class="menu-icon fa fa-users"></i>Manage Customer</a>
+                      </li>
+
+                      <li>
                         <a href="category.php"><i class="menu-icon fa fa-th-list"></i>Manage Category</a>
                       </li>
 
                       <li>
-                        <a href="customer.php"><i class="menu-icon fa fa-users"></i>Manage Customer</a>
+                        <a href="country.php"><i class="menu-icon fa fa-globe"></i>Manage Countries</a>
                       </li>
+
                   <?php } ?>
 
                     <li>

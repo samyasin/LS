@@ -1,4 +1,17 @@
 <?php session_start();
+include 'includes/config.php';
+global $con;
+if(isset($_POST['ajax']) && isset($_POST['country_id'])){
+  $country_id = $_POST['country_id'];
+  $sql = "SELECT * FROM city WHERE country_id='$country_id'";
+  $res = mysqli_query($con, $sql);
+  while($city = mysqli_fetch_assoc($res)){
+    $city_id = $city['city_id'];
+    $city_name = $city['city_name'];
+    echo "<option value='$city_id'>$city_name</option>";
+  }
+  exit;
+}
 
 if(!isset($_SESSION['user_id'])){
   header("Location: login.php");
@@ -10,10 +23,13 @@ if(isset($_POST['add_address'])){
     $_SESSION['address'] = array();
   }
   $_SESSION['address']['address_line'] = $_POST['address_line'];
-  $_SESSION['address']['city']         = $_POST['city'];
-  $_SESSION['address']['country']      = $_POST['country'];
+  $_SESSION['address']['city']         = $_POST['city_id'];
+  $_SESSION['address']['country']      = $_POST['country_id'];
   header("Location: payment.php");
 }
+
+$select_country = "SELECT * FROM country ORDER BY country_name";
+$result_country = mysqli_query($con, $select_country);
 ?>
 <?php include 'includes/header.php'; ?>
 
@@ -37,16 +53,29 @@ if(isset($_POST['add_address'])){
           <div class="gradient-padding reduce-padding">
             <form  action="address.php" method="post">
               <div class="form-group col-12">
+                      <label for="country">Country</label>
+                      <div class="input-group">
+                          <select id="country" class="form-control" name="country_id" required>
+                                <option value="" selected disabled hidden>Select Country</option>
+                                <?php if(mysqli_num_rows($result_country) > 0){
+                                    while($country = mysqli_fetch_assoc($result_country)){ ?>
+                                        <option value="<?php echo $country['country_id']; ?>"><?php echo $country['country_name']; ?></option>
+                                  <?php  }
+                                }?>
+                            </select>
+                      </div>
+                  </div>
+                  <div class="form-group col-12">
+                      <label for="city">City</label>
+                     <div class="input-group">
+                         <select class="form-control" name="city_id" id="city" required>
+                              <option value="">Select City</option>
+                         </select>
+                     </div>
+                 </div>
+              <div class="form-group col-12">
                 <label for="exampleInputEmail1">Address Line</label>
                 <input type="text" class="form-control" id="address_line" name="address_line" aria-describedby="emailHelp" placeholder="Enter Address Line" required>
-              </div>
-              <div class="form-group col-12">
-                <label for="exampleInputEmail1">City</label>
-                <input type="City" class="form-control" id="city" name="city" aria-describedby="emailHelp" placeholder="Enter City" required>
-              </div>
-              <div class="form-group col-12">
-                <label for="exampleInputEmail1">Country</label>
-                <input type="text" class="form-control" id="country" name="country" aria-describedby="emailHelp" placeholder="Enter Country" required>
               </div>
               <div class="form-group col-12 text-right mt-3 mt-md-4">
                 <button class="cp-default-btn-xl p-2 text-dark" type="submit" name="add_address" value="continue">Continue <i class="fa fa-arrow-right"></i></button>
@@ -75,6 +104,23 @@ if(isset($_POST['add_address'])){
 </section>
 
 <?php include 'includes/footer.php'; ?>
+<script>
+  $(document).ready(function(){
+    $('#country').on('change',function(){
+      var value =  $(this).val();
+      $.ajax({
+        type: 'post',
+        url: 'address.php',
+        cache: false,
+        data: {ajax: 1, country_id: value},
+        success: function(data){
+          $('#city').html(data);
+        }
+
+      });
+    });
+  });
+</script>
 
 </body>
 

@@ -299,5 +299,5 @@ if(isset($_POST['edit'])){
 
   });
 </script>
-</boody>
+</body>
 </html>

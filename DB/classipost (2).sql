@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2019 at 03:32 PM
+-- Generation Time: Jul 15, 2019 at 03:56 PM
 -- Server version: 10.1.33-MariaDB
 -- PHP Version: 7.2.6
 
@@ -42,7 +42,8 @@ CREATE TABLE `address` (
 
 INSERT INTO `address` (`address_id`, `address`, `city`, `country`, `postal_code`) VALUES
 (7, 'asfladf', 'amman', 'Jordan', '65412'),
-(8, 'building 2, jos st. ', 'new york', 'USA', '63521');
+(8, 'building 2, jos st. ', 'new york', 'USA', '63521'),
+(9, 'uyf', 'ytf', 'ytf', '564654');
 
 -- --------------------------------------------------------
 
@@ -102,17 +103,103 @@ INSERT INTO `category` (`category_id`, `name_en`, `name_ar`, `url`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Table structure for table `city`
 --
 
-CREATE TABLE `order` (
-  `order_id` int(11) NOT NULL,
-  `quantity` float NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `provider_id` varchar(20) NOT NULL,
-  `product_id` varchar(20) NOT NULL,
+CREATE TABLE `city` (
+  `city_id` int(11) NOT NULL,
+  `city_name` varchar(30) NOT NULL,
+  `country_id` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `city`
+--
+
+INSERT INTO `city` (`city_id`, `city_name`, `country_id`) VALUES
+(3, 'Texas', '2'),
+(5, 'Oran', '3'),
+(11, 'Amman', '5'),
+(12, 'Zarqa', '5'),
+(13, 'Irbid', '5'),
+(14, 'Aqaba', '5');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country`
+--
+
+CREATE TABLE `country` (
+  `country_id` int(11) NOT NULL,
+  `country_name` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`country_id`, `country_name`) VALUES
+(2, 'USA'),
+(3, 'Algeria'),
+(5, 'Jordan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(6) UNSIGNED ZEROFILL NOT NULL,
+  `payment_method` varchar(20) NOT NULL,
+  `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `grand_total` int(11) NOT NULL,
+  `order_status` varchar(20) NOT NULL,
+  `address_line` varchar(20) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `country` varchar(20) NOT NULL,
   `user_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `payment_method`, `order_date`, `grand_total`, `order_status`, `address_line`, `city`, `country`, `user_id`) VALUES
+(000012, 'cash', '2019-07-14 23:34:28', 5002, 'pending', 'yajouz st.', 'Zarqa', 'jordan', '4'),
+(000013, 'cash', '2019-07-14 23:35:42', 8103, 'pending', 'yajouz st.', 'Zarqa', 'sdfg', '4'),
+(000014, 'paypal', '2019-07-15 00:34:18', 8103, 'approved', 'sfg', 'daf', 'asf', '4'),
+(000015, 'cash', '2019-07-15 00:35:31', 9600, 'pending', 'sfg', 'daf', 'jordan', '4'),
+(000016, 'cash', '2019-07-15 11:34:57', 5002, 'pending', 'yajouz st.', 'Zarqa', 'jordan', '4'),
+(000017, 'cash', '2019-07-15 16:55:32', 5002, 'pending', 'aldnfjadf', '12', '5', '4');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_details`
+--
+
+CREATE TABLE `order_details` (
+  `order_details_id` int(11) NOT NULL,
+  `order_id` varchar(20) NOT NULL,
+  `product_id` varchar(20) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `order_details`
+--
+
+INSERT INTO `order_details` (`order_details_id`, `order_id`, `product_id`, `quantity`) VALUES
+(1, '12', '35', 2),
+(2, '13', '35', 3),
+(3, '13', '30', 2),
+(4, '14', '35', 3),
+(5, '14', '30', 2),
+(6, '15', '27', 32),
+(7, '16', '35', 2),
+(8, '17', '35', 2);
 
 -- --------------------------------------------------------
 
@@ -139,11 +226,10 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `title`, `price`, `special_price`, `brand`, `color`, `warranty`, `category_id`, `provider_id`, `description`, `featured`) VALUES
-(25, 'phone', '250', '200', 'iphone', 'red', '', '25', '5', '<u>This </u><strong><span style=\"font-size: 18px;\">Phone</span></strong><ul><li><span style=\"font-family: Times New Roman,Times,serif,-webkit-standard;\">is very fast</span></li><li><span style=\"font-family: Verdana,Geneva,sans-serif;\">easy to use</span></li></ul>', 1),
-(27, 'Dog', '300', '', '', '', '', '28', '5', '', 0),
-(30, 'Toys', '320', '300', '', '', '', '29', '5', 'test', 1),
-(35, '', 'test', '', '', '', '', '25', '5', '<ol><li>adfnsfjngkjsndfgjkndfg</li><li>fdsgdsfdsfh</li></ol>fdgdfsgdsfgdsfg<br><span style=\"font-family: Impact,Charcoal,sans-serif;\">fsdgdsfgdfsgdsfgsdfg</span><br>dsfgsdfg<br><strong><em><u><span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 60px;\">noor</span></u></em></strong><br><br>', 0),
-(36, 'Sonata', '2500', '2450', 'Hundau', 'Blach', '2', '26', '5', '', 1);
+(27, 'Dog', '300', '', '', 'Blue', '0', '28', '5', '', 0),
+(30, 'Toys', '320', '300', '', 'White', '1', '29', '5', 'test', 1),
+(35, 'Test', '2501', '', '', 'Red', '3', '25', '5', '<ol><li>adfnsfjngkjsndfgjkndfg</li><li>fdsgdsfdsfh</li></ol>fdgdfsgdsfgdsfg<br><span style=\"font-family: Impact,Charcoal,sans-serif;\">fsdgdsfgdfsgdsfgsdfg</span><br>dsfgsdfg<br><strong><em><u><span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 60px;\">noor</span></u></em></strong><br><br>', 0),
+(36, 'Sonata', '2500', '2450', 'Hundau', 'Black', '2', '26', '5', '', 1);
 
 -- --------------------------------------------------------
 
@@ -162,12 +248,9 @@ CREATE TABLE `product_image` (
 --
 
 INSERT INTO `product_image` (`img_id`, `product_id`, `url`) VALUES
-(15, '25', 'upload/product/product8.png'),
-(16, '25', 'upload/product/sidebar-img1.png'),
 (19, '27', 'upload/product/product9.png'),
 (23, '30', 'upload/product/product12.png'),
 (24, '30', 'upload/product/product19.png'),
-(25, '30', 'upload/product/sidebar-img3.png'),
 (26, '30', 'upload/product/single-product1.jpg'),
 (27, '31', 'upload/product/product1.png'),
 (28, '32', 'upload/product/product1.png'),
@@ -180,9 +263,10 @@ INSERT INTO `product_image` (`img_id`, `product_id`, `url`) VALUES
 (36, '36', 'upload/product/ctg3.png'),
 (37, '36', 'upload/product/product14.png'),
 (38, '36', 'upload/product/product16.png'),
-(43, '25', 'upload/product/2.jpg'),
-(44, '35', 'upload/product/3.jpg'),
-(45, '35', 'upload/product/background.jpg');
+(54, '35', 'upload/product/35background.jpg'),
+(55, '27', 'upload/product/27background.jpg'),
+(56, '35', 'upload/product/353.jpg'),
+(60, '27', 'upload/product/272.jpg');
 
 -- --------------------------------------------------------
 
@@ -208,7 +292,8 @@ CREATE TABLE `provider` (
 
 INSERT INTO `provider` (`provider_id`, `owner_full_name`, `company_name`, `provider_email`, `password`, `phone_number`, `logo`, `category_id`, `address_id`) VALUES
 (3, 'Mohammad Ali', 'test', 'test1@gmail.com', '25f9e794323b453885f5181f1b624d0b', '132465798', 'upload/company_logo/background.jpg', '25', '7'),
-(4, 'Steve', 'Apple', 'apple@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '0786532154', 'upload/company_logo/3.jpg', '25', '8');
+(4, 'Steve', 'Apple', 'apple@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '0786532154', 'upload/company_logo/3.jpg', '25', '8'),
+(5, 'ghdfd', 'ghcgfx', 'gdxtd@gfx', 'e10adc3949ba59abbe56e057f20f883e', '65465465', 'upload/company_logo/2.jpg', '25', '9');
 
 -- --------------------------------------------------------
 
@@ -225,6 +310,14 @@ CREATE TABLE `users` (
   `user_gender` text NOT NULL,
   `user_phone` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `user_email`, `user_password`, `user_fname`, `user_lname`, `user_gender`, `user_phone`) VALUES
+(3, 'dlkgfn@lncv.com', 'e10adc3949ba59abbe56e057f20f883e', 'Test', 'test', 'male', '01796354'),
+(4, 'sdv@sv', '25f9e794323b453885f5181f1b624d0b', 'adg', 'sdv', 'female', '64546');
 
 --
 -- Indexes for dumped tables
@@ -249,10 +342,28 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Indexes for table `order`
+-- Indexes for table `city`
 --
-ALTER TABLE `order`
+ALTER TABLE `city`
+  ADD PRIMARY KEY (`city_id`);
+
+--
+-- Indexes for table `country`
+--
+ALTER TABLE `country`
+  ADD PRIMARY KEY (`country_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indexes for table `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`order_details_id`);
 
 --
 -- Indexes for table `product`
@@ -286,7 +397,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -301,10 +412,28 @@ ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT for table `order`
+-- AUTO_INCREMENT for table `city`
 --
-ALTER TABLE `order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `city`
+  MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `country`
+--
+ALTER TABLE `country`
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(6) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `order_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -316,19 +445,19 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `provider`
 --
 ALTER TABLE `provider`
-  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

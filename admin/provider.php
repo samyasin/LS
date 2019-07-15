@@ -3,6 +3,19 @@ include 'includes/config.php';
 global $con;
 
 
+if(isset($_POST['ajax']) && isset($_POST['country_id'])){
+  $country_id = $_POST['country_id'];
+  $sql = "SELECT * FROM city WHERE country_id='$country_id'";
+  $res = mysqli_query($con, $sql);
+  while($city = mysqli_fetch_assoc($res)){
+    $city_id = $city['city_id'];
+    $city_name = $city['city_name'];
+    echo "<option value='$city_id'>$city_name</option>";
+  }
+  exit;
+}
+
+
 if(isset($_POST['add'])){
   $company_name = $_POST['company_name'];
   $owner_name   = $_POST['owner_name'];
@@ -106,6 +119,9 @@ if(isset($_POST['edit_address'])){
 //retrieve data category
 $sqlCategory    = "SELECT * FROM category";
 $resultCategory = mysqli_query($con,$sqlCategory);
+
+$select_country = "SELECT * FROM country ORDER BY country_name";
+$result_country = mysqli_query($con, $select_country);
  ?>
 
  <?php include 'includes/header.php'; ?>
@@ -195,16 +211,25 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                    </div>
                </div>
                <div class="row">
+                  <div class="form-group col-sm-6">
+                     <div class="input-group">
+                         <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+                         <select id="country" class="form-control" name="country_id" required>
+                              <option value="" selected disabled hidden>Select Country</option>
+                              <?php if(mysqli_num_rows($result_country) > 0){
+                                  while($country = mysqli_fetch_assoc($result_country)){ ?>
+                                      <option value="<?php echo $country['country_id']; ?>"><?php echo $country['country_name']; ?></option>
+                                <?php  }
+                              }?>
+                          </select>
+                     </div>
+                 </div>
                  <div class="form-group col-12 col-sm-6">
                      <div class="input-group">
                          <div class="input-group-addon"><i class="fa fa-map-marker"></i></div>
-                         <input type="text" id="city" name="city" placeholder="City" class="form-control" required autocomplete="off">
-                     </div>
-                 </div>
-                 <div class="form-group col-sm-6">
-                     <div class="input-group">
-                         <div class="input-group-addon"><i class="fa fa-globe"></i></div>
-                         <input type="text" id="country" name="country" placeholder="Country" class="form-control" required autocomplete="off">
+                         <select class="form-control" name="city_id" id="city" required>
+                              <option value="">Select City</option>
+                         </select>
                      </div>
                  </div>
                </div>
@@ -509,8 +534,23 @@ $resultCategory = mysqli_query($con,$sqlCategory);
         return false;
       }
     });
+
+    $('#country').on('change',function(){
+      var value =  $(this).val();
+      $.ajax({
+        type: 'post',
+        url: 'provider.php',
+        cache: false,
+        data: {ajax: 1, country_id: value},
+        success: function(data){
+          $('#city').html(data);
+        }
+
+      });
+    });
+
   });
 </script>
 
-</boody>
+</body>
 </html>

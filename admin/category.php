@@ -166,7 +166,7 @@ if(isset($_POST['edit'])){
                           <td>
                           <!-- modal -->
                           <!-- Button trigger modal -->
-                          <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modal<?php echo $i;?>'>
+                          <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#modal<?php echo $i;?>'>
                             Edit
                           </button>
 
@@ -216,9 +216,9 @@ if(isset($_POST['edit'])){
                             </div>
                           </div>
                           <!-- end modal -->
-                          <form id='option<?php echo $i;?>'action = 'category.php' method='POST' class='d-inline'>
+                          <form id='option<?php echo $i;?>'action = 'category.php' method='POST' class='d-inline-block mt-2 mt-md-0'>
                           <input type='hidden' name='id' value='<?php echo $row['category_id'];?>'>
-                            <button class='btn btn-danger' type='submit' name='remove' vlaue='remove'>Remove</button>
+                            <button class='btn btn-danger btn-sm' type='submit' name='remove' vlaue='remove'>Remove</button>
                           </form>
                           </td>
                         </tr>
