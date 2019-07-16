@@ -2957,9 +2957,10 @@ p.text-bold-primary {
 .search-layout2-holder {
   position: absolute;
   top: -140px;
-  left: 0;
+  left: 50%;
   right: 0;
   z-index: 5;
+  transform: translateX(-50%);
 }
 .search-layout2-holder .search-layout2-inner {
   position: relative;
@@ -5971,6 +5972,7 @@ ul.sidebar-ads-from-user li .price {
   .search-layout2-holder {
     position: initial;
     padding-top: 15px;
+    transform: translateX(0);
   }
   .add-layout2-right {
     padding-right: 0;

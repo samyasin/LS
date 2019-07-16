@@ -8,22 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $email    = $_POST['email'];
     $password = md5($_POST['password']);
-    $type     = $_POST['type'];
-    if($type == 0){
-      $sql    = "SELECT * FROM admin WHERE email='$email' AND password='$password'";
-      $result = mysqli_query($con, $sql);
-      if(mysqli_num_rows($result) > 0){
-        $id = '';
-        while($row = mysqli_fetch_assoc($result)){
-          $id = $row['admin_id'];
-        }
-        $_SESSION["id"]   = $id;
-        $_SESSION["type"] = "admin";
-        header('Location: index.php');
-      } else {
-        $error =  'Email or Password is incorrect';
-      }
-    }else {
       $sql    = "SELECT * FROM provider WHERE provider_email='$email' AND password='$password'";
       $result = mysqli_query($con, $sql);
       if(mysqli_num_rows($result) > 0){
@@ -37,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       } else {
         $error =  'Email or Password is incorrect';
       }
-    }
   }
 }
  ?>
@@ -81,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                   <div class="login-form">
                   <?php if(isset($error)) { echo "<div class='alert alert-danger' role='alert'>$error</div>";} ?>
 
-                    <form id="form" method="post" action="login.php">
+                    <form id="form" method="post" action="loginProvider.php">
                         <div class="form-group">
                             <label>Email address</label>
                             <input type="email" class="form-control" placeholder="Email" name="email" required>
@@ -89,13 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                         <div class="form-group">
                             <label>Password</label>
                             <input type="password" class="form-control" placeholder="Password" name="password" autocomplete="off" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Type</label>
-                            <select class="form-control" name="type">
-                              <option value="0">Admin</option>
-                              <option value="1">Provider</option>
-                            </select>
                         </div>
                         <div class="checkbox">
                             <label>

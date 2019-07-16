@@ -165,7 +165,7 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
           <section class="map-layout1 fixed-menu-mt full-width-container">
               <div class="container-fluid">
                   <div class="google-map-area">
-                      <div id="googleMap" style="width:100%; height:400px;"></div>
+                      <div id="googleMap" style="width:100%; height:200px;"></div>
                   </div>
               </div>
           </section>
