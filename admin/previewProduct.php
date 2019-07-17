@@ -106,9 +106,20 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                 </div>
                                 <ul class="sidebar-seller-information">
                                   <?php
-                                    $sqlProvider = "SELECT * FROM provider, address WHERE provider_id='$provider_id' AND provider.address_id = address.address_id";
+                                    $sqlProvider = "SELECT * FROM provider WHERE provider_id='$provider_id'";
                                     $resProvider = mysqli_query($con, $sqlProvider);
-                                    while($provider = mysqli_fetch_assoc($resProvider)){ ?>
+                                    while($provider = mysqli_fetch_assoc($resProvider)){
+                                        $city_id    = $provider['city_id'];
+                                          $country_id = $provider['country_id'];
+                                          $selectAddress = "SELECT country_name, city_name FROM country, city WHERE city.city_id='$city_id' AND country.country_id='$country_id'";
+                                          $resSA         = mysqli_query($con, $selectAddress);
+                                          $country_name  = "";
+                                          $city_name     = ""; 
+                                          while($address = mysqli_fetch_assoc($resSA)){
+                                              $country_name = $address['country_name'];
+                                              $city_name    = $address['city_name'];
+                                          }
+                                         ?>
                                       <li>
                                           <div class="media">
                                               <img src="<?php echo $provider['logo']; ?>" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
@@ -123,7 +134,7 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                               <img src="includes/previewProduct/img/user/user2.png" alt="user" class="img-fluid pull-left">
                                               <div class="media-body">
                                                   <span>Location</span>
-                                                  <h4><?php echo $provider['address'].', '.$provider['city'].', '.$provider['country']; ?></h4>
+                                                  <h4><?php echo $provider['address_line'].', '.$city_name.', '.$country_name; ?></h4>
                                               </div>
                                           </div>
                                       </li>
@@ -150,7 +161,8 @@ $resultOneProduct   = mysqli_query($con, $retrieveOneProduct);
                                               <img src="includes/previewProduct/img/user/user5.png" alt="user" class="img-fluid pull-left rounded-circle" style="width:36px;height:36px">
                                               <div class="media-body">
                                                   <span>Location in Map</span>
-                                                  <h4>Go to the map</h4>
+                                                  <a href="<?php echo $provider['location_map']; ?>" class="btn btn-link"
+                                                target="_blank">Go to the map</a>
                                               </div>
                                           </div>
                                       </li>

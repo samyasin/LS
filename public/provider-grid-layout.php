@@ -14,7 +14,7 @@ $resultProvider    = mysqli_query($con, $retrieveProvider);
 $retrieveCategory  = "SELECT * FROM category";
 $resultCategory    = mysqli_query($con, $retrieveCategory);
 
-$retrieveLocation1 = "SELECT * FROM address";
+$retrieveLocation1 = "SELECT * FROM country ORDER BY country_name";
 $resultLocation1   = mysqli_query($con, $retrieveLocation1);
 
 $retrieveOneCategory  = "SELECT * FROM category WHERE category_id='$category_id'";
@@ -87,12 +87,18 @@ while($oneCat = mysqli_fetch_assoc($resultOneCategory)){
                                                 <h3 class="short-title"><?php echo $row['company_name']; ?></h3>
                                                 <ul class="upload-info">
                                                   <?php
-                                                    $address_id    = $row['address_id'];
-                                                    $selectAddress = "SELECT * FROM address WHERE address_id='$address_id'";
+                                                    $country_id     = $row['country_id'];
+                                                    $city_id       = $row['city_id'];
+                                                    $selectAddress = "SELECT country_name, city_name FROM country, city WHERE city.city_id='$city_id' AND country.country_id='$country_id'";
                                                     $resSA         = mysqli_query($con, $selectAddress);
-                                                    while($address = mysqli_fetch_assoc($resSA)){ ?>
-                                                      <li class="place"><i class="fa fa-map-marker d-inline-block"></i><?php echo $address['city'].', '.$address['country']; ?></li>
-                                                    <?php } ?>
+                                                    $country_name  = "";
+                                                    $city_name     = ""; 
+                                                    while($address = mysqli_fetch_assoc($resSA)){
+                                                        $country_name = $address['country_name'];
+                                                        $city_name    = $address['city_name'];
+                                                    }
+                                                     ?>
+                                                      <li class="place"><i class="fa fa-map-marker d-inline-block"></i><?php echo $city_name.', '.$country_name; ?></li>
                                                     <li class="d-block"><a href="company_details.php?provider_id=<?php echo $row['provider_id']; ?>" class="btn btn-link" style="font-size:0.8rem">Company Details</a></li>
                                                 </ul>
                                                 <div class="price" style="font-size:1rem;font-weight:400;bottom:58px"><?php echo $row['owner_full_name']; ?></div>
@@ -162,11 +168,11 @@ while($oneCat = mysqli_fetch_assoc($resultOneCategory)){
                         <div class="sidebar-item-box">
                             <div class="gradient-wrapper">
                                 <div class="gradient-title">
-                                    <h3>Location</h3>
+                                    <h3>Country</h3>
                                 </div>
                                 <ul class="sidebar-loacation-list">
                                   <?php while($row = mysqli_fetch_assoc($resultLocation1)){ ?>
-                                    <li><a href="#"><?php echo $row['city']; ?></a></li>
+                                    <li><a href="#"><?php echo $row['country_name']; ?></a></li>
                                   <?php } ?>
                                 </ul>
                             </div>

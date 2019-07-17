@@ -169,13 +169,8 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                     <th>#</th>
                     <th>Title</th>
                     <th>Category</th>
-                    <th>Brand</th>
                     <th>Price</th>
-                    <th>Special Price</th>
                     <th>Featured</th>
-                    <th>Warranty Period</th>
-                    <th>Description</th>
-                    <th>Color</th>
                     <th>Images</th>
                     <th>Option</th>
                   </tr>
@@ -197,17 +192,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                         <td><?php echo $i; ?></td>
                         <td><?php echo $row['title'];?></td>
                         <td><?php echo $row['name_en'];?></td>
-                        <td><?php echo $row['brand'];?></td>
                         <td><?php echo $row['price'];?></td>
-                        <td>
-                          <?php
-                          if($row['special_price'] ==  ""){
-                            echo "-";
-                          } else {
-                            echo $row['special_price'];
-                          }
-                          ?>
-                        </td>
                         <td>
                           <?php
                           if($row['featured'] == 0){
@@ -217,9 +202,6 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                           }
                            ?>
                         </td>
-                        <td><?php echo $row['warranty'];?></td>
-                        <td style="max-width:400px;padding:10px 30px"><?php echo $row['description'];?></td>
-                        <td><?php echo $row['color'];?></td>
                         <!-- display image -->
                         <td>
                         <?php
@@ -239,7 +221,7 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                         <td>
                           <div class="row">
                             <div class="col-12">
-                              <a href="previewProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary w-100'>Preview</a>
+                              <a href="previewProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-info w-100' target="_blank">Preview</a>
                             </div>
                             <div class="col-12">
                               <a href="editProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary my-2 w-100'>Edit</a>
