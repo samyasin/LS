@@ -87,10 +87,9 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                                         </span>
                                         <?php } ?>
 
-                                        <div role="tabpanel" class="h-100 text-center" id="related"
+                                        <div role="tabpanel" class="h-100 text-center d-flex align-items-center justify-content-center" id="related"
                                             style="height:500px !important">
-                                            <img id="displayImg" alt="single" src="" class="img-fluid"
-                                                style="height:100%">
+                                            <img id="displayImg" alt="single" src="" class="img-fluid mh-100">
                                         </div>
                                     </div>
                                 </div>
@@ -100,9 +99,9 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                                             $retImage    = "SELECT * FROM product_image WHERE product_id='$prodect_id'";
                                             $resImage    = mysqli_query($con, $retImage);
                                             while($image = mysqli_fetch_assoc($resImage)){ ?>
-                                        <div class="item text-center">
+                                        <div class="item text-center d-flex align-items-center justify-content-center" style="width:75px !important; height:75px !important;">
                                             <img class="imgItem" src="../admin/<?php echo $image['url']; ?>" alt=""
-                                                style="width:75px !important; height:75px !important;cursor:pointer">
+                                                style="cursor:pointer;width:auto">
                                         </div>
                                         <?php } ?>
                                     </div>

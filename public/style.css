@@ -6400,4 +6400,11 @@ font-weight:300 !important
 .custom-radio .custom-control-input:checked~.custom-control-label::after {
   background-color: #fff;
 }
+
+.cover-imge{
+  object-fit: cover;
+}
+.color-theme{
+  color:#139e81;
+}
 /***********************************End By Noor***************************************/

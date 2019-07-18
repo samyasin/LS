@@ -31,12 +31,19 @@ if(isset($_POST['add'])){
   $postal_code  = $_POST['postal_code'];
   $location_map = $_POST['location_map'];
 
-  if(mysqli_query($con, $insertAddress)){
     if(move_uploaded_file($_FILES['logo']['tmp_name'], $target)){
-      $insertProvider = "INSERT INTO provider(owner_full_name,company_name,provider_email, password,phone_number,logo,location_map,category_id,address_line,country_id,city_id) VALUES ('$owner_name','$company_name','$email','$password',
-        '$number_phone','$target', '$location_map','$category','$address_line', '$country_id', '$city_id')";
+      $insertProvider = "INSERT INTO provider(owner_full_name,company_name,provider_email, password,phone_number,logo,location_map,category_id,address_line,postal_code,country_id,city_id) VALUES ('$owner_name','$company_name','$email','$password',
+        '$number_phone','$target', '$location_map','$category','$address_line', '$postal_code', '$country', '$city')";
       $result  = mysqli_query($con, $insertProvider);
-    }
+      $provider_id = mysqli_insert_id($con);
+      foreach($_FILES['companyImg']['name'] as $key => $value){
+        $imageName = $_FILES['companyImg']['name'][$key];
+        $target    = "upload/company_images/$provider_id".basename($imageName);
+        if(move_uploaded_file($_FILES['companyImg']['tmp_name'][$key], $target)){
+            $insertImage = "INSERT INTO company_image(provider_id,url) VALUE ('$provider_id', '$target')";
+            $resultImage = mysqli_query($con, $insertImage);
+        }
+      }
   }
 
   header("Location: provider.php");
@@ -49,6 +56,16 @@ if(isset($_POST['remove'])){
   $delProvider = "DELETE FROM provider WHERE provider_id='$provider_id'";
   $resDelP     = mysqli_query($con, $delProvider);
   unlink($logo);
+
+  $selectImage = "SELECT * FROM company_image WHERE provider_id='$provider_id'";
+  $resultImage = mysqli_query($con, $selectImage);
+  while($img   = mysqli_fetch_assoc($resultImage)){
+    $delImg = $img['url'];  
+    unlink($delImg);
+    $delImage    = "DELETE FROM company_image WHERE provider_id='$provider_id'";
+    $resDelImg   = mysqli_query($con, $delImage);
+  };
+
   header("Location: provider.php");
 }
 
@@ -183,6 +200,17 @@ $result_country = mysqli_query($con, $select_country);
                                         <input type="file" class="custom-file-input" id="uploadImg" accept="image/*"
                                             name="logo" required>
                                         <label class="custom-file-label" for="uploadImg">Company Logo</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-image"></i></div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="uploadImgs" accept="image/*"
+                                            name="companyImg[]" multiple>
+                                        <label class="custom-file-label" for="uploadImgs">Company Images (Main building,
+                                            Branches).</label>
                                     </div>
                                 </div>
                             </div>
@@ -352,7 +380,7 @@ $result_country = mysqli_query($con, $select_country);
                                     <td><?php echo $row['provider_email']; ?></td>
                                     <td><?php echo $row['address_line']; ?></td>
                                     <td>
-                                    <?php $city_id =  $row['city_id'];
+                                        <?php $city_id =  $row['city_id'];
                                           $sql = "SELECT city_name FROM city WHERE city_id='$city_id'";
                                           $res = mysqli_query($con, $sql);
                                           while($city = mysqli_fetch_assoc($res)){
@@ -616,14 +644,20 @@ $result_country = mysqli_query($con, $select_country);
                                                                             <div class="input-group-addon"><i
                                                                                     class="fa fa-map-marker"></i></div>
                                                                             <select class="form-control city"
-                                                                                name="city_id" id="editCity<?php echo $i;  ?>" required>
+                                                                                name="city_id"
+                                                                                id="editCity<?php echo $i;  ?>"
+                                                                                required>
                                                                                 <?php
                                                                                 $country_id = $row['country_id'];
                                                                                  $select_city = "SELECT * FROM city WHERE country_id='$country_id'";
                                                                                  $result_city = mysqli_query($con, $select_city);
                                                                                  while($city = mysqli_fetch_assoc($result_city)){ ?>
-                                                                                  <option value="<?php echo $city['city_id']; ?>" <?php if($city['city_id'] == $row['city_id']) echo "selected"; ?>><?php echo $city['city_name']; ?></option>
-                                                                                 <?php } ?>
+                                                                                <option
+                                                                                    value="<?php echo $city['city_id']; ?>"
+                                                                                    <?php if($city['city_id'] == $row['city_id']) echo "selected"; ?>>
+                                                                                    <?php echo $city['city_name']; ?>
+                                                                                </option>
+                                                                                <?php } ?>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -633,7 +667,8 @@ $result_country = mysqli_query($con, $select_country);
                                                                                     class="fa fa-globe"></i></div>
                                                                             <select id="editCountry<?php echo $i; ?>"
                                                                                 class="form-control country"
-                                                                                name="country_id" required data-id="#editCity<?php echo $i;  ?>">
+                                                                                name="country_id" required
+                                                                                data-id="#editCity<?php echo $i;  ?>">
                                                                                 <option value="" selected disabled
                                                                                     hidden>Select Country</option>
                                                                                 <?php
@@ -642,7 +677,8 @@ $result_country = mysqli_query($con, $select_country);
                                                                                  if(mysqli_num_rows($result_country) > 0){
                                                                                 while($country = mysqli_fetch_assoc($result_country)){ ?>
                                                                                 <option
-                                                                                    value="<?php echo $country['country_id']; ?>" <?php if($country['country_id'] == $row['country_id']) echo "selected"; ?>>
+                                                                                    value="<?php echo $country['country_id']; ?>"
+                                                                                    <?php if($country['country_id'] == $row['country_id']) echo "selected"; ?>>
                                                                                     <?php echo $country['country_name']; ?>
                                                                                 </option>
                                                                                 <?php  }

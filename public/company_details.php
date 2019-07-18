@@ -8,6 +8,9 @@ $provider_id = $_GET['provider_id'];
 $retrieveProvider = "SELECT * FROM provider WHERE provider_id='$provider_id'";
 $resultProvider   = mysqli_query($con, $retrieveProvider);
 
+
+$selectImage = "SELECT * FROM company_image WHERE provider_id='$provider_id'";
+$resultImage = mysqli_query($con, $selectImage);
  ?>
 <?php include 'includes/header.php'; ?>
 <!-- Product Area Start Here -->
@@ -43,12 +46,26 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
                     <div class="gradient-padding reduce-padding">
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <div class="col-12 d-flex align-items-center justify-content-center"
-                                    style="height:200px">
-                                    <img class="rounded mh-100" src="../admin/<?php echo $row['logo']; ?>" alt="">
+                                <div class="col-12 d-flex align-items-center justify-content-center h-100">
+                                    <?php if(mysqli_num_rows($resultImage) > 0){ ?>
+                                    <!-- Start Display Image using owl carousel -->
+                                    <div class="owl-carousel owl-theme">
+                                        <?php 
+                                            
+
+                                            while($img = mysqli_fetch_assoc($resultImage)){?>
+                                                <div class="imgItem" style="max-height:300px">
+                                                    <img class="h-100 w-100 cover-imge" src="../admin/<?php echo $img['url']; ?>" alt="">
+                                                </div>
+                                            <?php } ?>
+                                    </div>
+                                    <!-- End Display Image using owl carousel -->
+                                            <?php }else{ ?>
+                                                <img class="mh-100" src="../admin/<?php echo $row['logo']; ?>" alt="">
+                                            <?php }?>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 mt-4 mt-md-0">
                                 <div class="h3 py-2">
                                     Company: <?php echo $row['company_name']; ?>
                                 </div>
@@ -63,18 +80,18 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
                                 </div>
                                 <div class="row">
                                     <div class=" py-2 h6 col-12 col-xl-6">
-                                        <i class="fa fa-phone pr-2"></i> Phone Number:
+                                        <i class="fa fa-phone pr-2 color-theme"></i> Phone Number:
                                         <?php echo $row['phone_number'] ?>
                                     </div>
                                     <div class="py-2 h6 col-12 col-xl-6">
-                                        <i class="fa fa-envelope pr-2"></i> Email: <?php echo $row['provider_email'] ?>
+                                        <i class="fa fa-envelope pr-2 color-theme"></i> Email: <?php echo $row['provider_email'] ?>
                                     </div>
                                 </div>
 
 
 
                                 <div class="py-2 h6">
-                                    <i class="fa fa-map-marker pr-2"></i> Address: <?php echo $row['address_line'].', '; 
+                                    <i class="fa fa-map-marker pr-2 color-theme"></i> Address: <?php echo $row['address_line'].', '; 
                                           $country_id     = $row['country_id'];
                                           $city_id       = $row['city_id'];
                                           $selectAddress = "SELECT country_name, city_name FROM country, city WHERE city.city_id='$city_id' AND country.country_id='$country_id'";
@@ -85,7 +102,7 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
                                          ?>
                                 </div>
                                 <div class="py-2 h6">
-                                    <i class="fa fa-hashtag pr-2"></i> Postal Code: <?php echo $row['postal_code']; ?>
+                                    <i class="fa fa-hashtag pr-2 color-theme"></i> Postal Code: <?php echo $row['postal_code']; ?>
                                 </div>
 
 
@@ -107,6 +124,21 @@ $resultProvider   = mysqli_query($con, $retrieveProvider);
 </section>
 <!-- Product Area End Here -->
 <?php include 'includes/footer.php'; ?>
+<script>
+$('.owl-carousel').owlCarousel({
+    loop: true,
+    margin: 10,
+    nav: true,
+    autoplay: true,
+    autoplayTimeout: 2000,
+    autoplayHoverPause: true,
+    responsive: {
+        0: {
+            items: 1
+        }
+    }
+})
+</script>
 </body>
 
 
