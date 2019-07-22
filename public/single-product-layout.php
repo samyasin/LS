@@ -87,8 +87,9 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                                         </span>
                                         <?php } ?>
 
-                                        <div role="tabpanel" class="h-100 text-center d-flex align-items-center justify-content-center" id="related"
-                                            style="height:500px !important">
+                                        <div role="tabpanel"
+                                            class="h-100 text-center d-flex align-items-center justify-content-center"
+                                            id="related" style="height:500px !important">
                                             <img id="displayImg" alt="single" src="" class="img-fluid mh-100">
                                         </div>
                                     </div>
@@ -99,7 +100,8 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                                             $retImage    = "SELECT * FROM product_image WHERE product_id='$prodect_id'";
                                             $resImage    = mysqli_query($con, $retImage);
                                             while($image = mysqli_fetch_assoc($resImage)){ ?>
-                                        <div class="item text-center d-flex align-items-center justify-content-center" style="width:75px !important; height:75px !important;">
+                                        <div class="item text-center d-flex align-items-center justify-content-center"
+                                            style="width:75px !important; height:75px !important;">
                                             <img class="imgItem" src="../admin/<?php echo $image['url']; ?>" alt=""
                                                 style="cursor:pointer;width:auto">
                                         </div>
@@ -110,7 +112,15 @@ while($ret = mysqli_fetch_assoc($resultProduct)){
                         </div>
                         <div class="section-title-left-dark child-size-xl title-bar item-mb">
                             <h3>Product Details:</h3>
-                            <p><?php echo $row['description']; ?></p>
+                            <p id="description"><?php echo $row['description']; ?></p>
+                        </div>
+                        <div class="section-title-left-dark child-size-xl item-mb">
+                            <?php if($row['video_url'] != ""){ ?>
+                            <iframe src="<?php echo $row['video_url']; ?>"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                            <?php }?>
                         </div>
                         <ul class="item-actions border-top">
                             <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i>Save Ad</a></li>
@@ -357,7 +367,12 @@ $(document).ready(function() {
                 items: 5
             }
         }
-    })
+    });
+    $('iframe').height($('iframe').width() / 2 + 18);
+    $(window).resize(function(){
+        $('iframe').height($('iframe').width() / 2 + 18);
+    });
+    $('#description a').attr('target','_blank');
 });
 </script>
 </body>

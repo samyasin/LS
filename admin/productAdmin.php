@@ -16,8 +16,12 @@ if(isset($_POST['add'])){
   $brand       = $_POST['brand'];
   $color       = $_POST['color'];
   $warranty    = $_POST['warranty'];
+  $video_url   = $_POST['video'];
+  $pos         = strpos($video_url,'v=') + 2;
+  $video_v     = substr($video_url, $pos);
+  $video_embed = "https://www.youtube.com/embed/".$video_v;
 
-  $sql        = "INSERT INTO product(title,price,special_price,brand,color,warranty,category_id,provider_id,description,featured) VALUES ('$title','$price','$specialP','$brand','$color','$warranty','$category','$provider_id','$description','$featured')";
+  $sql        = "INSERT INTO product(title,price,special_price,brand,color,warranty,category_id,provider_id,description,featured,video_url) VALUES ('$title', '$price', '$specialP', '$brand', '$color', '$warranty', '$category', '$provider_id', '$description', '$featured', '$video_embed')";
   if(mysqli_query($con,$sql)){
 
     $last_id = mysqli_insert_id($con);
@@ -62,121 +66,139 @@ $resultCategory = mysqli_query($con,$sqlCategory);
  ?>
 
 
-  <!-- Content -->
-  <div class="content">
+<!-- Content -->
+<div class="content">
     <!-- Animated -->
     <div class="animated fadeIn">
-      <?php if($_SESSION['type'] != 'admin'){ ?>
+        <?php if($_SESSION['type'] != 'admin'){ ?>
         <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <strong class="card-title">Add Product</strong>
-              </div>
-              <div class="card-body card-block position-relative">
-                <form id="add_product" class="" action="productAdmin.php" method="post" enctype="multipart/form-data">
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-th-list"></i></div>
-                          <select class="form-control" name="category" required>
-                            <?php if(mysqli_num_rows($resultCategory) > 0){
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Add Product</strong>
+                    </div>
+                    <div class="card-body card-block position-relative">
+                        <form id="add_product" class="" action="productAdmin.php" method="post"
+                            enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-th-list"></i></div>
+                                    <select class="form-control" name="category" required>
+                                        <?php if(mysqli_num_rows($resultCategory) > 0){
                               while($row = mysqli_fetch_assoc($resultCategory)){
                                 ?>
-                                <option value="<?php echo $row['category_id']; ?>"><?php echo $row['name_en']; ?></option>
-                                <?php
+                                        <option value="<?php echo $row['category_id']; ?>">
+                                            <?php echo $row['name_en']; ?></option>
+                                        <?php
                               }
                             } ?>
-                          </select>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-pencil"></i></div>
-                          <input type="text" id="title" name="title" placeholder="Title" class="form-control" required autocomplete="off">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-dollar"></i></div>
-                          <input type="text" id="price" name="price" placeholder="Price" class="form-control" required autocomplete="off">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-dollar"></i></div>
-                          <input type="text" id="specialPrice" name="specialPrice" placeholder="Special Price" class="form-control" autocomplete="off">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-star"></i></div>
-                          <select class="form-control" name="featured" required>
-                            <option value="0" selected>Normal</option>
-                            <option value="1">Featured</option>
-                          </select>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-trademark"></i></div>
-                          <input type="text" id="brand" name="brand" placeholder="Brand" class="form-control" autocomplete="off">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-shield"></i></div>
-                          <input type="text" id="warranty" name="warranty" placeholder="Warranty Period" class="form-control" autocomplete="off">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-tint"></i></div>
-                          <input type="text" id="color" name="color" placeholder="Color" class="form-control" autocomplete="off">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-image"></i></div>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="uploadImg" accept="image/*" name="image[]" multiple required>
-                        <label class="custom-file-label" for="uploadImg">Choose images</label>
-                      </div>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-pencil"></i></div>
+                                    <input type="text" id="title" name="title" placeholder="Title" class="form-control"
+                                        required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-dollar"></i></div>
+                                    <input type="text" id="price" name="price" placeholder="Price" class="form-control"
+                                        required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-dollar"></i></div>
+                                    <input type="text" id="specialPrice" name="specialPrice" placeholder="Special Price"
+                                        class="form-control" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-star"></i></div>
+                                    <select class="form-control" name="featured" required>
+                                        <option value="0" selected>Normal</option>
+                                        <option value="1">Featured</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-trademark"></i></div>
+                                    <input type="text" id="brand" name="brand" placeholder="Brand" class="form-control"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-shield"></i></div>
+                                    <input type="text" id="warranty" name="warranty" placeholder="Warranty Period"
+                                        class="form-control" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-tint"></i></div>
+                                    <input type="text" id="color" name="color" placeholder="Color" class="form-control"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-image"></i></div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="uploadImg" accept="image/*"
+                                            name="image[]" multiple required>
+                                        <label class="custom-file-label" for="uploadImg">Choose images</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-video-camera"></i></div>
+                                    <input type="text" id="video" name="video" placeholder="Video URL"
+                                        class="form-control" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <textarea id="example" name="description" class="form-control" required
+                                        placeholder="Description"></textarea>
+                                </div>
+                                <div class="form-actions form-group"><button type="submit"
+                                        class="btn btn-success btn-sm" name="add" value="add">Submit</button></div>
+                        </form>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <textarea id="example" name="description" class="form-control" required placeholder="Description"></textarea>
-                    </div>
-                <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm" name="add" value="add">Submit</button></div>
-                </form>
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-        </div>
-        <!-- / .end add product -->
-      <?php } ?>
-      <div class="row">
+    </div>
+    <!-- / .end add product -->
+    <?php } ?>
+    <div class="row">
         <div class="col-12">
-          <div class="card w-100">
-            <div class="card-header">
-              <strong class="card-title">Product</strong>
-            </div>
-            <div class="card-body">
-              <table id="displayProduct" class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Featured</th>
-                    <th>Images</th>
-                    <th>Option</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
+            <div class="card w-100">
+                <div class="card-header">
+                    <strong class="card-title">Product</strong>
+                </div>
+                <div class="card-body">
+                    <table id="displayProduct" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Featured</th>
+                                <th>Images</th>
+                                <th>Option</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
                   if($_SESSION['type'] == 'admin'){
                     $retrieveData = "SELECT * FROM product, category  WHERE product.category_id = category.category_id";
                   } else {
@@ -188,80 +210,88 @@ $resultCategory = mysqli_query($con,$sqlCategory);
                     $i=1;
                     while($row = mysqli_fetch_assoc($resultRetrieve)){
                       ?>
-                      <tr>
-                        <td><?php echo $i; ?></td>
-                        <td><?php echo $row['title'];?></td>
-                        <td><?php echo $row['name_en'];?></td>
-                        <td><?php echo $row['price'];?></td>
-                        <td>
-                          <?php
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $row['title'];?></td>
+                                <td><?php echo $row['name_en'];?></td>
+                                <td><?php echo $row['price'];?></td>
+                                <td>
+                                    <?php
                           if($row['featured'] == 0){
                             echo "Normal";
                           } else{
                             echo "Featured";
                           }
                            ?>
-                        </td>
-                        <!-- display image -->
-                        <td>
-                        <?php
+                                </td>
+                                <!-- display image -->
+                                <td>
+                                    <?php
                           $product_id = $row['product_id'];
                           $retrieveImage = "SELECT * FROM product_image WHERE product_id='$product_id'";
                           $resultImage = mysqli_query($con,$retrieveImage);
                           if(mysqli_num_rows($resultImage) > 0){
                             while ($imageUrl = mysqli_fetch_assoc($resultImage)) {
                               ?>
-                              <img src="<?php echo $imageUrl['url']; ?>" alt="" width="50" height="50" class="my-1">
-                              <?php
+                                    <img src="<?php echo $imageUrl['url']; ?>" alt="" width="50" height="50"
+                                        class="my-1">
+                                    <?php
                             }
                           }
                          ?>
-                         </td>
-                         <!-- end display image -->
-                        <td>
-                          <div class="row">
-                            <div class="col-12">
-                              <a href="previewProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-info w-100' target="_blank">Preview</a>
-                            </div>
-                            <div class="col-12">
-                              <a href="editProduct.php?product_id=<?php echo $row['product_id'];?>" class='btn btn-sm btn-primary my-2 w-100'>Edit</a>
-                            </div>
-                            <div class="col-12">
-                              <form id='option<?php echo $i;?>'action = 'productAdmin.php' method='POST' class='d-inline'>
-                              <input type='hidden' name='id' value='<?php echo $row['product_id'];?>'>
-                                <button class='btn btn-sm btn-danger w-100' type='submit' name='remove' vlaue='remove'>Remove</button>
-                              </form>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <?php
+                                </td>
+                                <!-- end display image -->
+                                <td>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a href="../public/single-product-layout.php?product_id=<?php echo $row['product_id']; ?>"
+                                                class='btn btn-sm btn-info w-100' target="_blank">Preview</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <a href="editProduct.php?product_id=<?php echo $row['product_id'];?>"
+                                                class='btn btn-sm btn-primary my-2 w-100'>Edit</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <form id='option<?php echo $i;?>' action='productAdmin.php' method='POST'
+                                                class='d-inline'>
+                                                <input type='hidden' name='id' value='<?php echo $row['product_id'];?>'>
+                                                <button class='btn btn-sm btn-danger w-100' type='submit' name='remove'
+                                                    vlaue='remove'>Remove</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php
                       $i++;
                     }
                   }
                    ?>
-                </tbody>
-              </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-    <!-- / .Animated -->
-  </div>
-  <!-- /.content -->
+</div>
+<!-- / .Animated -->
+</div>
+<!-- /.content -->
 
 <?php include 'includes/footer.php'; ?>
 
 <script type="text/javascript">
 var editor = new FroalaEditor('#example', {
-  toolbarButtons: ['bold', 'italic', 'underline', '|', 'fontFamily', '|', 'fontSize', '|', 'formatOL', 'formatUL', '|', 'align', '|', 'lineHeight', '|', 'undo', 'redo'],
-  heightMin: 150,
-  dragInline: false,
-  toolbarInline: false,
-  placeholderText: 'Description',
-  enter: FroalaEditor.ENTER_BR
+    toolbarButtons: ['bold', 'italic', 'underline', '|', 'fontFamily', '|', 'fontSize', '|', 'formatOL',
+        'formatUL', '|', 'align', '|', 'lineHeight', '|', 'undo', 'redo'
+    ],
+    heightMin: 150,
+    dragInline: false,
+    toolbarInline: false,
+    placeholderText: 'Description',
+    enter: FroalaEditor.ENTER_BR
 });
 </script>
 </body>
+
 </html>

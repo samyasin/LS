@@ -64,12 +64,23 @@ if(isset($_POST['save'])){
   $color        = $_POST['color'];
   $warranty     = $_POST['warranty'];
   $description  = $_POST['description'];
-  $sql          = "UPDATE product SET title='$title', price='$price', special_price='$specialPrice', brand='$brand', color='$color', warranty='$warranty', category_id='$category', description='$description', featured='$featurd' WHERE product_id='$product_id'";
+  $video_url    = $_POST['video'];
+
+  $pos         = strpos($video_url,'v=');
+
+  if(!$pos){
+    $video_embed = $video_url;
+  }else{
+    $pos+=2;
+    $video_v     = substr($video_url, $pos);
+    $video_embed = "https://www.youtube.com/embed/".$video_v;
+  }
+
+  $sql          = "UPDATE product SET title='$title', price='$price', special_price='$specialPrice', brand='$brand', color='$color', warranty='$warranty', category_id='$category', description='$description', featured='$featurd', video_url='$video_embed' WHERE product_id='$product_id'";
   $result = mysqli_query($con, $sql);
   header("Location: productAdmin.php");
 
 }
-
 
 
 $retrieveProduct      = "SELECT * FROM product WHERE product_id='$product_id'";
@@ -247,6 +258,12 @@ $resultProductImage   = mysqli_query($con, $retrieveProductImage);
                   </div>
               </div>
               <div class="form-group">
+                  <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-video-camera"></i></div>
+                      <input type="text" id="video" name="video" placeholder="Video URL" class="form-control" autocomplete="off" value="<?php echo $row['video_url']; ?>">
+                  </div>
+              </div>
+              <div class="form-group">
                 <div class="inerCard card border-secondary">
                   <div class="card-header bg-dark text-light">
                     <div class="row">
@@ -263,7 +280,7 @@ $resultProductImage   = mysqli_query($con, $retrieveProductImage);
                   </div>
                   <div class="card-body">
                     <!-- Start image show -->
-                    <?php while($imageShow = mysqli_fetch_assoc($resultProductImage)) { ?>
+                    <?php $i=0; while($imageShow = mysqli_fetch_assoc($resultProductImage)) { ?>
                       <div class="bg-light rounded my-2 text-secondary p-2">
                         <div class="row">
                           <div class="col-6">
@@ -292,8 +309,8 @@ $resultProductImage   = mysqli_query($con, $retrieveProductImage);
                                             <div class="custom-file">
                                               <input type="hidden" name="image_id" value="<?php echo $imageShow['img_id']; ?>">
                                               <input type="hidden" name="image_url" value="<?php echo $imageShow['url']; ?>">
-                                              <input type="file" class="custom-file-input" name="eImage" id="edit" accept="image/*" value="">
-                                              <label class="custom-file-label" for="edit">Choose image</label>
+                                              <input type="file" class="custom-file-input" name="eImage" id="edit<?php echo $i; ?>" accept="image/*" value="">
+                                              <label class="custom-file-label" for="edit<?php echo $i; ?>">Choose image</label>
                                             </div>
                                           </div>
                                         </div>

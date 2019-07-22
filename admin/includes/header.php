@@ -5,12 +5,18 @@ if(isset($_GET['logout'])){
 if(!isset($_SESSION["id"])){
   header('Location: loginAdmin.php'); exit();
 }
+
+include 'includes/config.php';
+global $con;
  ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,7 +31,8 @@ if(!isset($_SESSION["id"])){
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css">
     <link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -37,119 +44,148 @@ if(!isset($_SESSION["id"])){
     <link href="https://cdn.jsdelivr.net/npm/weathericons@2.1.0/css/weather-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" rel="stylesheet" />
 
-<link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
-<style>
-  .fr-box.fr-basic{
-    width: 100%;
-    margin-bottom: 15px
-  }
-  .fr-quick-insert, #logo { display: none; }
-  #weatherWidget .currentDesc {
-      color: #ffffff!important;
-  }
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.1/css/froala_editor.pkgd.min.css" rel="stylesheet"
+        type="text/css" />
+    <style>
+    .fr-box.fr-basic {
+        width: 100%;
+        margin-bottom: 15px
+    }
+
+    .fr-quick-insert,
+    #logo {
+        display: none;
+    }
+
+    #weatherWidget .currentDesc {
+        color: #ffffff !important;
+    }
+
     .traffic-chart {
         min-height: 335px;
     }
-    #flotPie1  {
+
+    #flotPie1 {
         height: 150px;
     }
+
     #flotPie1 td {
-        padding:3px;
+        padding: 3px;
     }
+
     #flotPie1 table {
-        top: 20px!important;
-        right: -10px!important;
+        top: 20px !important;
+        right: -10px !important;
     }
+
     .chart-container {
         display: table;
-        min-width: 270px ;
+        min-width: 270px;
         text-align: left;
         padding-top: 10px;
         padding-bottom: 10px;
     }
-    #flotLine5  {
-         height: 105px;
+
+    #flotLine5 {
+        height: 105px;
     }
 
     #flotBarChart {
         height: 150px;
     }
-    #cellPaiChart{
+
+    #cellPaiChart {
         height: 160px;
     }
+
     .select2-container--classic .select2-selection--single {
-      background-color: #FFFFFF;
-      border: none;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      -ms-border-radius: 4px;
-      -o-border-radius: 4px;
-      border-radius: 4px;
+        background-color: #FFFFFF;
+        border: none;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+        -o-border-radius: 4px;
+        border-radius: 4px;
     }
+
     .select2-container--classic.select2-container--open .select2-dropdown {
-      border-color: #007bff;
-      z-index: 9999;
+        border-color: #007bff;
+        z-index: 9999;
     }
+
     .select2-container .select2-selection--single {
-      height: 40px;
+        height: 40px;
     }
+
     .select2-container--classic .select2-selection--single {
-      background-color: transparent;
-      background-image: none;
-      -webkit-border-radius: 6px;
-      -moz-border-radius: 6px;
-      -ms-border-radius: 6px;
-      -o-border-radius: 6px;
-      border-radius: 6px;
-      border: 1px solid #c8c8c8;
+        background-color: transparent;
+        background-image: none;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        -ms-border-radius: 6px;
+        -o-border-radius: 6px;
+        border-radius: 6px;
+        border: 1px solid #c8c8c8;
     }
+
     .select2-container--classic .select2-selection--single .select2-selection__rendered {
-      font-size: 16px!important;
-      height: 40px;
-      line-height: 36px;
-      padding-left: 35px;
+        font-size: 16px !important;
+        height: 40px;
+        line-height: 36px;
+        padding-left: 35px;
     }
+
     .select2-container--classic .select2-dropdown {
-      border: 1px solid #c8c8c8;
+        border: 1px solid #c8c8c8;
     }
+
     .select2-container--classic.select2-container--open .select2-selection--single .select2-selection__arrow b {
-      border-color: transparent transparent #007bff transparent;
+        border-color: transparent transparent #007bff transparent;
     }
+
     .select2-container--classic .select2-selection--single .select2-selection__arrow b {
-      border-color: #007bff transparent transparent transparent;
+        border-color: #007bff transparent transparent transparent;
     }
+
     .select2-container--classic .select2-selection--single .select2-selection__arrow {
-      top: 7px;
-      background-color: transparent;
-      background-image: none;
-      border-style: none;
-      right: 5px;
+        top: 7px;
+        background-color: transparent;
+        background-image: none;
+        border-style: none;
+        right: 5px;
     }
+
     .select2-container--classic.select2-container--open .select2-selection--single {
-      border: 1px solid #c8c8c8;
+        border: 1px solid #c8c8c8;
     }
+
     .select2-container--classic .select2-selection--single:focus {
-      border: 1px solid #007bff;
+        border: 1px solid #007bff;
     }
+
     .select2-container--classic .select2-results__option--highlighted[aria-selected] {
-      background-color: #007bff;
-      color: #FFFFFF;
+        background-color: #007bff;
+        color: #FFFFFF;
     }
+
     .custom-select {
-      margin-bottom: 15px;
+        margin-bottom: 15px;
     }
+
     .select2-container--classic.select2-container--open.select2-container--below .select2-selection--single,
     .select2-container--classic.select2-container--open.select2-container--above .select2-selection--single {
-      background-image: none;
+        background-image: none;
     }
+
     .select2-results__options {
-      padding: 0 4px;
+        padding: 0 4px;
     }
+
     .select2-container--classic .select2-selection--single .select2-selection__arrow b,
     .select2-container--classic.select2-container--open .select2-selection--single .select2-selection__arrow b {
-      border-width: 0;
+        border-width: 0;
     }
-</style>
+    </style>
 
 </head>
 
@@ -165,35 +201,40 @@ if(!isset($_SESSION["id"])){
                     </li>
                     <li class="menu-title">Management</li><!-- /.menu-title -->
                     <?php if($_SESSION['type'] == "admin"){ ?>
-                      <li>
+                    <li>
                         <a href="admin.php"><i class="menu-icon fa fa-user"></i>Manage Admin</a>
-                      </li>
+                    </li>
 
-                      <li>
+                    <li>
                         <a href="provider.php"><i class="menu-icon fa fa-id-badge"></i>Manage Provider</a>
-                      </li>
+                    </li>
 
-                      <li>
+                    <li>
                         <a href="customer.php"><i class="menu-icon fa fa-users"></i>Manage Customer</a>
-                      </li>
+                    </li>
 
-                      <li>
+                    <li>
                         <a href="category.php"><i class="menu-icon fa fa-th-list"></i>Manage Category</a>
-                      </li>
+                    </li>
 
-                      <li>
+                    <li>
                         <a href="country.php"><i class="menu-icon fa fa-globe"></i>Manage Countries</a>
-                      </li>
+                    </li>
 
-                  <?php } ?>
+                    <?php } ?>
 
                     <li>
-                      <a href="productAdmin.php"><i class="menu-icon fa fa-product-hunt"></i>Product</a>
+                        <a href="productAdmin.php"><i class="menu-icon fa fa-product-hunt"></i>Product</a>
                     </li>
 
                     <li>
-                      <a href="order.php"><i class="menu-icon fa fa-list-alt"></i>Order</a>
+                        <a href="order.php"><i class="menu-icon fa fa-list-alt"></i>Order</a>
                     </li>
+                    <?php if($_SESSION['type'] != 'admin'){ ?>
+                    <li>
+                        <a href="providerSetting.php?active=1"><i class="menu-icon fa fa-cog"></i>Settings</a>
+                    </li>
+                    <?php } ?>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -213,7 +254,7 @@ if(!isset($_SESSION["id"])){
             <div class="top-right">
                 <div class="header-menu">
                     <div class="header-left">
-                        <button class="search-trigger"><i class="fa fa-search"></i></button>
+                        <!-- <button class="search-trigger"><i class="fa fa-search"></i></button>
                         <div class="form-inline">
                             <form class="search-form">
                                 <input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search">
@@ -284,25 +325,37 @@ if(!isset($_SESSION["id"])){
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="user-area dropdown float-right">
-                        <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="images/admin.jpg" alt="User Avatar">
-                        </a>
+                        <?php if($_SESSION['type'] != 'admin'){ ?>
+                        <div class="user-area dropdown float-right">
+                            <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <?php
+                                  $provider_id = $_SESSION['id'];
+                                  $sql = "SELECT logo FROM provider WHERE provider_id='$provider_id'";
+                                  $res = mysqli_query($con, $sql);
+                                  while($img = mysqli_fetch_assoc($res)){ ?>
+                                    <img style="height:40px;object-fit: cover;" class="user-avatar rounded-circle" src="<?php echo $img['logo']; ?>" alt="User Avatar">
+                                  <?php } ?>
+                                
+                            </a>
 
-                        <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
+                            <div class="user-menu dropdown-menu">
+                                <!-- <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
 
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
+                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a> -->
 
-                            <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
+                                <a class="nav-link" href="providerSetting.php?active=1"><i class="fa fa -cog"></i>Settings</a>
 
-                            <a class="nav-link" href="index.php?logout=1"><i class="fa fa-power -off"></i>Logout</a>
+                                <a class="nav-link" href="index.php?logout=1"><i class="fa fa-power -off"></i>Logout</a>
+                            </div>
                         </div>
-                    </div>
+                        <?php }else{ ?>
+                          <a class="nav-link pb-0" href="index.php?logout=1"><i class="fa fa-power -off"></i>Logout</a>
+                        <?php } ?>
 
+                    </div>
                 </div>
-            </div>
         </header>
         <!-- /#header -->

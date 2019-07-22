@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
                         <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
                         <div class="text-center mt-3 text-muted">
-                          If you Provider <a href="loginProvider.php">Click here</a>
+                          If You Provider <a class="btn btn-link w-auto py-2 px-1" href="loginProvider.php">Click here</a>
                         </div>
                     </form>
                 </div>
