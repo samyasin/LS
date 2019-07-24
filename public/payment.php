@@ -1,7 +1,6 @@
 <?php session_start();
 include 'includes/config.php';
 global $con;
-
 if(isset($_POST['add_payment'])){
     $user_id       = $_SESSION['user_id'];
     $paymentMethod = $_POST['paymentMethod'];
@@ -9,10 +8,11 @@ if(isset($_POST['add_payment'])){
     $address_line  = $_SESSION['address']['address_line'];
     $city          = $_SESSION['address']['city'];
     $country       = $_SESSION['address']['country'];
+    $insert = "";
     if($paymentMethod == "cash"){
-        $insert = "INSERT INTO orders(payment_method,grand_total,order_status,address_line,city,country,user_id) VALUE ('$paymentMethod', '$grand_total', 'pending', '$address_line','$city', '$country', '$user_id')";
+        $insert = "INSERT INTO orders(payment_method,grand_total,order_status,address_line,city_id,country_id,user_id) VALUE ('$paymentMethod', '$grand_total', 'pending', '$address_line','$city', '$country', '$user_id')";
     }else{
-        $insert = "INSERT INTO orders(payment_method,grand_total,order_status,address_line,city,country,user_id) VALUE ('$paymentMethod', '$grand_total', 'approved', '$address_line','$city', '$country', '$user_id')";
+        $insert = "INSERT INTO orders(payment_method,grand_total,order_status,address_line,city_id,country_id,user_id) VALUE ('$paymentMethod', '$grand_total', 'approved', '$address_line','$city', '$country', '$user_id')";
     }
     
     
@@ -22,6 +22,8 @@ if(isset($_POST['add_payment'])){
             $insertDetails = "INSERT INTO order_details(order_id,product_id,quantity) VALUE ('$order_id', '$product_id', '$quantity')";
             $res = mysqli_query($con, $insertDetails);
         }
+    }else{
+      echo "not done";exit;
     }
     header("Location: done.php");
 }

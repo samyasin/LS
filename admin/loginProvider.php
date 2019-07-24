@@ -3,6 +3,10 @@ session_start();
 include 'includes/config.php';
 global $con;
 
+if(isset($_SESSION['id']) && isset($_SESSION['type'])){
+  header('Location: indexProvider.php');
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   if(isset($_POST['email']) && isset($_POST['password'])){
 
@@ -17,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         $_SESSION["id"]   = $id;
         $_SESSION["type"] = "provider";
-        header('Location: index.php');
+        header('Location: indexProvider.php');
       } else {
         $error =  'Email or Password is incorrect';
       }

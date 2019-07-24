@@ -6,17 +6,21 @@
                     <p>Stay in touch with Classified Ads Wordpress Theme and we'll notify you about best ads</p>
                 </div>
                 <div class="input-group subscribe-area container">
-                    <div class="row w-100">
-                        <div class="col-12 col-md-7 col-lg-8 col-xl-9 pr-0">
-                            <input type="text" placeholder="Type your e-mail address" class="form-control w-100">
+
+                    <form class="w-100" method="post">
+                        <div class="row w-100">
+                            <div class="col-12 col-md-7 col-lg-8 col-xl-9 pr-0">
+                                <input type="email" placeholder="Type your e-mail address" class="form-control w-100"
+                                    name="email" required>
+                            </div>
+                            <div class="col-12 col-md-5 col-lg-4 col-xl-3 pr-0">
+                                <span class="input-group-addon d-inline-block w-100">
+                                    <button type="submit" class="cp-default-btn-xl" name="subscribe"
+                                        value="subscribe">Subscribe</button>
+                                </span>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-5 col-lg-4 col-xl-3 pr-0">
-                            <span class="input-group-addon d-inline-block w-100">
-                                <button type="submit" class="cp-default-btn-xl">Subscribe</button>
-                            </span>
-                        </div>
-                    </div>
-                    
+                    </form>
 
                 </div>
             </div>
@@ -32,19 +36,19 @@
                                 <h3 class="title-medium-light title-bar-left size-lg">About us</h3>
                                 <ul class="useful-link">
                                     <li>
-                                        <a href="about.html">About us</a>
+                                        <a href="about.php">About us</a>
                                     </li>
                                     <li>
-                                        <a href="#">Career</a>
+                                        <a href="career.php">Career</a>
                                     </li>
                                     <li>
-                                        <a href="#">Terms &amp; Conditions</a>
+                                        <a href="condition.php">Terms &amp; Conditions</a>
                                     </li>
                                     <li>
-                                        <a href="#">Privacy Policy</a>
+                                        <a href="privacy.php">Privacy Policy</a>
                                     </li>
                                     <li>
-                                        <a href="#">Sitemap</a>
+                                        <a href="sitemap.php">Sitemap</a>
                                     </li>
                                 </ul>
                             </div>
@@ -79,13 +83,13 @@
                                         <a href="#">Live Chat</a>
                                     </li>
                                     <li>
-                                        <a href="faq.html">FAQ</a>
+                                        <a href="faq.php">FAQ</a>
                                     </li>
                                     <li>
                                         <a href="#">Stay safe on classipost</a>
                                     </li>
                                     <li>
-                                        <a href="contact.html">Contact us</a>
+                                        <a href="contact.php">Contact us</a>
                                     </li>
                                 </ul>
                             </div>
@@ -164,63 +168,67 @@
             </div>
         </footer>
         <!-- Footer Area End Here -->
-    </div>
-    <!-- Report Abuse Modal Start-->
-    <div class="modal fade" id="report_abuse" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content report-abuse-area radius-none">
-                <div class="gradient-wrapper">
-                    <div class="gradient-title">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="item-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>There's Something Wrong With This Ads?</h2>
-                    </div>
-                    <div class="gradient-padding reduce-padding">
-                        <form id="report-abuse-form">
-                            <div class="form-group">
-                                <label class="control-label" for="first-name">Your E-mail</label>
-                                <input type="text" id="first-name" class="form-control" placeholder="Type your mail here ...">
-                            </div>
-                            <div class="form-group">
+        </div>
+        <!-- Report Abuse Modal Start-->
+        <div class="modal fade" id="report_abuse" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content report-abuse-area radius-none">
+                    <div class="gradient-wrapper">
+                        <div class="gradient-title">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h2 class="item-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>There's
+                                Something Wrong With This Ads?</h2>
+                        </div>
+                        <div class="gradient-padding reduce-padding">
+                            <form id="report-abuse-form">
                                 <div class="form-group">
-                                    <label class="control-label" for="first-name">Your Reason</label>
-                                    <textarea placeholder="Type your reason..." class="textarea form-control" name="message" id="form-message" rows="7" cols="20" data-error="Message field is required" required></textarea>
-                                    <div class="help-block with-errors"></div>
+                                    <label class="control-label" for="first-name">Your E-mail</label>
+                                    <input type="text" id="first-name" class="form-control"
+                                        placeholder="Type your mail here ...">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="cp-default-btn-sm">Submit Now!</button>
-                            </div>
-                        </form>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="control-label" for="first-name">Your Reason</label>
+                                        <textarea placeholder="Type your reason..." class="textarea form-control"
+                                            name="message" id="form-message" rows="7" cols="20"
+                                            data-error="Message field is required" required></textarea>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="cp-default-btn-sm">Submit Now!</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Report Abuse Modal End-->
-    <!-- jquery-->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Owl Cauosel JS -->
-    <script src="vendor/OwlCarousel/owl.carousel.min.js"></script>
-    <!-- Meanmenu Js -->
-    <script src="js/jquery.meanmenu.min.js"></script>
-    <!-- Srollup js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- jquery.counterup js -->
-    <script src="js/jquery.counterup.min.js"></script>
-    <script src="js/waypoints.min.js"></script>
-    <!-- Select2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Isotope js -->
-    <script src="js/isotope.pkgd.min.js"></script>
-    <!-- Magnific Popup -->
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <!-- jQuery Zoom -->
-    <script src="js/jquery.zoom.min.js"></script>
-    <!-- Google Map js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtmXSwv4YmAKtcZyyad9W7D4AC08z0Rb4"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
+        <!-- Report Abuse Modal End-->
+        <!-- jquery-->
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <!-- Popper js -->
+        <script src="js/popper.js"></script>
+        <!-- Bootstrap js -->
+        <script src="js/bootstrap.min.js"></script>
+        <!-- Owl Cauosel JS -->
+        <script src="vendor/OwlCarousel/owl.carousel.min.js"></script>
+        <!-- Meanmenu Js -->
+        <script src="js/jquery.meanmenu.min.js"></script>
+        <!-- Srollup js -->
+        <script src="js/jquery.scrollUp.min.js"></script>
+        <!-- jquery.counterup js -->
+        <script src="js/jquery.counterup.min.js"></script>
+        <script src="js/waypoints.min.js"></script>
+        <!-- Select2 Js -->
+        <script src="js/select2.min.js"></script>
+        <!-- Isotope js -->
+        <script src="js/isotope.pkgd.min.js"></script>
+        <!-- Magnific Popup -->
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <!-- jQuery Zoom -->
+        <script src="js/jquery.zoom.min.js"></script>
+        <!-- Google Map js -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtmXSwv4YmAKtcZyyad9W7D4AC08z0Rb4"></script>
+        <!-- Custom Js -->
+        <script src="js/main.js"></script>

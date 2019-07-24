@@ -2,13 +2,11 @@
 include 'includes/config.php';
 global $con;
 
-if($_SESSION['type'] != 'admin'){
-    header('Location: loginProvider.php');
-}
-
 $now = new \DateTime('now');
 $month = $now->format('m');
 $year  = $now->format('Y');
+
+
 
 if(isset($_POST['ajax']) && isset($_POST['period'])){
     switch ($_POST['period']) {
@@ -130,7 +128,10 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
     exit;
 }
 
-$sqlSales = "SELECT SUM(grand_total) total_sum, COUNT(order_id) count_num FROM orders WHERE order_status='completed'";
+include('includes/header.php');
+$global_provider_id = $_SESSION['id'];
+
+$sqlSales = "SELECT SUM(orders.grand_total) total_sum, COUNT(orders.order_id) count_num FROM orders, order_details, product, provider WHERE orders.order_id = order_details.order_id AND order_details.product_id = product.product_id AND product.provider_id = provider.provider_id AND provider.provider_id = '$global_provider_id' AND orders.order_status='completed'";
 $resSales = mysqli_query($con, $sqlSales);
 while($order = mysqli_fetch_assoc($resSales)){
     $revenue = $order['total_sum'];
@@ -149,7 +150,7 @@ while($user = mysqli_fetch_assoc($resUser)){
     $clients = $user['count_num'];
 }
 
-$sqlProvider = "SELECT COUNT(provider_id) count_num FROM provider";
+$sqlProvider = "SELECT COUNT(product_id) count_num FROM product WHERE provider_id='$global_provider_id'";
 $resProvider = mysqli_query($con, $sqlProvider);
 while($provider = mysqli_fetch_assoc($resProvider)){
     $provider_num = $provider['count_num'];
@@ -199,7 +200,6 @@ while($row = mysqli_fetch_assoc($resChart)){
 
 
 ?>
-<?php include('includes/header.php'); ?>
 
 
 
@@ -250,12 +250,12 @@ while($row = mysqli_fetch_assoc($resChart)){
                     <div class="card-body">
                         <div class="stat-widget-five">
                             <div class="stat-icon dib flat-color-3">
-                                <i class="pe-7s-user"></i>
+                                <i class="fa fa-product-hunt"></i>
                             </div>
                             <div class="stat-content">
                                 <div class="text-left dib">
                                     <div class="stat-text"><span class="count"><?php echo $provider_num; ?></span></div>
-                                    <div class="stat-heading">Providers</div>
+                                    <div class="stat-heading">Products</div>
                                 </div>
                             </div>
                         </div>

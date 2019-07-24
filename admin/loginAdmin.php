@@ -3,6 +3,10 @@ session_start();
 include 'includes/config.php';
 global $con;
 
+if(isset($_SESSION['id']) && isset($_SESSION['type'])){
+  header('Location: index.php');
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   if(isset($_POST['email']) && isset($_POST['password'])){
 

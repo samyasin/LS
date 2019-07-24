@@ -6,22 +6,22 @@ global $con;
 
 
 
-$category_id       = $_GET['category_id'];
+$country_id       = $_GET['country_id'];
 
-$retrieveProvider  = "SELECT * FROM provider, category WHERE category.category_id='$category_id' AND provider.category_id = category.category_id";
+$retrieveProvider  = "SELECT * FROM provider, category WHERE provider.category_id = category.category_id AND provider.country_id = '$country_id'";
 $resultProvider    = mysqli_query($con, $retrieveProvider);
 
-$retrieveCategory  = "SELECT * FROM category";
+$retrieveCategory  = "SELECT * FROM country";
 $resultCategory    = mysqli_query($con, $retrieveCategory);
 
-$retrieveLocation1 = "SELECT * FROM country ORDER BY country_name";
+$retrieveLocation1 = "SELECT * FROM city WHERE country_id = '$country_id' ORDER BY city_name";
 $resultLocation1   = mysqli_query($con, $retrieveLocation1);
 
-$retrieveOneCategory  = "SELECT * FROM category WHERE category_id='$category_id'";
-$resultOneCategory    = mysqli_query($con, $retrieveOneCategory);
+$retrieveOneCountry  = "SELECT * FROM country WHERE country_id='$country_id'";
+$resultOneCountry    = mysqli_query($con, $retrieveOneCountry);
 $category_name_en     = "";
-while($oneCat = mysqli_fetch_assoc($resultOneCategory)){
-  $category_name_en   = $oneCat['name_en'];
+while($oneCat = mysqli_fetch_assoc($resultOneCountry)){
+  $category_name_en   = $oneCat['country_name'];
 }
 
 ?>
@@ -148,16 +148,17 @@ while($oneCat = mysqli_fetch_assoc($resultOneCategory)){
                         <div class="sidebar-item-box">
                             <div class="gradient-wrapper">
                                 <div class="gradient-title">
-                                    <h3>All Categories</h3>
+                                    <h3>All Countries</h3>
                                 </div>
                                 <ul class="sidebar-category-list">
                                   <?php while($row = mysqli_fetch_assoc($resultCategory)){ ?>
                                     <li>
-                                        <a href="provider-grid-layout.php?category_id=<?php echo $row['category_id']; ?>"><img src="../admin/<?php echo $row['url']; ?>" alt="category" class="img-fluid" height="30" width="30"><?php
-                                        echo $row['name_en']; ?>
+                                        <a href="provider-grid-layout-country.php?country_id=<?php echo $row['country_id']; ?>">
                                         <?php
-                                          $provCategory_id   = $row['category_id'];
-                                         $numProviderCat     = "SELECT COUNT(*) numOfProv FROM provider WHERE category_id='$provCategory_id'";
+                                        echo $row['country_name']; ?>
+                                        <?php
+                                          $provCategory_id   = $row['country_id'];
+                                         $numProviderCat     = "SELECT COUNT(*) numOfProv FROM provider WHERE country_id='$provCategory_id'";
                                          $resNum             = mysqli_query($con, $numProviderCat);
                                          while($num = mysqli_fetch_assoc($resNum)){?> <span>(<?php echo $num['numOfProv']; ?>)</span></a> <?php } ?>
                                     </li>
@@ -168,11 +169,11 @@ while($oneCat = mysqli_fetch_assoc($resultOneCategory)){
                         <div class="sidebar-item-box">
                             <div class="gradient-wrapper">
                                 <div class="gradient-title">
-                                    <h3>Country</h3>
+                                    <h3>City</h3>
                                 </div>
                                 <ul class="sidebar-loacation-list">
                                   <?php while($row = mysqli_fetch_assoc($resultLocation1)){ ?>
-                                    <li><a href="provider-grid-layout-country.php?country_id=<?php echo $row['country_id']; ?>"><?php echo $row['country_name']; ?></a></li>
+                                    <li><a href="provider-grid-layout-city.php?city_id=<?php echo $row['city_id']; ?>"><?php echo $row['city_name']; ?></a></li>
                                   <?php } ?>
                                 </ul>
                             </div>

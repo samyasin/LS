@@ -2,7 +2,16 @@
 include 'includes/config.php';
 global $con;
 
-
+if(isset($_POST['subscribe'])){
+    $email     = $_POST['email'];
+    $sqlSelect = "SELECT * FROM subscribe WHERE subscribe_email='$email'";
+    $resSelect = mysqli_query($con, $sqlSelect);
+    if(mysqli_num_rows($resSelect) == 0){
+        $sqlInsert = "INSERT INTO subscribe(subscribe_email) VALUE ('$email')";
+        $resInsert = mysqli_query($con, $sqlInsert);
+    }
+    header("Refresh:0");exit;
+}
 
 $retrieveCategorySearch = "SELECT * FROM category";
 $resultCategorySearch   = mysqli_query($con, $retrieveCategorySearch);
@@ -18,7 +27,9 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
 
 
 <!-- Mirrored from radiustheme.com/demo/html/classipost/classipost/category-grid-layout1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 23 Jun 2019 10:29:22 GMT -->
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -55,8 +66,8 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
     <div id="preloader"></div>
     <!-- Preloader End Here -->
     <div id="wrapper">
-       <!-- Header Area Start Here -->
-       <header>
+        <!-- Header Area Start Here -->
+        <header>
             <div id="header-three" class="header-style1 header-fixed">
                 <div class="header-top-bar top-bar-style1">
                     <div class="container">
@@ -64,36 +75,39 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                             <div class="col-lg-6 col-md-6 col-sm-6 col-8">
                                 <div class="top-bar-left h-100">
                                     <div class="d-flex d-lg-none align-items-end h-100">
-                                        <a href="shopping-cart.php" class="h5 text-white mb-0"><i class="fa fa-shopping-cart"></i><span style="font-weight:500;" class="badge badge-pill badge-light ml-2">
-                                        <?php if(isset($_SESSION['carts'])){
+                                        <a href="shopping-cart.php" class="h5 text-white mb-0"><i
+                                                class="fa fa-shopping-cart"></i><span style="font-weight:500;"
+                                                class="badge badge-pill badge-light ml-2">
+                                                <?php if(isset($_SESSION['carts'])){
                                             echo is_array($_SESSION['carts']) ? count($_SESSION['carts']) : 0;
                                         }else {
                                             echo "0";
                                         } ?>
-                                        </span></a>
+                                            </span></a>
                                     </div>
                                     <p class="d-none d-lg-block">
-                                        <i class="fa fa-life-ring" aria-hidden="true"></i>Have any questions? +088 199990 or mail@classipost
+                                        <i class="fa fa-life-ring" aria-hidden="true"></i>Have any questions? +088
+                                        199990 or mail@classipost
                                     </p>
                                 </div>
                             </div>
                             <?php if(!isset($_SESSION['user_id'])){ ?>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-4">
-                                    <div class="top-bar-right">
-                                        <ul>
-                                            <li>
-                                                <a href="login.php" class="login-btn">
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>Login
-                                                </a>
-                                            </li>
-                                            <li class="hidden-mb">
-                                                <a class="login-btn" href="singup.php">
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>Signup
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-4">
+                                <div class="top-bar-right">
+                                    <ul>
+                                        <li>
+                                            <a href="login.php" class="login-btn">
+                                                <i class="fa fa-lock" aria-hidden="true"></i>Login
+                                            </a>
+                                        </li>
+                                        <li class="hidden-mb">
+                                            <a class="login-btn" href="singup.php">
+                                                <i class="fa fa-lock" aria-hidden="true"></i>Signup
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
+                            </div>
                             <?php }?>
                         </div>
                     </div>
@@ -121,13 +135,15 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
-                                <a href="shopping-cart.php" class="h4 text-white"><i class="fa fa-shopping-cart"></i><span style="font-weight:500;" class="badge badge-pill badge-light ml-2">
-                                  <?php if(isset($_SESSION['carts'])){
+                                <a href="shopping-cart.php" class="h4 text-white"><i
+                                        class="fa fa-shopping-cart"></i><span style="font-weight:500;"
+                                        class="badge badge-pill badge-light ml-2">
+                                        <?php if(isset($_SESSION['carts'])){
                                     echo is_array($_SESSION['carts']) ? count($_SESSION['carts']) : 0;
                                   }else {
                                     echo "0";
                                   } ?>
-                                </span></a>
+                                    </span></a>
                             </div>
                         </div>
                     </div>
@@ -161,96 +177,101 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
 
 
         <?php if(basename($_SERVER['PHP_SELF']) == "index.php"){ ?>
-          <!-- Map Area Start Here -->
-          <section class="map-layout1 fixed-menu-mt full-width-container">
-              <div class="container-fluid">
-                  <div class="google-map-area">
-                      <div id="googleMap" style="width:100%; height:200px;"></div>
-                  </div>
-              </div>
-          </section>
-          <!-- Map Area End Here -->
-          <!-- Search Area Start Here -->
-          <section class="search-layout2 bg-accent">
-              <div class="search-layout2-holder">
-                  <div class="container">
-                      <form id="cp-search-form" class="bg-body search-layout2-inner">
-                          <div class="row">
-                              <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                                  <div class="form-group search-input-area input-icon-location">
-                                      <select id="location" class="select2">
-                                          <option value="0">Select Location</option>
-                                          <?php while($row = mysqli_fetch_assoc($resultLocation)){ ?>
-                                            <option value="<?php echo $row['country_id']; ?>"><?php echo $row['country_name']; ?></option>
-                                          <?php } ?>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                                  <div class="form-group search-input-area input-icon-category">
-                                      <select id="categories" class="select2">
-                                          <option value="0">Select Categories</option>
-                                          <?php while($row = mysqli_fetch_assoc($resultCategorySearch)){ ?>
-                                            <option value="<?php echo $row['category_id']; ?>"><?php echo $row['name_en']; ?></option>
-                                          <?php } ?>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                                  <div class="form-group search-input-area input-icon-keywords">
-                                      <input placeholder="Enter Keywords here ..." value="" name="key-word" type="text">
-                                  </div>
-                              </div>
-                              <div class="col-lg-3 col-md-6 col-sm-6 col-12 text-right text-left-mb">
-                                  <a href="#" class="cp-search-btn"><i class="fa fa-search" aria-hidden="true"></i>Search</a>
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          </section>
-          <!-- Search Area End Here -->
-          <?php
+        <!-- Map Area Start Here -->
+        <section class="map-layout1 fixed-menu-mt full-width-container">
+            <div class="container-fluid">
+                <div class="google-map-area">
+                    <div id="googleMap" style="width:100%; height:200px;"></div>
+                </div>
+            </div>
+        </section>
+        <!-- Map Area End Here -->
+        <!-- Search Area Start Here -->
+        <section class="search-layout2 bg-accent">
+            <div class="search-layout2-holder">
+                <div class="container">
+                    <form id="cp-search-form" class="bg-body search-layout2-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="form-group search-input-area input-icon-location">
+                                    <select id="location" class="select2">
+                                        <option value="0">Select Location</option>
+                                        <?php while($row = mysqli_fetch_assoc($resultLocation)){ ?>
+                                        <option value="<?php echo $row['country_id']; ?>">
+                                            <?php echo $row['country_name']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="form-group search-input-area input-icon-category">
+                                    <select id="categories" class="select2">
+                                        <option value="0">Select Categories</option>
+                                        <?php while($row = mysqli_fetch_assoc($resultCategorySearch)){ ?>
+                                        <option value="<?php echo $row['category_id']; ?>">
+                                            <?php echo $row['name_en']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="form-group search-input-area input-icon-keywords">
+                                    <input placeholder="Enter Keywords here ..." value="" name="key-word" type="text">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 text-right text-left-mb">
+                                <a href="#" class="cp-search-btn"><i class="fa fa-search"
+                                        aria-hidden="true"></i>Search</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- Search Area End Here -->
+        <?php
 
         } else { ?>
-          <!-- Search Area Start Here -->
-          <section class="search-layout1 bg-body full-width-border-bottom fixed-menu-mt">
-              <div class="container">
-                  <form id="cp-search-form">
-                      <div class="row">
-                          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                              <div class="form-group search-input-area input-icon-location">
-                                  <select id="location" class="select2">
-                                      <option class="first" value="0">Select Location</option>
-                                      <?php while($row = mysqli_fetch_assoc($resultLocation)){ ?>
-                                        <option value="<?php echo $row['country_id']; ?>"><?php echo $row['country_name']; ?></option>
-                                      <?php } ?>
-                                  </select>
-                              </div>
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                              <div class="form-group search-input-area input-icon-category">
-                                  <select id="categories" class="select2">
-                                      <option class="first" value="0">Select Categories</option>
-                                      <?php while($row = mysqli_fetch_assoc($resultCategorySearch)){ ?>
-                                        <option value="<?php echo $row['category_id'] ?>"><?php echo $row['name_en']; ?></option>
-                                      <?php } ?>
-                                  </select>
-                              </div>
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                              <div class="form-group search-input-area input-icon-keywords">
-                                  <input placeholder="Enter Keywords here ..." value="" name="key-word" type="text">
-                              </div>
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 col-12 text-right text-left-mb">
-                              <a href="#" class="cp-search-btn">
-                                  <i class="fa fa-search" aria-hidden="true"></i>Search
-                              </a>
-                          </div>
-                      </div>
-                  </form>
-              </div>
-          </section>
-          <!-- Search Area End Here -->
-      <?php } ?>
+        <!-- Search Area Start Here -->
+        <section class="search-layout1 bg-body full-width-border-bottom fixed-menu-mt">
+            <div class="container">
+                <form id="cp-search-form">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="form-group search-input-area input-icon-location">
+                                <select id="location" class="select2">
+                                    <option class="first" value="0">Select Location</option>
+                                    <?php while($row = mysqli_fetch_assoc($resultLocation)){ ?>
+                                    <option value="<?php echo $row['country_id']; ?>">
+                                        <?php echo $row['country_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="form-group search-input-area input-icon-category">
+                                <select id="categories" class="select2">
+                                    <option class="first" value="0">Select Categories</option>
+                                    <?php while($row = mysqli_fetch_assoc($resultCategorySearch)){ ?>
+                                    <option value="<?php echo $row['category_id'] ?>"><?php echo $row['name_en']; ?>
+                                    </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="form-group search-input-area input-icon-keywords">
+                                <input placeholder="Enter Keywords here ..." value="" name="key-word" type="text">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12 text-right text-left-mb">
+                            <a href="#" class="cp-search-btn">
+                                <i class="fa fa-search" aria-hidden="true"></i>Search
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- Search Area End Here -->
+        <?php } ?>

@@ -2565,9 +2565,19 @@ footer.site-footer {
   text-transform: uppercase;
   padding: 10px;
   font-weight: normal;
+  cursor: pointer;
 }
 .pending{
-  background-color: #fb9678;
+  background-color: #fa8567;
+}
+.approved{
+  background-color: #03a9f4
+}
+.completed{
+  background-color: #00c292;
+}
+.canceled{
+  background-color: #d3072f;
 }
 /**********************************************************************************/
 /**

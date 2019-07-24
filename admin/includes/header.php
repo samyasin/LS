@@ -197,7 +197,7 @@ global $con;
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="">
-                        <a href="index.php"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                        <a href="<?php if($_SESSION['type'] == 'admin'){echo 'index.php';}else{echo 'indexProvider.php';}  ?>"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                     </li>
                     <li class="menu-title">Management</li><!-- /.menu-title -->
                     <?php if($_SESSION['type'] == "admin"){ ?>
@@ -219,6 +219,10 @@ global $con;
 
                     <li>
                         <a href="country.php"><i class="menu-icon fa fa-globe"></i>Manage Countries</a>
+                    </li>
+
+                    <li>
+                        <a href="subscribers.php"><i class="menu-icon fa fa-bell"></i>Manage subscribers</a>
                     </li>
 
                     <?php } ?>
@@ -251,9 +255,9 @@ global $con;
                     <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
                 </div>
             </div>
-            <div class="top-right">
-                <div class="header-menu">
-                    <div class="header-left">
+            <div class="top-right h-100">
+                <div class="header-menu h-100">
+                    <div class="header-left d-flex align-items-center">
                         <!-- <button class="search-trigger"><i class="fa fa-search"></i></button>
                         <div class="form-inline">
                             <form class="search-form">
@@ -352,7 +356,7 @@ global $con;
                             </div>
                         </div>
                         <?php }else{ ?>
-                          <a class="nav-link pb-0" href="index.php?logout=1"><i class="fa fa-power -off"></i>Logout</a>
+                          <a class="nav-link p-0" href="index.php?logout=1"><i class="fa fa-power -off"></i>Logout</a>
                         <?php } ?>
 
                     </div>
