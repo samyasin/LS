@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2019 at 01:57 PM
+-- Generation Time: Jul 28, 2019 at 02:14 PM
 -- Server version: 10.1.33-MariaDB
 -- PHP Version: 7.2.6
 
@@ -176,14 +176,12 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `payment_method`, `order_date`, `grand_total`, `order_status`, `address_line`, `city_id`, `country_id`, `user_id`) VALUES
-(000012, 'cash', '2019-07-14 23:34:28', 5002, 'pending', 'yajouz st.', 'Zarqa', 'jordan', '4'),
-(000013, 'cash', '2019-07-14 23:35:42', 8103, 'pending', 'yajouz st.', 'Zarqa', 'sdfg', '4'),
-(000014, 'paypal', '2019-07-15 00:34:18', 8103, 'approved', 'sfg', 'daf', 'asf', '4'),
-(000015, 'cash', '2019-07-15 00:35:31', 9600, 'pending', 'sfg', 'daf', 'jordan', '4'),
-(000016, 'cash', '2019-07-15 11:34:57', 5002, 'pending', 'yajouz st.', 'Zarqa', 'jordan', '4'),
-(000017, 'cash', '2019-07-15 16:55:32', 5002, 'pending', 'aldnfjadf', '12', '5', '4'),
-(000018, 'cash', '2019-07-18 14:19:06', 600, 'pending', 'ertyui', '13', '5', '4'),
-(000019, 'cash', '2019-07-18 15:40:50', 5002, 'pending', 'adjbjdb', '5', '3', '4');
+(000017, 'cash', '2020-07-15 16:55:32', 5002, 'completed', 'aldnfjadf', '12', '5', '4'),
+(000018, 'cash', '2019-07-18 14:19:06', 600, 'completed', 'ertyui', '13', '5', '4'),
+(000019, 'cash', '2019-08-18 15:40:50', 5002, 'completed', 'adjbjdb', '5', '3', '4'),
+(000020, 'paypal', '2019-08-24 11:18:02', 30020, 'completed', 'adjbjdb', '13', '5', '4'),
+(000021, 'paypal', '2019-07-24 11:18:14', 30020, 'completed', 'adjbjdb', '13', '5', '4'),
+(000022, 'cash', '2019-07-24 12:46:41', 1440, 'completed', 'adjbjdb', '13', '5', '4');
 
 -- --------------------------------------------------------
 
@@ -203,16 +201,12 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`order_details_id`, `order_id`, `product_id`, `quantity`) VALUES
-(1, 000012, '35', 2),
-(2, 000013, '35', 3),
-(3, 000013, '30', 2),
-(4, 000014, '35', 3),
-(5, 000014, '30', 2),
-(6, 000015, '27', 32),
-(7, 000016, '35', 2),
 (8, 000017, '35', 2),
 (9, 000018, '30', 2),
-(10, 000019, '35', 2);
+(10, 000019, '35', 2),
+(11, 000020, '39', 20),
+(12, 000021, '39', 20),
+(13, 000022, '37', 12);
 
 -- --------------------------------------------------------
 
@@ -333,6 +327,26 @@ INSERT INTO `provider` (`provider_id`, `owner_full_name`, `company_name`, `provi
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscribe`
+--
+
+CREATE TABLE `subscribe` (
+  `subscribe_id` int(11) NOT NULL,
+  `subscribe_email` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `subscribe`
+--
+
+INSERT INTO `subscribe` (`subscribe_id`, `subscribe_email`) VALUES
+(1, 'noor@gmail.com'),
+(5, 'yazan@gmail.com'),
+(7, 'salameh.yasin@yahoo.com');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -423,6 +437,12 @@ ALTER TABLE `provider`
   ADD PRIMARY KEY (`provider_id`);
 
 --
+-- Indexes for table `subscribe`
+--
+ALTER TABLE `subscribe`
+  ADD PRIMARY KEY (`subscribe_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -466,13 +486,13 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(6) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `order_id` int(6) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `order_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -491,6 +511,12 @@ ALTER TABLE `product_image`
 --
 ALTER TABLE `provider`
   MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `subscribe`
+--
+ALTER TABLE `subscribe`
+  MODIFY `subscribe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`

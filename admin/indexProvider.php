@@ -9,23 +9,37 @@ $year  = $now->format('Y');
 
 
 if(isset($_POST['ajax']) && isset($_POST['period'])){
+    $global_provider_id = $_POST['provider_id'];
     switch ($_POST['period']) {
         case 1:
-            $sqlChart = "SELECT provider.provider_id, COUNT(orders.order_id) as num FROM orders, provider, product, order_details WHERE orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = provider.provider_id AND orders.order_status = 'completed' AND MONTH(orders.order_date) = $month AND YEAR(orders.order_date) = $year GROUP BY provider.provider_id ORDER BY COUNT(orders.order_id) DESC LIMIT 5";
-            $resChart = mysqli_query($con, $sqlChart);
-            $dataPoints = array();
-            while($row = mysqli_fetch_assoc($resChart)){
-
-                $y = $row['num'];
-                $provider_id = $row['provider_id'];
-                $sqlPro = "SELECT company_name FROM provider WHERE provider_id = '$provider_id'";
-                $resPro = mysqli_query($con, $sqlPro);
-                while($prov = mysqli_fetch_assoc($resPro)){
-                    $label = $prov['company_name'];
-                    array_push($dataPoints,array("y" => $y, "label" => "$label" ));
-                } 
-                
-            }
+        $sqlChart = "SELECT
+        product.product_id,
+        SUM(order_details.quantity) as num,
+        product.title
+        FROM
+        orders,
+        product,
+        order_details
+        WHERE
+        orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = '$global_provider_id' AND orders.order_status = 'completed' AND MONTH(orders.order_date) = $month AND YEAR(orders.order_date) = $year
+        GROUP BY
+        product.product_id
+        ORDER BY
+        COUNT(orders.order_id)
+        DESC
+        LIMIT 5";
+        
+        $resChart = mysqli_query($con, $sqlChart);
+        
+        
+        $dataPoints = array();
+        while($row = mysqli_fetch_assoc($resChart)){
+        
+            $y = $row['num'];
+            $label = $row['title'];
+            array_push($dataPoints,array("y" => $y, "label" => "$label" )); 
+        
+        }
             echo "<div id='chartContainer' style='height: 330px; width: 100%;'></div>
             <script>
 
@@ -33,7 +47,7 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
                     animationEnabled: true,
                     theme: 'light2',
                     title: {
-                        text: 'Top Sellers'
+                        text: 'Top Products Sales'
                     },
                     axisY: {
                         title: 'Number of Products( Month ".$now->format('M').")'
@@ -49,21 +63,34 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
             </script>";
             break;
         case 2:
-            $sqlChart = "SELECT provider.provider_id, COUNT(orders.order_id) as num FROM orders, provider, product, order_details WHERE orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = provider.provider_id AND orders.order_status = 'completed' AND YEAR(orders.order_date) = $year GROUP BY provider.provider_id ORDER BY COUNT(orders.order_id) DESC LIMIT 5";
-            $resChart = mysqli_query($con, $sqlChart);
-            $dataPoints = array();
-            while($row = mysqli_fetch_assoc($resChart)){
-
-                $y = $row['num'];
-                $provider_id = $row['provider_id'];
-                $sqlPro = "SELECT company_name FROM provider WHERE provider_id = '$provider_id'";
-                $resPro = mysqli_query($con, $sqlPro);
-                while($prov = mysqli_fetch_assoc($resPro)){
-                    $label = $prov['company_name'];
-                    array_push($dataPoints,array("y" => $y, "label" => "$label" ));
-                } 
-                
-            }
+        $sqlChart = "SELECT
+        product.product_id,
+        SUM(order_details.quantity) as num,
+        product.title
+        FROM
+        orders,
+        product,
+        order_details
+        WHERE
+        orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = '$global_provider_id' AND orders.order_status = 'completed' AND  YEAR(orders.order_date) = $year
+        GROUP BY
+        product.product_id
+        ORDER BY
+        COUNT(orders.order_id)
+        DESC
+        LIMIT 5";
+        
+        $resChart = mysqli_query($con, $sqlChart);
+        
+        
+        $dataPoints = array();
+        while($row = mysqli_fetch_assoc($resChart)){
+        
+            $y = $row['num'];
+            $label = $row['title'];
+            array_push($dataPoints,array("y" => $y, "label" => "$label" )); 
+        
+        }
             echo "<div id='chartContainer' style='height: 330px; width: 100%;'></div>
             <script>
 
@@ -71,7 +98,7 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
                     animationEnabled: true,
                     theme: 'light2',
                     title: {
-                        text: 'Top Sellers'
+                        text: 'Top Products Sales'
                     },
                     axisY: {
                         title: 'Number of Products( Year ".$year.")'
@@ -87,21 +114,34 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
             </script>";
             break;
         case 3:
-            $sqlChart = "SELECT provider.provider_id, COUNT(orders.order_id) as num FROM orders, provider, product, order_details WHERE orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = provider.provider_id AND orders.order_status = 'completed' GROUP BY provider.provider_id ORDER BY COUNT(orders.order_id) DESC LIMIT 5";
-            $resChart = mysqli_query($con, $sqlChart);
-            $dataPoints = array();
-            while($row = mysqli_fetch_assoc($resChart)){
-
-                $y = $row['num'];
-                $provider_id = $row['provider_id'];
-                $sqlPro = "SELECT company_name FROM provider WHERE provider_id = '$provider_id'";
-                $resPro = mysqli_query($con, $sqlPro);
-                while($prov = mysqli_fetch_assoc($resPro)){
-                    $label = $prov['company_name'];
-                    array_push($dataPoints,array("y" => $y, "label" => "$label" ));
-                } 
-                
-            }
+        $sqlChart = "SELECT
+        product.product_id,
+        SUM(order_details.quantity) as num,
+        product.title
+        FROM
+        orders,
+        product,
+        order_details
+        WHERE
+        orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = '$global_provider_id' AND orders.order_status = 'completed'
+        GROUP BY
+        product.product_id
+        ORDER BY
+        COUNT(orders.order_id)
+        DESC
+        LIMIT 5";
+        
+        $resChart = mysqli_query($con, $sqlChart);
+        
+        
+        $dataPoints = array();
+        while($row = mysqli_fetch_assoc($resChart)){
+        
+            $y = $row['num'];
+            $label = $row['title'];
+            array_push($dataPoints,array("y" => $y, "label" => "$label" )); 
+        
+        }
             echo "<div id='chartContainer' style='height: 330px; width: 100%;'></div>
             <script>
 
@@ -109,7 +149,7 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
                     animationEnabled: true,
                     theme: 'light2',
                     title: {
-                        text: 'Top Sellers'
+                        text: 'Top Products Sales'
                     },
                     axisY: {
                         title: 'Number of Products( All Time)'
@@ -138,17 +178,12 @@ while($order = mysqli_fetch_assoc($resSales)){
     $sales   = $order['count_num'];
 }
 
-$sqlOrder = "SELECT COUNT(order_id) count_num FROM orders";
+$sqlOrder = "SELECT COUNT(orders.order_id) count_num FROM orders, order_details, product, provider WHERE orders.order_id = order_details.order_id AND order_details.product_id = product.product_id AND product.provider_id = provider.provider_id AND provider.provider_id = '$global_provider_id'";
 $resOrder = mysqli_query($con, $sqlOrder);
 while($order = mysqli_fetch_assoc($resOrder)){
     $order_num = $order['count_num'];
 }
 
-$sqlUser = "SELECT COUNT(user_id) count_num FROM users";
-$resUser = mysqli_query($con, $sqlUser);
-while($user = mysqli_fetch_assoc($resUser)){
-    $clients = $user['count_num'];
-}
 
 $sqlProvider = "SELECT COUNT(product_id) count_num FROM product WHERE provider_id='$global_provider_id'";
 $resProvider = mysqli_query($con, $sqlProvider);
@@ -158,25 +193,25 @@ while($provider = mysqli_fetch_assoc($resProvider)){
 
 
 
-$total_sum = $clients + $order_num + $sales;
+$total_sum = $provider_num + $order_num + $sales;
 $pre_order = round($order_num / $total_sum*100);
 $pre_sales = round($sales / $total_sum*100);
-$pre_clt   = round(($clients / $total_sum)*100);
+$pre_product   = round(($provider_num / $total_sum)*100);
 
 
 
 $sqlChart = "SELECT
-provider.provider_id,
-COUNT(orders.order_id) as num
+product.product_id,
+SUM(order_details.quantity) as num,
+product.title
 FROM
 orders,
-provider,
 product,
 order_details
 WHERE
-orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = provider.provider_id AND orders.order_status = 'completed' AND MONTH(orders.order_date) = $month AND YEAR(orders.order_date) = $year
+orders.order_id = order_details.order_id AND product.product_id = order_details.product_id AND product.provider_id = '$global_provider_id' AND orders.order_status = 'completed' AND MONTH(orders.order_date) = $month AND YEAR(orders.order_date) = $year
 GROUP BY
-provider.provider_id
+product.product_id
 ORDER BY
 COUNT(orders.order_id)
 DESC
@@ -184,18 +219,14 @@ LIMIT 5";
 
 $resChart = mysqli_query($con, $sqlChart);
 
+
 $dataPoints = array();
 while($row = mysqli_fetch_assoc($resChart)){
 
     $y = $row['num'];
-    $provider_id = $row['provider_id'];
-    $sqlPro = "SELECT company_name FROM provider WHERE provider_id = '$provider_id'";
-    $resPro = mysqli_query($con, $sqlPro);
-    while($prov = mysqli_fetch_assoc($resPro)){
-        $label = $prov['company_name'];
-        array_push($dataPoints,array("y" => $y, "label" => "$label" ));
-    } 
-	
+    $label = $row['title'];
+    array_push($dataPoints,array("y" => $y, "label" => "$label" )); 
+
 }
 
 
@@ -268,12 +299,12 @@ while($row = mysqli_fetch_assoc($resChart)){
                     <div class="card-body">
                         <div class="stat-widget-five">
                             <div class="stat-icon dib flat-color-4">
-                                <i class="pe-7s-users"></i>
+                                <i class="fa fa-list-alt"></i>
                             </div>
                             <div class="stat-content">
                                 <div class="text-left dib">
-                                    <div class="stat-text"><span class="count"><?php echo $clients; ?></span></div>
-                                    <div class="stat-heading">Customers</div>
+                                    <div class="stat-text"><span class="count"><?php echo $order_num; ?></span></div>
+                                    <div class="stat-heading">Orders</div>
                                 </div>
                             </div>
                         </div>
@@ -312,7 +343,7 @@ while($row = mysqli_fetch_assoc($resChart)){
                                             animationEnabled: true,
                                             theme: "light2",
                                             title: {
-                                                text: "Top Sellers"
+                                                text: "Top Products Sales"
                                             },
                                             axisY: {
                                                 title: "Number of Products( Month <?php echo $now->format('M'); ?>)"
@@ -332,13 +363,13 @@ while($row = mysqli_fetch_assoc($resChart)){
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="card-body d-flex flex-column h-100 w-100 justify-content-between">
+                            <div class="card-body d-flex flex-column h-100 w-100 justify-content-center">
                                 <div class="progress-box progress-1">
-                                    <h4 class="por-title">Customers</h4>
-                                    <div class="por-txt"><?php echo $clients; ?> Users (<?php echo $pre_clt; ?>%)</div>
+                                    <h4 class="por-title">Products</h4>
+                                    <div class="por-txt"><?php echo $provider_num; ?> Products (<?php echo $pre_product; ?>%)</div>
                                     <div class="progress mb-2" style="height: 5px;">
                                         <div class="progress-bar bg-flat-color-1" role="progressbar"
-                                            style="width: <?php echo $pre_clt; ?>%;" aria-valuenow="25"
+                                            style="width: <?php echo $pre_product; ?>%;" aria-valuenow="25"
                                             aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
@@ -399,7 +430,7 @@ while($row = mysqli_fetch_assoc($resChart)){
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $sqlOrd = "SELECT * FROM orders, order_details, users WHERE orders.order_id = order_details.order_id AND orders.user_id = users.user_id ORDER BY orders.order_id DESC LIMIT 5";
+                                                $sqlOrd = "SELECT * FROM orders, order_details, users, product WHERE product.product_id = order_details.product_id AND product.provider_id='$global_provider_id' AND orders.order_id = order_details.order_id AND orders.user_id = users.user_id ORDER BY orders.order_id DESC LIMIT 5";
                                                 $resOrd = mysqli_query($con , $sqlOrd);
                                                 $i = 1;
                                                 while($order5 = mysqli_fetch_assoc($resOrd)){ ?>
@@ -481,11 +512,12 @@ $(document).ready(function() {
         var value = $(this).val();
         $.ajax({
             type: 'post',
-            url: 'index.php',
+            url: 'indexProvider.php',
             cach: false,
             data: {
                 ajax: 1,
-                period: value
+                period: value,
+                provider_id: <?php echo $global_provider_id ?>
             },
             success: function(data) {
                 $('#drawChart').html(data);

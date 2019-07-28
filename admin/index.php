@@ -2,9 +2,6 @@
 include 'includes/config.php';
 global $con;
 
-if($_SESSION['type'] != 'admin'){
-    header('Location: loginProvider.php');
-}
 
 $now = new \DateTime('now');
 $month = $now->format('m');
@@ -130,6 +127,13 @@ if(isset($_POST['ajax']) && isset($_POST['period'])){
     exit;
 }
 
+include('includes/header.php');
+
+if($_SESSION['type'] != 'admin'){
+    echo "<script type='text/javascript'>window.top.location='loginProvider.php';</script>"; exit;
+    //header('Location: loginProvider.php');
+}
+
 $sqlSales = "SELECT SUM(grand_total) total_sum, COUNT(order_id) count_num FROM orders WHERE order_status='completed'";
 $resSales = mysqli_query($con, $sqlSales);
 while($order = mysqli_fetch_assoc($resSales)){
@@ -199,7 +203,7 @@ while($row = mysqli_fetch_assoc($resChart)){
 
 
 ?>
-<?php include('includes/header.php'); ?>
+
 
 
 
@@ -332,7 +336,7 @@ while($row = mysqli_fetch_assoc($resChart)){
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="card-body d-flex flex-column h-100 w-100 justify-content-between">
+                            <div class="card-body d-flex flex-column h-100 w-100 justify-content-center">
                                 <div class="progress-box progress-1">
                                     <h4 class="por-title">Customers</h4>
                                     <div class="por-txt"><?php echo $clients; ?> Users (<?php echo $pre_clt; ?>%)</div>

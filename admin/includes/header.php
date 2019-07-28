@@ -225,6 +225,7 @@ global $con;
                         <a href="subscribers.php"><i class="menu-icon fa fa-bell"></i>Manage subscribers</a>
                     </li>
 
+
                     <?php } ?>
 
                     <li>
@@ -239,6 +240,12 @@ global $con;
                         <a href="providerSetting.php?active=1"><i class="menu-icon fa fa-cog"></i>Settings</a>
                     </li>
                     <?php } ?>
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file"></i>Reports</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-bell"></i><a href="subscribers_file.php">subscribers</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
