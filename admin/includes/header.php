@@ -210,6 +210,10 @@ global $con;
                     </li>
 
                     <li>
+                        <a href="new_provider.php"><i class="menu-icon fa fa-id-badge"></i>New Provider</a>
+                    </li>
+
+                    <li>
                         <a href="customer.php"><i class="menu-icon fa fa-users"></i>Manage Customer</a>
                     </li>
 
@@ -223,6 +227,10 @@ global $con;
 
                     <li>
                         <a href="subscribers.php"><i class="menu-icon fa fa-bell"></i>Manage subscribers</a>
+                    </li>
+
+                    <li>
+                        <a href="ads.php"><i class="menu-icon fa fa-plus-square"></i>Manage Ads</a>
                     </li>
 
 

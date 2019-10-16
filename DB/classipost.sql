@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2019 at 02:14 PM
+-- Generation Time: Oct 16, 2019 at 03:37 PM
 -- Server version: 10.1.33-MariaDB
 -- PHP Version: 7.2.6
 
@@ -50,6 +50,26 @@ INSERT INTO `admin` (`admin_id`, `email`, `password`, `full_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ads`
+--
+
+CREATE TABLE `ads` (
+  `ads_id` int(10) NOT NULL,
+  `ads_img` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ads`
+--
+
+INSERT INTO `ads` (`ads_id`, `ads_img`) VALUES
+(5, 'upload/pubg-android-game-4k-eh.jpg'),
+(6, 'upload/Sunset_at_Tiergarten_UHD.jpg'),
+(7, 'upload/4K-HD-Desktop-Wallpapers.jpg');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `category`
 --
 
@@ -65,8 +85,6 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`category_id`, `name_en`, `name_ar`, `url`) VALUES
-(25, ' Electronics', 'Ø§Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ§Øª', 'upload/category/service1.png'),
-(26, 'Cars & Vehicles', 'Ø³ÙŠØ§Ø±Ø§Øª Ùˆ Ø´Ø§Ø­Ù†Ø§Øª', 'upload/category/service2.png'),
 (27, 'Overseas Jobs', 'Ø§Ù„Ø¹Ù…Ù„ ', 'upload/category/service3.png'),
 (28, 'Pets & Animals', 'Ø­ÙŠÙˆØ§Ù†Ø§Øª ', 'upload/category/service4.png'),
 (29, 'Hobby, Sport & Kids', '', 'upload/category/service5.png'),
@@ -74,8 +92,7 @@ INSERT INTO `category` (`category_id`, `name_en`, `name_ar`, `url`) VALUES
 (32, 'Education', 'Ø§Ù„ØªØ¹Ù„ÙŠÙ…', 'upload/category/service7.png'),
 (33, 'Home & Garden', '', 'upload/category/service8.png'),
 (34, 'test', 'ØªØ¬Ø±Ø¨Ø©', 'upload/category/service1.png'),
-(35, 'Interests', 'Ø£Ù‡ØªÙ…Ø§Ù…Ø§Øª', 'upload/category/service4.png'),
-(36, 'test1', 'ØªØ¬Ø±Ø¨Ø©1', 'upload/category/service8.png');
+(35, 'Interests', 'Ø£Ù‡ØªÙ…Ø§Ù…Ø§Øª', 'upload/category/service4.png');
 
 -- --------------------------------------------------------
 
@@ -152,6 +169,28 @@ INSERT INTO `country` (`country_id`, `country_name`) VALUES
 (2, 'USA'),
 (3, 'Algeria'),
 (5, 'Jordan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `new_provider`
+--
+
+CREATE TABLE `new_provider` (
+  `new_id` int(11) NOT NULL,
+  `new_name` varchar(30) DEFAULT NULL,
+  `new_email` varchar(50) DEFAULT NULL,
+  `new_mobile` varchar(50) DEFAULT NULL,
+  `new_message` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `new_provider`
+--
+
+INSERT INTO `new_provider` (`new_id`, `new_name`, `new_email`, `new_mobile`, `new_message`) VALUES
+(1, 'test', 'test@test.com', '0135654', NULL),
+(2, 'fg', 'fsb@f', '864654', 'slkgjlkhfgoi');
 
 -- --------------------------------------------------------
 
@@ -383,6 +422,12 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`admin_id`);
 
 --
+-- Indexes for table `ads`
+--
+ALTER TABLE `ads`
+  ADD PRIMARY KEY (`ads_id`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -405,6 +450,12 @@ ALTER TABLE `company_image`
 --
 ALTER TABLE `country`
   ADD PRIMARY KEY (`country_id`);
+
+--
+-- Indexes for table `new_provider`
+--
+ALTER TABLE `new_provider`
+  ADD PRIMARY KEY (`new_id`);
 
 --
 -- Indexes for table `orders`
@@ -459,10 +510,16 @@ ALTER TABLE `admin`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT for table `ads`
+--
+ALTER TABLE `ads`
+  MODIFY `ads_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `city`
@@ -481,6 +538,12 @@ ALTER TABLE `company_image`
 --
 ALTER TABLE `country`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `new_provider`
+--
+ALTER TABLE `new_provider`
+  MODIFY `new_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `orders`

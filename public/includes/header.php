@@ -180,8 +180,9 @@ $resultLocation   = mysqli_query($con, $retrieveLocation);
         <!-- Map Area Start Here -->
         <section class="map-layout1 fixed-menu-mt full-width-container">
             <div class="container-fluid">
-                <div class="google-map-area">
-                    <div id="googleMap" style="width:100%; height:200px;"></div>
+                <div class="google-map-area" style="height: 300px; overflow: hidden;position: relative">
+<!--                    <iframe width='100%' height='300px' id='mapcanvas' src='https://maps.google.com/maps?q=aqaba,Jordan&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=&amp;output=embed' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'><div class="zxos8_gm"><a href="https://sites.google.com/site/wistfulvariance/instant-free-vehicle-check">instant</a></div><div style='overflow:hidden;'><div id='gmap_canvas' style='height:100%;width:100%;'></div></div><div></div></iframe>-->
+                        <img src="test.jpg" style="object-fit: cover;max-height: 100%;width: 100%">
                 </div>
             </div>
         </section>
